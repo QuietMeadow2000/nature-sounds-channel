@@ -18,6 +18,18 @@ pipeline. Tamamen GitHub Actions üzerinde çalışır. Plan: `youtube-doga-sesl
   → state/ commit
 ```
 
+## Ölçülen değerler (yerel, Apple Silicon)
+
+| | |
+|---|---|
+| 60 dk render, uçtan uca | 11 dk 40 sn (ses 63 sn, video 10,5 dk) |
+| Çıktı boyutu | 475–480 MB (plan tahmini 500 MB–1 GB) |
+| Ses döngü ek yeri | sıçrama oranı 1,08 (1,0 = kusursuz); kasıtlı bozuk döngüde 2,54 |
+| Video döngü ek yeri | oran 1,46 (eşik 2,0) |
+
+GitHub runner (4 vCPU) bu makineden yavaş; CPU süresi 54 dk olduğuna göre runner'da
+kabaca 14–20 dk + yükleme beklenir. İş zaman aşımı 120 dk, GitHub sınırı 6 saat.
+
 ## Kurulum durumu
 
 | Adım | Durum |
@@ -98,7 +110,13 @@ saklamaya gerek yok.
   kareleri RAM'de tutuyor (1080p'de GB'larca), runner'ı riske atıyor. Yerine ses
   tarafıyla aynı xfade yöntemi kullanıldı.
 - **Tekrar başına görsel varyasyon:** 60 dk benzersiz video render etmek gerekirdi.
-  Yerine saat boyunca çok yavaş renk/parlaklık kayması (tek filtre, maliyetsiz).
+  Yerine saat boyunca çok yavaş renk/parlaklık kayması (`video.drift`, tek filtre).
+  Ölçüldü: aynı döngü fazındaki iki kare 300 sn arayla ortalama 3,6/255 farklı —
+  yani 288 tekrar birbirinin bit-bit kopyası değil. Ardışık kareler arası katkı
+  1,1/255, kaynağın kendi hareketi (5 sn'de 24,4/255) yanında görünmez. Dosya
+  boyutuna etkisi ölçülemedi (60 dk: 475 MB → 480 MB).
+  İki tuzak: `hue=h=` **derece** cinsinden (küçük değerler H.264'te tamamen kaybolur)
+  ve `eq` varsayılan olarak ifadeyi bir kez hesaplar — `eval=frame` şart.
 - **Metadata maliyeti:** Plan "ayda ~1 $" diyordu; 5 dilde çeviri eklenince
   `claude-opus-5` ile ayda ~2,5 $. `config` içinde `metadata.model: claude-sonnet-5`
   yazarak düşürülebilir.

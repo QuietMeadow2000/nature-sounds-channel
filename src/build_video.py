@@ -133,19 +133,39 @@ def kenburns_unit(src: Path, dst: Path, cfg: Dict[str, Any], seconds: float = 60
 
 # ---------------------------------------------------------------- final render
 
+# Kayma genlikleri (drift=1.0 icin). Kare-kare gorunmez, saat boyunca olculebilir:
+# duz renk uzerinde kanal basina ~11/255 degisim. Amac, 288 kez tekrarlanan birimin
+# birbirinin bit-bit kopyasi olmamasi (Bolum 11, "tekrar eden icerik" riski).
+# Periyotlar birbirine bolunmez secildi ki desen tekrarlanmasin.
+DRIFT_HUE_DEG = 5.0        # hue: derece cinsinden — kucuk degerler H.264'te tamamen kaybolur
+DRIFT_SAT = 0.05
+DRIFT_BRIGHT = 0.015
+
+
+def drift_filter(scale: float) -> str:
+    """Cok yavas renk/parlaklik kaymasi. eq icin eval=frame SART:
+    varsayilan eval=init ifadeyi bir kez hesaplar ve kayma sabit kalir."""
+    return (
+        f"hue=h='{DRIFT_HUE_DEG * scale:.2f}*sin(2*PI*t/2400)'"
+        f":s='1+{DRIFT_SAT * scale:.3f}*sin(2*PI*t/1500)',"
+        f"eq=brightness='{DRIFT_BRIGHT * scale:.4f}*sin(2*PI*t/1800)':eval=frame"
+    )
+
+
 def render_final(
     unit: Path, unit_len: float, audio: Path, out: Path,
-    cfg: Dict[str, Any], drift: float = 0.6,
+    cfg: Dict[str, Any], drift: Optional[float] = None,
 ) -> None:
     """Birimi 60 dk'ya uzat, sesi bindir, tek gecis H.264 render."""
     vcfg = cfg["video"]
     total = float(cfg["audio"]["duration_min"]) * 60.0
     loops = max(0, math.ceil(total / unit_len) - 1)
+    if drift is None:
+        drift = float(vcfg.get("drift", 1.0))
 
-    # Cok yavas renk kaymasi: 1 saatte ~2 tam tur. Gozle fark edilmez, pikselde belirgin.
     filters = [f"trim=0:{total:.3f}", "setpts=PTS-STARTPTS"]
     if drift > 0:
-        filters.append(f"hue=h='{drift:.2f}*sin(2*PI*t/1800)':s='1+0.02*sin(2*PI*t/1200)'")
+        filters.append(drift_filter(drift))
     filters.append("format=yuv420p")
 
     args = [

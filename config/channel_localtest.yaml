@@ -29,6 +29,10 @@ video:
   fps: 24
   crf: 23
   preset: veryfast
+  # Saat boyunca cok yavas renk/parlaklik kaymasi. 0 = kapali (o zaman
+  # tune=stillimage devreye girer ve dosya kuculur, ama 288 tekrar
+  # birbirinin bit-bit kopyasi olur). 1.0 = varsayilan genlik.
+  drift: 1.0
   tune: stillimage
 
 thumbnail:
