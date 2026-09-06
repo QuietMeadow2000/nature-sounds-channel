@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "date": "2026-09-06",
+    "channel": "main",
+    "theme": "rain",
+    "season_hint": null,
+    "seed": 113536206257462,
+    "title": "Heavy Rain and Distant Thunder for Deep Sleep | 1 Hour",
+    "tags": [
+      "rain sounds",
+      "heavy rain",
+      "distant thunder",
+      "rain for sleeping",
+      "sleep sounds",
+      "thunderstorm ambience",
+      "rain and thunder",
+      "nature sounds",
+      "white noise",
+      "rain sounds for studying",
+      "1 hour rain",
+      "relaxing rain",
+      "countryside rain",
+      "calm rain"
+    ],
+    "metadata_by": "elle yazildi (Anthropic anahtari yok)",
+    "audio": {
+      "layers": [
+        {
+          "role": "main",
+          "match": "rain",
+          "source": "rain__freesound_200270.wav",
+          "unit_len": 375.0,
+          "gain": 1.043,
+          "offset": 0.0,
+          "normalize_db": 15.84
+        },
+        {
+          "role": "layer",
+          "match": "distant_thunder",
+          "source": "distant_thunder__freesound_361401.wav",
+          "unit_len": 402.342,
+          "gain": 0.215,
+          "offset": 214.511,
+          "normalize_db": 23.05
+        },
+        {
+          "role": "layer",
+          "match": "light_wind",
+          "source": "light_wind__freesound_670307.wav",
+          "unit_len": 309.113,
+          "gain": 0.0965,
+          "offset": 102.283,
+          "normalize_db": 6.03
+        }
+      ],
+      "crossfade_sec": 5.0,
+      "edge_trim_sec": 10.0,
+      "target_lufs": -18.0,
+      "mix_correction_db": 0.62,
+      "duration_sec": 3600.0,
+      "seam_check_sec": 375.0
+    },
+    "video": {
+      "visual_kind": "clip",
+      "visual_source": "pexels:10541023",
+      "unit_len_sec": 9.21,
+      "size_mb": 519.9
+    },
+    "video_id": null,
+    "publish_mode": "manual",
+    "privacy": "manual",
+    "uploaded_at": "2026-09-06T21:04:36+00:00"
+  }
+]
