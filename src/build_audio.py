@@ -68,19 +68,30 @@ def normalize_source(src: Path, dst: Path, target_lufs: float, sample_rate: int)
     return delta
 
 
-def make_loop_unit(src: Path, dst: Path, crossfade: float) -> float:
-    """Son `crossfade` sn'yi basa bindirerek dongu birimi uret. Birim suresini dondur."""
+def make_loop_unit(src: Path, dst: Path, crossfade: float, edge_trim: float = 0.0) -> float:
+    """Son `crossfade` sn'yi basa bindirerek dongu birimi uret. Birim suresini dondur.
+
+    `edge_trim`: kaydin iki ucundan atilacak saniye. Ses arsivlerine yuklenen
+    kayitlarin cogunda yukleyenin ekledigi fade-in/fade-out var; crossfade tam o
+    bolgeyi kullandigi icin ek yerinde duyulur bir nefes boslugu olusur. Olcumde
+    bu fade'ler ilk 5-10 saniyede bitiyor. Kisa dosyalarda asiri kirpmamak icin
+    her yandan en fazla %10 atilir.
+    """
     dur = duration_sec(src)
-    if dur < crossfade * 4:
+    lo = min(edge_trim, dur * 0.10)
+    hi = dur - lo
+    effective = hi - lo
+    if effective < crossfade * 4:
         raise PipelineError(
-            f"{src.name}: {dur:.0f} sn cok kisa (crossfade {crossfade:.0f} sn icin "
-            f"en az {crossfade * 4:.0f} sn gerekir). Daha uzun bir kayit sec."
+            f"{src.name}: kullanilabilir sure {effective:.0f} sn cok kisa "
+            f"(crossfade {crossfade:.0f} sn icin en az {crossfade * 4:.0f} sn gerekir). "
+            f"Daha uzun bir kayit sec."
         )
-    head_end = dur - crossfade
+    head_end = hi - crossfade
     chain = (
         f"[0:a]asplit=2[a][b];"
-        f"[a]atrim=0:{head_end:.6f},asetpts=PTS-STARTPTS[a1];"
-        f"[b]atrim={head_end:.6f}:{dur:.6f},asetpts=PTS-STARTPTS[b1];"
+        f"[a]atrim={lo:.6f}:{head_end:.6f},asetpts=PTS-STARTPTS[a1];"
+        f"[b]atrim={head_end:.6f}:{hi:.6f},asetpts=PTS-STARTPTS[b1];"
         f"[b1][a1]acrossfade=d={crossfade:.6f}:c1=tri:c2=tri[out]"
     )
     ffmpeg(
@@ -89,7 +100,8 @@ def make_loop_unit(src: Path, dst: Path, crossfade: float) -> float:
         f"loop unit {src.name}",
     )
     unit_len = duration_sec(dst)
-    log.info("  %-42s %6.0f sn  ->  birim %.0f sn", src.name, dur, unit_len)
+    log.info("  %-42s %6.0f sn  (kenar -%.0f sn)  ->  birim %.0f sn",
+             src.name, dur, lo, unit_len)
     return unit_len
 
 
@@ -202,7 +214,7 @@ def build(
         norm = work / f"norm_{idx}.wav"
         unit = work / f"unit_{idx}.wav"
         applied = normalize_source(src, norm, float(acfg["target_lufs"]), sr)
-        unit_len = make_loop_unit(norm, unit, xfade)
+        unit_len = make_loop_unit(norm, unit, xfade, float(acfg.get("edge_trim_sec", 0.0)))
 
         # Bolum 5: oranlar her gun +-%10 oynar -> her video olculebilir sekilde farkli.
         gain = float(item["gain"]) * (1.0 + rng.uniform(-jitter, jitter))
@@ -244,6 +256,7 @@ def build(
     recipe = {
         "layers": [{k: v for k, v in l.items() if k != "unit"} for l in layers],
         "crossfade_sec": xfade,
+        "edge_trim_sec": float(acfg.get("edge_trim_sec", 0.0)),
         "target_lufs": float(acfg["target_lufs"]),
         "mix_correction_db": round(correction, 2),
         "duration_sec": round(total, 1),

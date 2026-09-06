@@ -21,6 +21,10 @@ audio:
   duration_min: 60
   target_lufs: -18.0
   crossfade_sec: 5               # loop birimi ek yeri
+  # Kaydin iki ucundan atilacak saniye. Ses arsivlerindeki kayitlarin
+  # cogunda yukleyenin ekledigi fade-in/fade-out var ve crossfade tam
+  # orayi kullaniyor; kirpmazsan ek yerinde nefes boslugu duyulur.
+  edge_trim_sec: 10
   fade_in_sec: 8
   fade_out_sec: 15
   bitrate: 192k
