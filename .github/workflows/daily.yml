@@ -68,6 +68,18 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GDRIVE_SA_JSON: ${{ secrets.GDRIVE_SA_JSON }}
 
+      # Manuel yayin modunda (publish_mode: manual) video YouTube'a gitmez;
+      # buradan indirip Studio'ya elle yukluyorsun. Audit onayi gelince
+      # config'de publish_mode: api yapilir ve bu adim bos gecer.
+      - if: steps.guard.outputs.run == 'true'
+        name: Manuel yayin paketi
+        uses: actions/upload-artifact@v4
+        with:
+          name: quiet-meadow-${{ github.run_number }}
+          path: out/
+          retention-days: 14
+          if-no-files-found: ignore
+
       # Bolum 15: 60 gun commit gormeyen public repo'da GitHub cron'u durdurur.
       # state/ her gun degistigi icin bu sorun olusmaz.
       - if: always() && steps.guard.outputs.run == 'true'

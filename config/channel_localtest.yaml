@@ -10,6 +10,11 @@ channel:
   # API audit onayi gelene kadar "private" (Bolum 3.3/7).
   # Onay gelince "public" yapilir — tek satirlik degisiklik.
   privacy_status: private
+  # manual : video out/<tarih>/ altina birakilir, Studio'ya elle yuklersin.
+  #          Audit onayi beklenirken kullanilan mod — YouTube API'ye hic
+  #          ihtiyac yok, yani secret da gerekmiyor.
+  # api    : videos.insert ile dogrudan yukler. Audit onayi gelince gec.
+  publish_mode: manual
   category_id: "10"              # 10 = Music, 22 = People & Blogs (A/B test, Bolum 17)
   made_for_kids: false
 

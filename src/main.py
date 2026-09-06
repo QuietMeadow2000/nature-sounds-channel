@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import os
+import shutil
 import sys
 import traceback
 from datetime import date, datetime, timezone
@@ -24,9 +25,10 @@ import drive
 import gen_metadata
 import make_thumbnail
 import pick_theme
+import publish_sheet
 import upload_youtube
 from util import (
-    REPO, WORK, PipelineError, append_history, clean_work, history, load_yaml,
+    OUT, REPO, WORK, PipelineError, append_history, clean_work, history, load_yaml,
     log, log_error, paused, setup_logging, workdir,
 )
 
@@ -54,7 +56,7 @@ def replay_entry(day: str) -> Dict[str, Any]:
 
 
 def run(cfg_path: Path, dry_run: bool, replay: Optional[str], keep_work: bool,
-        force_theme: Optional[str] = None) -> int:
+        force_theme: Optional[str] = None, manual: bool = False) -> int:
     cfg = load_yaml(cfg_path)
     channel_key = cfg["channel"].get("key", "main")
     secrets = load_secrets()
@@ -124,10 +126,28 @@ def run(cfg_path: Path, dry_run: bool, replay: Optional[str], keep_work: bool,
         api_key=secrets["ANTHROPIC_API_KEY"] or None,
     )
 
-    # 7) Yukleme
+    # 7) Yayin
+    #    manual : dosyalari out/ altina koyar, Studio'ya elle yuklersin (audit beklenirken)
+    #    api    : videos.insert ile dogrudan yukler (audit onayi geldikten sonra)
+    mode = "manual" if manual else cfg["channel"].get("publish_mode", "api")
     video_id = None
+    bundle = None
+
     if dry_run:
-        log.info("DRY RUN — yukleme atlandi. Dosyalar: %s", work)
+        log.info("DRY RUN — yayin adimi atlandi. Dosyalar: %s", work)
+    elif mode == "manual":
+        bundle = OUT / day
+        bundle.mkdir(parents=True, exist_ok=True)
+        stem = f"{day}-{theme}"
+        video_name, thumb_name = f"{stem}.mp4", f"{stem}.jpg"
+        shutil.copy2(video["path"], bundle / video_name)
+        if thumb and thumb.exists():
+            shutil.copy2(thumb, bundle / thumb_name)
+        sheet = publish_sheet.write(
+            bundle, day, theme, meta, cfg, video_name, thumb_name if thumb else "-")
+        log.info("MANUEL YAYIN — dosyalar hazir: %s", bundle)
+        log.info("  %-28s %.0f MB", video_name, (bundle / video_name).stat().st_size / 1e6)
+        log.info("  %-28s kopyala-yapistir sayfasi", sheet.name)
     else:
         video_id = upload_youtube.publish(
             video["path"], thumb, meta, cfg, theme, secrets,
@@ -155,7 +175,8 @@ def run(cfg_path: Path, dry_run: bool, replay: Optional[str], keep_work: bool,
             "audio": audio["recipe"],
             "video": video["recipe"],
             "video_id": video_id,
-            "privacy": cfg["channel"]["privacy_status"],
+            "publish_mode": mode,
+            "privacy": cfg["channel"]["privacy_status"] if mode == "api" else "manual",
             "uploaded_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         })
 
@@ -170,6 +191,8 @@ def main() -> int:
     parser.add_argument("--dry-run", action="store_true", help="uretir ama yuklemez")
     parser.add_argument("--replay", metavar="YYYY-MM-DD", help="gecmis bir videoyu yeniden uret")
     parser.add_argument("--theme", help="tema secimini atla (test/hata ayiklama)")
+    parser.add_argument("--manual", action="store_true",
+                        help="yuklemeden, dosyalari out/<tarih>/ altina birak")
     parser.add_argument("--keep-work", action="store_true", help="ara dosyalari silme")
     parser.add_argument("-v", "--verbose", action="store_true")
     args = parser.parse_args()
@@ -182,7 +205,8 @@ def main() -> int:
 
     cfg_path = REPO / args.channel if not Path(args.channel).is_absolute() else Path(args.channel)
     try:
-        return run(cfg_path, args.dry_run, args.replay, args.keep_work, args.theme)
+        return run(cfg_path, args.dry_run, args.replay, args.keep_work,
+                   args.theme, args.manual)
     except PipelineError as exc:
         log.error("%s", exc)
         log_error(str(exc).replace("\n", " | "))

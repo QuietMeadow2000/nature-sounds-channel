@@ -112,6 +112,20 @@ def _trim_tags(tags: List[str], limit: int) -> List[str]:
     return kept
 
 
+def duration_label(minutes: int) -> str:
+    """60 dk -> "1 Hour", 90 dk -> "1.5 Hours", 45 dk -> "45 Minutes".
+
+    Tam bolme kullanilmiyor: 60'in alti "0 Hour" veriyordu.
+    """
+    if minutes < 60:
+        return f"{minutes} Minutes"
+    hours = minutes / 60
+    if hours.is_integer():
+        h = int(hours)
+        return f"{h} Hour" if h == 1 else f"{h} Hours"
+    return f"{hours:.1f} Hours"
+
+
 def _fallback(theme: str, cfg: Dict[str, Any]) -> Dict[str, Any]:
     """Bolum 16.8 — Claude erisilemezse gun bos gecmesin. Kalite duser, yayin durmaz."""
     tcfg = cfg["themes"][theme]
@@ -120,7 +134,7 @@ def _fallback(theme: str, cfg: Dict[str, Any]) -> Dict[str, Any]:
     minutes = int(cfg["audio"]["duration_min"])
     log.warning("Metadata sablonu kullanildi (Claude API erisilemedi).")
     return {
-        "title": f"{pretty} Sounds for {purpose.title()} | {minutes // 60} Hour",
+        "title": f"{pretty} Sounds for {purpose.title()} | {duration_label(minutes)}",
         "description": (
             f"{minutes} minutes of continuous {theme.replace('_', ' ')} sounds, "
             f"mixed to loop without a noticeable seam.\n\n"
@@ -130,7 +144,7 @@ def _fallback(theme: str, cfg: Dict[str, Any]) -> Dict[str, Any]:
         "tags": _trim_tags(
             [f"{theme.replace('_', ' ')} sounds", "sleep sounds", "relaxing sounds",
              "nature sounds", "white noise", "study music", "focus sounds",
-             "ambient sounds", "1 hour", "calm"],
+             "ambient sounds", duration_label(minutes).lower(), "calm"],
             int(cfg["metadata"]["max_tags_chars"]),
         ),
         "localizations": {},

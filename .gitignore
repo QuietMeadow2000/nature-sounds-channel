@@ -26,3 +26,6 @@ assets/
 
 # Marka dosyalari izlensin (yukaridaki *.png kuralinin istisnasi)
 !brand/*.png
+
+# Manuel yayin paketleri (video + thumbnail + metin)
+out/

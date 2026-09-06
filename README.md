@@ -56,6 +56,23 @@ Dosya adı eşleşmesi: `distant_thunder__freesound_512345.flac` → `match: dis
 `sources` defterinde **A sütunu dosya adı** olmalı; defterde olmayan dosya pipeline'a
 girmez (`drive.check_registered`).
 
+## Yayın modu
+
+`config/channel_main.yaml` → `channel.publish_mode`:
+
+| Mod | Ne yapar | Ne gerektirir |
+|---|---|---|
+| `manual` *(şu an aktif)* | Video, thumbnail ve kopyala-yapıştır sayfasını `out/<tarih>/` altına bırakır. Studio'ya elle yüklersin. | YouTube API'ye **hiç** ihtiyaç yok — secret gerekmez |
+| `api` | `videos.insert` ile doğrudan yükler, thumbnail atar, playlist'e ekler, çevirileri yazar | Audit onayı + üç YouTube secret'ı |
+
+Manuel modda kalmamızın sebebi: YouTube, doğrulanmamış API projelerinden yüklenen
+videoları private'a kilitliyor ve doğrulama başvurusunun süresi belirsiz. Manuel yolla
+kanal beklemeden yayına başlar; onay gelince tek satır değişir.
+
+GitHub Actions'ta manuel mod çıktıyı **artifact** olarak bırakır (Actions → ilgili
+çalışma → Artifacts). Yerelde çalıştırırsan dosyalar zaten `out/` altında olur ve
+indirmen gerekmez.
+
 ## Yerel çalıştırma
 
 ```bash

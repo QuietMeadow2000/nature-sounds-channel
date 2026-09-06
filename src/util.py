@@ -14,6 +14,7 @@ from typing import Any, Dict, List, Optional
 REPO = Path(__file__).resolve().parent.parent
 STATE = REPO / "state"
 WORK = REPO / "work"
+OUT = REPO / "out"   # manuel yayin paketleri
 
 log = logging.getLogger("qm")
 
