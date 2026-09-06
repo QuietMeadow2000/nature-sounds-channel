@@ -53,7 +53,8 @@ def replay_entry(day: str) -> Dict[str, Any]:
     raise PipelineError(f"history.json icinde {day} tarihli kayit yok.")
 
 
-def run(cfg_path: Path, dry_run: bool, replay: Optional[str], keep_work: bool) -> int:
+def run(cfg_path: Path, dry_run: bool, replay: Optional[str], keep_work: bool,
+        force_theme: Optional[str] = None) -> int:
     cfg = load_yaml(cfg_path)
     channel_key = cfg["channel"].get("key", "main")
     secrets = load_secrets()
@@ -67,6 +68,11 @@ def run(cfg_path: Path, dry_run: bool, replay: Optional[str], keep_work: bool) -
         theme, season_hint = past["theme"], past.get("season_hint")
         seed = int(past.get("seed", seed))
         log.info("REPLAY %s — tema %s, tohum %d", replay, theme, seed)
+    elif force_theme:
+        if force_theme not in cfg["themes"]:
+            raise PipelineError(f"Bilinmeyen tema: {force_theme}")
+        theme, season_hint = force_theme, None
+        log.info("Tema elle secildi: %s", theme)
     else:
         theme, info = pick_theme.pick(cfg, today, seed)
         season_hint = info.get("title_hint")
@@ -130,7 +136,13 @@ def run(cfg_path: Path, dry_run: bool, replay: Optional[str], keep_work: bool) -
         )
 
     # 8) Kayit (Bolum 16.5 — bu kayit videoyu birebir yeniden uretmeye yeter)
-    if not replay:
+    # Dry-run YAZMAZ: yuklenmemis bir video "son 2 tema" kuralini ve "son 10 baslik"
+    # listesini kirletir, sonraki gercek calismalarin secimini bozardi.
+    if replay:
+        log.info("REPLAY — history.json'a yazilmadi.")
+    elif dry_run:
+        log.info("DRY RUN — history.json'a yazilmadi.")
+    else:
         append_history({
             "date": day,
             "channel": channel_key,
@@ -157,6 +169,7 @@ def main() -> int:
     parser.add_argument("--channel", default="config/channel_main.yaml")
     parser.add_argument("--dry-run", action="store_true", help="uretir ama yuklemez")
     parser.add_argument("--replay", metavar="YYYY-MM-DD", help="gecmis bir videoyu yeniden uret")
+    parser.add_argument("--theme", help="tema secimini atla (test/hata ayiklama)")
     parser.add_argument("--keep-work", action="store_true", help="ara dosyalari silme")
     parser.add_argument("-v", "--verbose", action="store_true")
     args = parser.parse_args()
@@ -169,7 +182,7 @@ def main() -> int:
 
     cfg_path = REPO / args.channel if not Path(args.channel).is_absolute() else Path(args.channel)
     try:
-        return run(cfg_path, args.dry_run, args.replay, args.keep_work)
+        return run(cfg_path, args.dry_run, args.replay, args.keep_work, args.theme)
     except PipelineError as exc:
         log.error("%s", exc)
         log_error(str(exc).replace("\n", " | "))

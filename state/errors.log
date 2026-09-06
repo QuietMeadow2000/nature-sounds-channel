@@ -1,0 +1,2 @@
+2026-09-06 11:59:23Z  ffprobe aiclip_test.mp4 basarisiz (kod 1): | [mov,mp4,m4a,3gp,3g2,mj2 @ 0x139e13640] moov atom not found | /Users/aksel/projects/nature-sounds-channel/assets/clips/rain/aiclip_test.mp4: Invalid data found when processing input
+2026-09-06 12:00:17Z  UNEXPECTED FileNotFoundError(2, 'No such file or directory')

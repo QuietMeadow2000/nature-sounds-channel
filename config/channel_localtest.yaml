@@ -1,0 +1,142 @@
+# Yalnizca yerel test icin — kisa sure. Gercek kanala yuklenmez.
+# Quiet Meadow — ana kanal ayarlari
+# Ikinci bir kanal eklemek icin bu dosyayi kopyala (Bolum 12).
+
+channel:
+  key: localtest                      # secret onekleri ve log icin
+  name: Quiet Meadow
+  handle: "@quietmeadow"
+  language: en
+  # API audit onayi gelene kadar "private" (Bolum 3.3/7).
+  # Onay gelince "public" yapilir — tek satirlik degisiklik.
+  privacy_status: private
+  category_id: "10"              # 10 = Music, 22 = People & Blogs (A/B test, Bolum 17)
+  made_for_kids: false
+
+audio:
+  duration_min: 2   # YEREL TEST
+  target_lufs: -18.0
+  crossfade_sec: 5               # loop birimi ek yeri
+  fade_in_sec: 8
+  fade_out_sec: 15
+  bitrate: 192k
+  sample_rate: 44100
+  gain_jitter: 0.10              # katman seviyeleri her gun +-%10 oynar
+
+video:
+  width: 1920
+  height: 1080
+  fps: 24
+  crf: 23
+  preset: veryfast
+  tune: stillimage
+
+thumbnail:
+  width: 1280
+  height: 720
+  title_font: fonts/BebasNeue-Regular.ttf
+  subtitle_font: fonts/Inter-SemiBold.ttf
+  logo: logo.png
+  logo_width_pct: 0.08
+  darken: 0.35
+
+drive:
+  root_folder: nature-sounds-assets
+  sources_sheet: sources
+
+metadata:
+  model: ""                      # bos = src/gen_metadata.py icindeki varsayilan
+  max_title_chars: 70
+  max_tags_chars: 500
+  recent_titles_shown: 10
+  locales: [es, pt, de, fr, ja]  # Bolum 16.3 otomatik ceviri
+
+selection:
+  avoid_last_n: 2                # son 2 temadan farkli olsun
+  weight_floor: 0.05             # hicbir tema %5 altina inmez
+  weight_ceiling: 0.35           # hicbir tema %35 ustune cikmaz
+
+retry:
+  upload_attempts: 3
+  upload_backoff_min: 20
+
+themes:
+  rain:
+    playlist_id: ""              # YouTube URL'sindeki list= sonrasi
+    playlist_name: Rain Sounds
+    purpose: "Sleep, Study"
+    mix:
+      - {role: main,  match: rain,            gain: 1.00}
+      - {role: layer, match: distant_thunder, gain: 0.20}
+      - {role: layer, match: light_wind,      gain: 0.10}
+    pexels_queries: ["rain on window", "rain on leaves", "rainy forest"]
+
+  ocean_waves:
+    playlist_id: ""
+    playlist_name: Ocean Waves
+    purpose: "Sleep, Relaxation"
+    mix:
+      - {role: main,  match: waves,        gain: 1.00}
+      - {role: layer, match: seagull,      gain: 0.10}
+      - {role: layer, match: beach_wind,   gain: 0.15}
+    pexels_queries: ["ocean waves slow", "calm sea sunset", "beach waves aerial"]
+
+  forest_birds:
+    playlist_id: ""
+    playlist_name: Forest & Birds
+    purpose: "Focus, Morning"
+    mix:
+      - {role: main,  match: birdsong,     gain: 1.00}
+      - {role: layer, match: leaves_wind,  gain: 0.20}
+      - {role: layer, match: distant_stream, gain: 0.12}
+    pexels_queries: ["forest sunlight", "green forest canopy", "woodland morning"]
+
+  stream:
+    playlist_id: ""
+    playlist_name: Rivers & Streams
+    purpose: "Meditation, Study"
+    mix:
+      - {role: main,  match: stream,       gain: 1.00}
+      - {role: layer, match: birdsong,     gain: 0.12}
+      - {role: layer, match: leaves_wind,  gain: 0.10}
+    pexels_queries: ["mountain stream", "forest creek water", "river rocks"]
+
+  thunderstorm:
+    playlist_id: ""
+    playlist_name: Thunderstorms
+    purpose: "Deep Sleep"
+    mix:
+      - {role: main,  match: heavy_rain,   gain: 1.00}
+      - {role: layer, match: thunder,      gain: 0.35}
+      - {role: layer, match: wind_gust,    gain: 0.12}
+    pexels_queries: ["thunderstorm clouds", "lightning night sky", "storm rain window"]
+
+  wind:
+    playlist_id: ""
+    playlist_name: Wind Sounds
+    purpose: "Relaxation"
+    mix:
+      - {role: main,  match: wind,         gain: 1.00}
+      - {role: layer, match: grass_rustle, gain: 0.18}
+      - {role: layer, match: distant_trees, gain: 0.12}
+    pexels_queries: ["wind grass field", "meadow wind slow motion", "windy hillside"]
+
+  fireplace:
+    playlist_id: ""
+    playlist_name: Fireplace
+    purpose: "Cozy, Sleep"
+    mix:
+      - {role: main,  match: fireplace,    gain: 1.00}
+      - {role: layer, match: crackle,      gain: 0.25}
+      - {role: layer, match: outside_wind, gain: 0.10}
+    pexels_queries: ["fireplace closeup", "burning logs fire", "cozy fire night"]
+
+  night_crickets:
+    playlist_id: ""
+    playlist_name: Night Sounds
+    purpose: "Sleep"
+    mix:
+      - {role: main,  match: crickets,     gain: 1.00}
+      - {role: layer, match: night_wind,   gain: 0.15}
+      - {role: layer, match: distant_owl,  gain: 0.08}
+    pexels_queries: ["night sky stars", "moonlit field night", "starry night timelapse"]

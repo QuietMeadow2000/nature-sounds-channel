@@ -20,3 +20,6 @@ __pycache__/
 *.pyc
 .venv/
 .DS_Store
+
+# Yerel test varliklari (Drive olmadan calisirken)
+assets/
