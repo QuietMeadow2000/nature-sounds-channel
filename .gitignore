@@ -1,0 +1,22 @@
+# Sirlar — asla repo'ya girmez (Bolum 16.7)
+client_secret.json
+service_account.json
+*.pem
+.env
+
+# Calisma dosyalari
+work/
+assets_cache/
+*.mp4
+*.wav
+*.flac
+*.aac
+*.m4a
+*.jpg
+*.png
+!prompts/*.png
+
+__pycache__/
+*.pyc
+.venv/
+.DS_Store

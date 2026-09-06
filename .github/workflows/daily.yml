@@ -1,0 +1,116 @@
+name: Daily upload
+
+on:
+  schedule:
+    - cron: "17 23 * * *"    # her gun 23:17 UTC -> video ~00:00 UTC'de yayinda (20:00 ABD Dogu)
+    - cron: "42 5 * * 1"     # Pazartesi -> analytics + agirliklar
+  workflow_dispatch:
+    inputs:
+      channel:
+        description: "Ayar dosyasi"
+        default: config/channel_test.yaml
+        type: string
+      dry_run:
+        description: "Uret ama YouTube'a yukleme"
+        default: true
+        type: boolean
+
+concurrency:
+  group: qm-${{ github.workflow }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write            # state/ commit'i icin
+
+jobs:
+  build-upload:
+    # Pazartesi 05:42 tetiklemesi bu isi calistirmaz.
+    if: github.event_name != 'schedule' || github.event.schedule == '17 23 * * *'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+
+      # Bolum 16.7 acil durdurma. NOT: bir adimda `exit 0` demek isi durdurmaz —
+      # sonraki adimlar yine calisir. O yuzden cikti degiskeni + `if:` kullaniyoruz.
+      - id: guard
+        run: |
+          if [ -f state/PAUSE ]; then
+            echo "state/PAUSE var — pipeline atlandi."
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - if: steps.guard.outputs.run == 'true'
+        run: sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends ffmpeg
+
+      - if: steps.guard.outputs.run == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - if: steps.guard.outputs.run == 'true'
+        run: pip install -r requirements.txt
+
+      - if: steps.guard.outputs.run == 'true'
+        name: Uret ve yukle
+        run: |
+          python src/main.py \
+            --channel "${{ inputs.channel || 'config/channel_main.yaml' }}" \
+            ${{ (inputs.dry_run == true) && '--dry-run' || '' }}
+        env:
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GDRIVE_SA_JSON: ${{ secrets.GDRIVE_SA_JSON }}
+
+      # Bolum 15: 60 gun commit gormeyen public repo'da GitHub cron'u durdurur.
+      # state/ her gun degistigi icin bu sorun olusmaz.
+      - if: always() && steps.guard.outputs.run == 'true'
+        name: state/ commit
+        run: |
+          git config user.name "quiet-meadow-bot"
+          git config user.email "actions@github.com"
+          git add state
+          git diff --staged --quiet || git commit -m "log: $(date -u +%F)"
+          git push
+
+      - if: failure()
+        name: QC kesitini sakla (hata ayiklama)
+        uses: actions/upload-artifact@v4
+        with:
+          name: work-debug
+          path: |
+            work/**/qc_seam.wav
+            state/errors.log
+          retention-days: 7
+          if-no-files-found: ignore
+
+  weekly-analytics:
+    if: github.event_name == 'schedule' && github.event.schedule == '42 5 * * 1'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Analytics -> tema agirliklari
+        run: python src/fetch_analytics.py --channel config/channel_main.yaml
+        env:
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+      - name: weights.json commit
+        run: |
+          git config user.name "quiet-meadow-bot"
+          git config user.email "actions@github.com"
+          git add state
+          git diff --staged --quiet || git commit -m "weights: $(date -u +%F)"
+          git push

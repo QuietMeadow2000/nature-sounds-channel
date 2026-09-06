@@ -1,0 +1,9 @@
+# Python 3.9+ ile calisir; GitHub runner'da 3.12 kullaniliyor.
+PyYAML>=6.0
+requests>=2.31
+Pillow>=10.0
+anthropic>=0.40
+google-api-python-client>=2.100
+google-auth>=2.23
+google-auth-oauthlib>=1.1
+google-auth-httplib2>=0.1.1

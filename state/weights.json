@@ -1,0 +1,14 @@
+{
+  "updated": null,
+  "note": "Ilk 4 hafta esit agirlik; fetch_analytics.py Pazartesileri gunceller (Bolum 16.2).",
+  "weights": {
+    "rain": 0.125,
+    "ocean_waves": 0.125,
+    "forest_birds": 0.125,
+    "stream": 0.125,
+    "thunderstorm": 0.125,
+    "wind": 0.125,
+    "fireplace": 0.125,
+    "night_crickets": 0.125
+  }
+}

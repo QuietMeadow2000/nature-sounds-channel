@@ -1,0 +1,25 @@
+# Bolum 16.6 — takvime bagli ozel temalar.
+# Sezon aktifken haftada 2 gun (weekdays) sezonluk tema zorunlu secilir.
+# Tarihler MM-DD; yil asan araliklar (kis) desteklenir.
+
+seasons:
+  - name: autumn
+    start: "09-15"
+    end: "11-30"
+    weekdays: [1, 4]             # 0=Pazartesi ... 6=Pazar
+    themes: [rain, wind, forest_birds]
+    title_hint: "autumn rain, fallen leaves, misty morning"
+
+  - name: winter
+    start: "12-01"
+    end: "01-15"
+    weekdays: [1, 4]
+    themes: [fireplace, wind]
+    title_hint: "winter fireplace, snowfall night, cold wind outside"
+
+  - name: summer
+    start: "06-01"
+    end: "08-31"
+    weekdays: [1, 4]
+    themes: [ocean_waves, night_crickets]
+    title_hint: "summer beach, warm night, crickets after sunset"
