@@ -23,3 +23,6 @@ __pycache__/
 
 # Yerel test varliklari (Drive olmadan calisirken)
 assets/
+
+# Marka dosyalari izlensin (yukaridaki *.png kuralinin istisnasi)
+!brand/*.png
