@@ -4,7 +4,7 @@
 channel:
   key: main                      # secret onekleri ve log icin
   name: Quiet Meadow
-  handle: "@quietmeadow"
+  handle: "@quietmeadowsounds"
   language: en
   # API audit onayi gelene kadar "private" (Bolum 3.3/7).
   # Onay gelince "public" yapilir — tek satirlik degisiklik.
