@@ -36,7 +36,11 @@ video:
   width: 1920
   height: 1080
   fps: 24
-  crf: 23
+  # 26, 23'ten kabaca yari boyut verir. Yagmur/su goruntusu sikistirmanin
+  # en zor icerigi (binlerce hareketli damla = gurultu); CRF 23'te 60 dk
+  # 1,2 GB'i asiyordu. Arka planda calan ambient video icin gorsel fark
+  # ihmal edilebilir, ustelik YouTube zaten yeniden kodluyor.
+  crf: 26
   preset: veryfast
   # Saat boyunca cok yavas renk/parlaklik kaymasi. 0 = kapali (o zaman
   # tune=stillimage devreye girer ve dosya kuculur, ama 288 tekrar

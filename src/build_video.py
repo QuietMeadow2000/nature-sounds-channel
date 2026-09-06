@@ -58,7 +58,9 @@ def pick_source(
         try:
             import pexels
             queries = cfg["themes"][theme].get("pexels_queries") or [theme]
-            hit = pexels.fetch_video(rng.choice(queries), pexels_key, work)
+            # rng'yi gecmek sart: gecmeden Pexels secimi rastgele olur ve
+            # --replay ayni videoyu uretemez (Bolum 16.5).
+            hit = pexels.fetch_video(rng.choice(queries), pexels_key, work, rng)
             if hit:
                 log.info("Gorsel kaynagi: Pexels (%s)", hit["source"])
                 return hit

@@ -28,8 +28,8 @@ import pick_theme
 import publish_sheet
 import upload_youtube
 from util import (
-    OUT, REPO, WORK, PipelineError, append_history, clean_work, history, load_yaml,
-    log, log_error, paused, setup_logging, workdir,
+    OUT, REPO, WORK, PipelineError, append_history, check_disk, clean_work, history,
+    load_yaml, log, log_error, paused, setup_logging, workdir,
 )
 
 SECRET_NAMES = (
@@ -78,6 +78,8 @@ def run(cfg_path: Path, dry_run: bool, replay: Optional[str], keep_work: bool,
     else:
         theme, info = pick_theme.pick(cfg, today, seed)
         season_hint = info.get("title_hint")
+
+    check_disk(float(cfg["audio"]["duration_min"]))
 
     work = workdir(day)
     assets = work / "assets"

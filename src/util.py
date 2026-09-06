@@ -129,6 +129,22 @@ def log_error(message: str) -> None:
         fh.write(f"{stamp}  {message}\n")
 
 
+def check_disk(duration_min: float, path: Path = REPO) -> None:
+    """Render'a baslamadan once yer var mi bak.
+
+    60 dakikalik 1080p cikti CRF 26'da ~600 MB, ara dosyalar (dongu birimleri +
+    ses) ~400 MB. Yetersizse 11 dakika render edip sonda patlamak yerine hemen dur.
+    """
+    need_mb = 400 + duration_min * 12 * 1.6        # cikti tahmini + %60 pay
+    free_mb = shutil.disk_usage(path).free / 1e6
+    log.info("Disk: %.1f GB bos, tahmini ihtiyac %.1f GB", free_mb / 1000, need_mb / 1000)
+    if free_mb < need_mb:
+        raise PipelineError(
+            f"Disk yetersiz: {free_mb / 1000:.1f} GB bos, en az {need_mb / 1000:.1f} GB gerekiyor.\n"
+            f"Yer ac (work/ ve out/ klasorleri silinebilir) ya da rendera GitHub Actions'ta calistir."
+        )
+
+
 def paused() -> bool:
     """Bolum 16.7 — state/PAUSE varsa pipeline calismaz."""
     return (STATE / "PAUSE").exists()
