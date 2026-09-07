@@ -1,3 +1,4 @@
 2026-09-06 20:35:20Z  final render basarisiz (kod 228): | [vost#0:0/libx264 @ 0x135f0b250] Error submitting a packet to the muxer: No space left on device | [aost#0:1/copy @ 0x135f091d0] Error submitting a packet to the muxer: No space left on device | [out#0/mp4 @ 0x135f06640] Error muxing a packet | [out#0/mp4 @ 0x135f06640] Task finished with error code: -28 (No space left on device) | [out#0/mp4 @ 0x135f06640] Terminating thread with return code -28 (No space left on device) | [out#0/mp4 @ 0x135f06640] Error writing trailer: No space left on device | [out#0/mp4 @ 0x135f06640] Error closing file: No space left on device
 2026-09-06 23:27:56Z  GDRIVE_SA_JSON yok ve yerel ./assets klasoru de yok. | Yerel test icin: assets/audio/<tema>/, assets/photos/<tema>/, assets/fonts/
 2026-09-07 18:52:17Z  unit_0.wav: sure okunamadi (bozuk dosya?)
+2026-09-07 19:13:03Z  unit_0.wav: sure okunamadi (bozuk dosya?)
