@@ -1,0 +1,8 @@
+Pipeline gece cron'unda durdurulmus durumda.
+
+Sebep: GitHub runner'in seslere erisimi yok — Drive kurulumu (service account +
+GDRIVE_SA_JSON secret'i) henuz yapilmadi. Bu dosya olmadan workflow her gece
+basarisiz olup e-posta gonderir.
+
+Kaldirmak icin: bu dosyayi sil ve commit'le. Video uretimi yerelde suruyor,
+Actions'a gecince bu dosya gider.
