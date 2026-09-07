@@ -146,7 +146,7 @@ def clip_loop_unit(src: Path, dst: Path, cfg: Dict[str, Any], xfade: float = 1.5
         ["-i", str(src), "-filter_complex", chain, "-map", "[out]",
          "-an", "-c:v", "libx264", "-preset", "veryfast", "-crf", "18",
          "-pix_fmt", "yuv420p", str(dst)],
-        f"dongu birimi {src.name}",
+        f"dongu birimi {src.name}", out=dst,
     )
     unit_len = duration_sec(dst, streams="v")
     log.info("  klip %.1f sn  ->  dongu birimi %.1f sn (xfade %.1f sn)", dur, unit_len, xfade)
@@ -169,7 +169,7 @@ def kenburns_unit(src: Path, dst: Path, cfg: Dict[str, Any], seconds: float = 60
         ["-loop", "1", "-i", str(src), "-t", f"{seconds:.2f}", "-vf", chain,
          "-an", "-c:v", "libx264", "-preset", "veryfast", "-crf", "18",
          "-pix_fmt", "yuv420p", str(dst)],
-        f"ken burns {src.name}",
+        f"ken burns {src.name}", out=dst,
     )
     log.info("  fotograf  ->  Ken Burns birimi %.0f sn", seconds)
     return duration_sec(dst, streams="v")
@@ -240,7 +240,7 @@ def render_final(
         "-shortest",
         str(out),
     ]
-    ffmpeg(args, "final render")
+    ffmpeg(args, "final render", out=out)
 
 
 def build(

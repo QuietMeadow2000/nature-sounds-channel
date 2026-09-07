@@ -62,7 +62,7 @@ def normalize_source(src: Path, dst: Path, target_lufs: float, sample_rate: int)
         ["-i", str(src),
          "-af", f"volume={delta:.3f}dB," + AFORMAT.format(sr=sample_rate),
          "-c:a", "pcm_s24le", str(dst)],
-        f"normalize {src.name}",
+        f"normalize {src.name}", out=dst,
     )
     log.info("  %-42s %6.1f LUFS  ->  %+.1f dB", src.name, measured, delta)
     return delta
@@ -97,7 +97,7 @@ def make_loop_unit(src: Path, dst: Path, crossfade: float, edge_trim: float = 0.
     ffmpeg(
         ["-i", str(src), "-filter_complex", chain, "-map", "[out]",
          "-c:a", "pcm_s24le", str(dst)],
-        f"loop unit {src.name}",
+        f"loop unit {src.name}", out=dst,
     )
     unit_len = duration_sec(dst)
     log.info("  %-42s %6.0f sn  (kenar -%.0f sn)  ->  birim %.0f sn",
@@ -161,7 +161,7 @@ def render_mix(
     else:
         args += ["-c:a", "aac", "-b:a", bitrate]
     args.append(str(out))
-    ffmpeg(args, "miks render")
+    ffmpeg(args, "miks render", out=out)
 
 
 # ---------------------------------------------------------------- QC kesiti

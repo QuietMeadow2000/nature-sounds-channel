@@ -54,8 +54,33 @@ def run(cmd: List[str], desc: str = "") -> str:
     return proc.stdout
 
 
-def ffmpeg(args: List[str], desc: str = "ffmpeg") -> None:
-    run([_tool("ffmpeg"), "-hide_banner", "-loglevel", "error", "-y"] + args, desc)
+def ffmpeg(args: List[str], desc: str = "ffmpeg", out: Optional[Path] = None) -> None:
+    """ffmpeg calistir. `out` verilirse ciktinin gercekten olustugunu dogrula.
+
+    ffmpeg bazi durumlarda 0 donup bos/bozuk dosya birakabiliyor (surumler arasi
+    filtre davranis farklari). Sifir cikis kodu yeterli kanit degil.
+    """
+    cmd = [_tool("ffmpeg"), "-hide_banner", "-loglevel", "warning", "-y"] + args
+    log.debug("$ %s", " ".join(cmd))
+    proc = subprocess.run(cmd, capture_output=True, text=True)
+    stderr = proc.stderr.strip()
+    if proc.returncode != 0:
+        tail = "\n".join(stderr.splitlines()[-25:])
+        raise PipelineError(f"{desc} basarisiz (kod {proc.returncode}):\n{tail}")
+    if out is not None:
+        if not out.exists():
+            raise PipelineError(
+                f"{desc}: ffmpeg 0 dondu ama {out.name} olusmadi.\n"
+                f"ffmpeg ciktisi:\n{stderr[-1500:] or '(bos)'}"
+            )
+        size = out.stat().st_size
+        if size < 1024:
+            raise PipelineError(
+                f"{desc}: ffmpeg 0 dondu ama {out.name} bos/kusurlu ({size} bayt).\n"
+                f"ffmpeg ciktisi:\n{stderr[-1500:] or '(bos)'}"
+            )
+    if stderr:
+        log.debug("%s uyarilari:\n%s", desc, stderr[-1000:])
 
 
 def ffprobe_json(path: Path, streams: str = "a") -> Dict[str, Any]:
@@ -78,7 +103,11 @@ def duration_sec(path: Path, streams: str = "a") -> float:
     fmt_dur = info.get("format", {}).get("duration")
     if fmt_dur:
         return float(fmt_dur)
-    raise PipelineError(f"{path.name}: sure okunamadi (bozuk dosya?)")
+    size = path.stat().st_size if path.exists() else -1
+    raise PipelineError(
+        f"{path.name}: sure okunamadi. Dosya boyutu {size} bayt. "
+        f"ffprobe ciktisi: {json.dumps(info)[:400]}"
+    )
 
 
 # ---------------------------------------------------------------- config / state
