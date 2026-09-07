@@ -86,8 +86,12 @@ retry:
   upload_attempts: 3
   upload_backoff_min: 20
 
+# enabled: false olan temalar secilmez. Sesi olmayan bir tema secilirse
+# pipeline 'ana katman icin dosya yok' diye durur; onun yerine bastan eliyoruz.
+# Yeni bir temanin sesleri Drive'a girince true yap.
 themes:
   rain:
+    enabled: true
     thumb_title: "RAIN SOUNDS"    # thumbnail ust satiri
     playlist_id: ""              # YouTube URL'sindeki list= sonrasi
     playlist_name: Rain Sounds
@@ -99,6 +103,7 @@ themes:
     pexels_queries: ["rain on window", "rain on leaves", "rainy forest"]
 
   ocean_waves:
+    enabled: true
     thumb_title: "OCEAN WAVES"    # thumbnail ust satiri
     playlist_id: ""
     playlist_name: Ocean Waves
@@ -113,6 +118,7 @@ themes:
                      "coconut palm beach turquoise water", "tropical beach hut palm"]
 
   forest_birds:
+    enabled: false   # ses dosyasi yok
     thumb_title: "FOREST BIRDS"    # thumbnail ust satiri
     playlist_id: ""
     playlist_name: Forest & Birds
@@ -124,6 +130,7 @@ themes:
     pexels_queries: ["forest sunlight", "green forest canopy", "woodland morning"]
 
   stream:
+    enabled: false   # ses dosyasi yok
     thumb_title: "RIVER SOUNDS"    # thumbnail ust satiri
     playlist_id: ""
     playlist_name: Rivers & Streams
@@ -135,6 +142,7 @@ themes:
     pexels_queries: ["mountain stream", "forest creek water", "river rocks"]
 
   thunderstorm:
+    enabled: false   # ses dosyasi yok
     thumb_title: "THUNDERSTORM"    # thumbnail ust satiri
     playlist_id: ""
     playlist_name: Thunderstorms
@@ -146,6 +154,7 @@ themes:
     pexels_queries: ["thunderstorm clouds", "lightning night sky", "storm rain window"]
 
   wind:
+    enabled: false   # ses dosyasi yok
     thumb_title: "WIND SOUNDS"    # thumbnail ust satiri
     playlist_id: ""
     playlist_name: Wind Sounds
@@ -157,6 +166,7 @@ themes:
     pexels_queries: ["wind grass field", "meadow wind slow motion", "windy hillside"]
 
   fireplace:
+    enabled: false   # ses dosyasi yok
     thumb_title: "FIREPLACE"    # thumbnail ust satiri
     playlist_id: ""
     playlist_name: Fireplace
@@ -168,6 +178,7 @@ themes:
     pexels_queries: ["fireplace closeup", "burning logs fire", "cozy fire night"]
 
   night_crickets:
+    enabled: false   # ses dosyasi yok
     thumb_title: "NIGHT SOUNDS"    # thumbnail ust satiri
     playlist_id: ""
     playlist_name: Night Sounds

@@ -35,9 +35,21 @@ def recent_themes(n: int) -> List[str]:
     return [e["theme"] for e in items[-n:] if "theme" in e]
 
 
+def enabled_themes(cfg: Dict[str, Any]) -> List[str]:
+    """Yalnizca `enabled: true` temalar. Varsayilan acik (geriye donuk uyumluluk).
+
+    Sesi olmayan bir tema secilirse pipeline ana katmanda duruyor; bastan elemek
+    hem gereksiz hatayi hem bos gecen gunu onluyor.
+    """
+    out = [t for t, c in cfg["themes"].items() if c.get("enabled", True)]
+    if not out:
+        raise PipelineError("Hicbir tema etkin degil — config'de enabled: true olan yok.")
+    return out
+
+
 def effective_weights(cfg: Dict[str, Any]) -> Dict[str, float]:
-    """weights.json + tavan/taban siniri; config'de olmayan temalar atilir."""
-    themes = list(cfg["themes"].keys())
+    """weights.json + tavan/taban siniri; kapali temalar atilir."""
+    themes = enabled_themes(cfg)
     raw = load_json(STATE / "weights.json", {}).get("weights") or {}
     sel = cfg.get("selection", {})
     floor = float(sel.get("weight_floor", 0.05))
@@ -69,23 +81,27 @@ def pick(
         season and today.weekday() in season.get("weekdays", [])
     )
 
+    weights = effective_weights(cfg)             # yalnizca etkin temalar
+
+    candidates: List[str] = []
     if forced_by_season:
-        pool = [t for t in season["themes"] if t in cfg["themes"]]
+        pool = [t for t in season["themes"] if t in weights]
         candidates = [t for t in pool if t not in recent] or pool
         if not candidates:
-            raise PipelineError(
-                f"Sezon '{season['name']}' temalari config'de yok: {season['themes']}"
-            )
-        weights = effective_weights(cfg)
-        chosen = rng.choices(candidates, weights=[weights[t] for t in candidates], k=1)[0]
+            # Sezonun temalarindan hicbiri etkin degil — normal secime dus.
+            log.info("Sezon '%s' temalarinin hicbiri etkin degil, agirlikli secime "
+                     "dusuluyor.", season["name"])
+            forced_by_season = False
+
+    if forced_by_season:
         reason = f"sezonluk ({season['name']})"
     else:
-        weights = effective_weights(cfg)
         candidates = [t for t in weights if t not in recent]
-        if not candidates:                       # tum temalar son N icinde (cok az tema)
+        if not candidates:                       # tum etkin temalar son N icinde
             candidates = list(weights)
-        chosen = rng.choices(candidates, weights=[weights[t] for t in candidates], k=1)[0]
         reason = "agirlikli rastgele"
+
+    chosen = rng.choices(candidates, weights=[weights[t] for t in candidates], k=1)[0]
 
     info = {
         "theme": chosen,
