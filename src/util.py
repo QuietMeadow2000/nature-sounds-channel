@@ -151,9 +151,12 @@ def append_history(entry: Dict[str, Any]) -> None:
     hem "son 10 baslik" listesini kirletiyor.
     """
     items = history()
-    key = (entry.get("date"), entry.get("channel"))
+    # Anahtar temayi da iceriyor: ayni UTC gununde iki farkli tema yayinlanabilir
+    # (gece 23:17 cron'u hala o gunun tarihini gorur). Tema olmadan ikinci video
+    # birincinin kaydini siliyordu.
+    key = (entry.get("date"), entry.get("channel"), entry.get("theme"))
     for i, existing in enumerate(items):
-        if (existing.get("date"), existing.get("channel")) == key:
+        if (existing.get("date"), existing.get("channel"), existing.get("theme")) == key:
             items[i] = entry
             break
     else:
