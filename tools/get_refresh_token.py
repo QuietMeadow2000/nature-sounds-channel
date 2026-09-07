@@ -2,7 +2,8 @@
 
 Kullanim (kendi bilgisayarinda, bir kez):
     pip install google-auth-oauthlib
-    python tools/get_refresh_token.py ~/Downloads/client_secret.json
+    python tools/get_refresh_token.py            # ~/Downloads'tan kendi bulur
+    python tools/get_refresh_token.py <yol>    # ya da acikca belirt
 
 Tarayici acilir, proje Gmail hesabiyla izin verirsin, terminale token dusen.
 Cikan uc degeri GitHub Secrets'a gir: YT_CLIENT_ID, YT_CLIENT_SECRET, YT_REFRESH_TOKEN.
@@ -13,6 +14,7 @@ bir gecersiz olur. Google Cloud Console'da "PUBLISH APP" ile "In production" mod
 import json
 import sys
 from pathlib import Path
+from typing import Optional
 
 SCOPES = [
     "https://www.googleapis.com/auth/youtube.upload",
@@ -21,18 +23,58 @@ SCOPES = [
 ]
 
 
+def from_prompt() -> dict:
+    """JSON yoksa degerleri elle al.
+
+    Google (2026) mevcut client secret'i artik goster/indir etmiyor; JSON indirme
+    yolu yalnizca istemci ILK olusturuldugunda calisiyor. Bu yuzden degerleri
+    dogrudan alabiliyoruz. Secret getpass ile aliniyor — ekrana yazilmaz,
+    kabuk gecmisine dusmez.
+    """
+    import getpass
+    print("client_secret JSON bulunamadi — degerleri elle girebilirsin.")
+    print("Google Cloud Console > Auth Platform > Clients > istemciye tikla\n")
+    client_id = input("Client ID    : ").strip()
+    if not client_id:
+        raise SystemExit("Client ID bos birakilamaz.")
+    client_secret = getpass.getpass("Client secret: ").strip()
+    if not client_secret:
+        raise SystemExit("Client secret bos birakilamaz.\n"
+                         "Secret'i goremiyorsan detay sayfasindaki 'Client secrets' "
+                         "bolumunden yeni bir tane olustur; bir kez gosterilir.")
+    return {"installed": {
+        "client_id": client_id,
+        "client_secret": client_secret,
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": TOKEN_URI,
+        "redirect_uris": ["http://localhost"],
+    }}
+
+
+def find_secret() -> Optional[Path]:
+    """Argüman verilmediyse ~/Downloads icindeki en yeni client_secret'i bul."""
+    hits = sorted(
+        Path.home().joinpath("Downloads").glob("client_secret*.json"),
+        key=lambda p: p.stat().st_mtime, reverse=True,
+    )
+    return hits[0] if hits else None
+
+
 def main() -> int:
-    if len(sys.argv) != 2:
+    if len(sys.argv) > 2:
         print(__doc__)
         return 1
-    secret_file = Path(sys.argv[1]).expanduser()
-    if not secret_file.exists():
-        print(f"Dosya yok: {secret_file}")
-        return 1
+    secret_file = Path(sys.argv[1]).expanduser() if len(sys.argv) == 2 else find_secret()
 
     from google_auth_oauthlib.flow import InstalledAppFlow
 
-    flow = InstalledAppFlow.from_client_secrets_file(str(secret_file), SCOPES)
+    if secret_file and secret_file.exists():
+        print(f"Kullanilan istemci dosyasi: {secret_file.name}")
+        config = json.loads(secret_file.read_text())
+    else:
+        config = from_prompt()
+
+    flow = InstalledAppFlow.from_client_config(config, SCOPES)
     creds = flow.run_local_server(port=0, prompt="consent", access_type="offline")
 
     if not creds.refresh_token:
@@ -40,8 +82,7 @@ def main() -> int:
               "(myaccount.google.com/permissions) tekrar calistir.")
         return 1
 
-    data = json.loads(secret_file.read_text())
-    info = data.get("installed") or data.get("web") or {}
+    info = config.get("installed") or config.get("web") or {}
     print("\n" + "=" * 62)
     print("GitHub Secrets'a girilecek degerler:\n")
     print(f"YT_CLIENT_ID      = {info.get('client_id', creds.client_id)}")
