@@ -53,6 +53,19 @@ nature-sounds-assets/
 ```
 
 Dosya adı eşleşmesi: `distant_thunder__freesound_512345.flac` → `match: distant_thunder`.
+
+**Ses dosyalarını FLAC 16-bit / 44,1 kHz olarak sakla.** Freesound'dan inen 24-bit/48 kHz
+WAV'lar gereksiz yer kaplıyor — çıktı zaten 192 kbps AAC. Ölçüldü: 237 MB → 81 MB (%34),
+duyulur kayıp yok. Gerekçe: en kritik kaydın (uzak gök gürültüsü) kendi zemin gürültüsü
+−89,5 dBFS, 16-bit kuantalama gürültüsü −96 dBFS; mikste ikisi de duyulmuyor. 44,1 kHz
+ayrıca pipeline'ın hedef hızı, render'da bir yeniden örnekleme adımı eksiliyor.
+
+```bash
+ffmpeg -i indirilen.wav -ar 44100 -sample_fmt s16 -c:a flac -compression_level 8 hedef.flac
+```
+
+**MP3/AAC dosyalara dokunma** — zaten sıkıştırılmışlar, FLAC'a çevirmek 6 kat büyütüyor
+(ölçüldü: 12 MB → 74 MB).
 `sources` defterinde **A sütunu dosya adı** olmalı; defterde olmayan dosya pipeline'a
 girmez (`drive.check_registered`).
 
