@@ -115,8 +115,20 @@ def history() -> List[Dict[str, Any]]:
 
 
 def append_history(entry: Dict[str, Any]) -> None:
+    """Kaydi ekle; ayni gun+kanal icin kayit varsa uzerine yaz.
+
+    Ayni gunu yeniden calistirmak (hata sonrasi, ya da ayar degistirip tekrar)
+    ikinci bir kayit olusturuyordu. Cift kayit hem "son N temadan farkli" kuralini
+    hem "son 10 baslik" listesini kirletiyor.
+    """
     items = history()
-    items.append(entry)
+    key = (entry.get("date"), entry.get("channel"))
+    for i, existing in enumerate(items):
+        if (existing.get("date"), existing.get("channel")) == key:
+            items[i] = entry
+            break
+    else:
+        items.append(entry)
     save_json(STATE / "history.json", items)
 
 

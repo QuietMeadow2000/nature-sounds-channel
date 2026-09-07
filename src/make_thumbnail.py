@@ -88,7 +88,10 @@ def build(
     overlay = Image.new("RGBA", img.size, (0, 0, 0, 0))
     draw = ImageDraw.Draw(overlay)
 
-    top = (title_line or theme.replace("_", " ") + " sounds").upper()
+    # Tema adindan turetmek "ocean_waves" -> "OCEAN WAVES SOUNDS" gibi
+    # tekrarlar uretiyordu; config'de tema basina acik baslik var.
+    tcfg_title = cfg["themes"][theme].get("thumb_title")
+    top = (title_line or tcfg_title or theme.replace("_", " ") + " sounds").upper()
     purpose = cfg["themes"][theme].get("purpose", "").split(",")[0].strip()
     bottom = (subtitle_line or f"for {purpose}").upper()
 

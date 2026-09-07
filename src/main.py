@@ -195,15 +195,22 @@ def main() -> int:
     parser.add_argument("--theme", help="tema secimini atla (test/hata ayiklama)")
     parser.add_argument("--manual", action="store_true",
                         help="yuklemeden, dosyalari out/<tarih>/ altina birak")
+    parser.add_argument("--ignore-pause", action="store_true",
+                        help="state/PAUSE varken de calistir (bilincli yerel calistirma)")
     parser.add_argument("--keep-work", action="store_true", help="ara dosyalari silme")
     parser.add_argument("-v", "--verbose", action="store_true")
     args = parser.parse_args()
 
     setup_logging(args.verbose)
 
-    if paused():
-        log.warning("state/PAUSE var — pipeline durduruldu (Bolum 16.7).")
+    # PAUSE otomatik calismalari durdurur. Yerelde bilincli calistirirken
+    # --ignore-pause ile gecilir; bayrak yine de yerinde kalir.
+    if paused() and not args.ignore_pause:
+        log.warning("state/PAUSE var — pipeline durduruldu (Bolum 16.7). "
+                    "Bilincli calistirma icin: --ignore-pause")
         return 0
+    if paused():
+        log.warning("state/PAUSE var ama --ignore-pause verildi, devam ediliyor.")
 
     cfg_path = REPO / args.channel if not Path(args.channel).is_absolute() else Path(args.channel)
     try:

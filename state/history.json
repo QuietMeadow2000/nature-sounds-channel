@@ -77,20 +77,24 @@
     "theme": "ocean_waves",
     "season_hint": null,
     "seed": 27559461661568,
-    "title": "Ocean Waves Sounds for Sleep | 1 Hour",
+    "title": "Ocean Waves on a Warm Tropical Shore | 1 Hour",
     "tags": [
-      "ocean waves sounds",
+      "ocean waves",
+      "ocean sounds",
+      "sea sounds",
+      "tropical beach",
+      "waves for sleeping",
       "sleep sounds",
-      "relaxing sounds",
+      "beach sounds",
       "nature sounds",
       "white noise",
-      "study music",
-      "focus sounds",
-      "ambient sounds",
-      "1 hour",
-      "calm"
+      "ocean waves for studying",
+      "1 hour ocean",
+      "calm sea",
+      "island sounds",
+      "relaxing waves"
     ],
-    "metadata_by": "fallback_template",
+    "metadata_by": "elle yazildi (Anthropic anahtari yok)",
     "audio": {
       "layers": [
         {
@@ -112,13 +116,13 @@
     },
     "video": {
       "visual_kind": "clip",
-      "visual_source": "pexels:36658356",
-      "unit_len_sec": 19.38,
-      "size_mb": 5918.9
+      "visual_source": "pexels:28838648",
+      "unit_len_sec": 44.12,
+      "size_mb": 1358.7
     },
     "video_id": null,
     "publish_mode": "manual",
     "privacy": "manual",
-    "uploaded_at": "2026-09-06T22:23:07+00:00"
+    "uploaded_at": "2026-09-07T16:32:37+00:00"
   }
 ]

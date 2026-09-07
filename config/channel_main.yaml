@@ -86,6 +86,7 @@ retry:
 
 themes:
   rain:
+    thumb_title: "RAIN SOUNDS"    # thumbnail ust satiri
     playlist_id: ""              # YouTube URL'sindeki list= sonrasi
     playlist_name: Rain Sounds
     purpose: "Sleep, Study"
@@ -96,6 +97,7 @@ themes:
     pexels_queries: ["rain on window", "rain on leaves", "rainy forest"]
 
   ocean_waves:
+    thumb_title: "OCEAN WAVES"    # thumbnail ust satiri
     playlist_id: ""
     playlist_name: Ocean Waves
     purpose: "Sleep, Relaxation"
@@ -109,6 +111,7 @@ themes:
                      "coconut palm beach turquoise water", "tropical beach hut palm"]
 
   forest_birds:
+    thumb_title: "FOREST BIRDS"    # thumbnail ust satiri
     playlist_id: ""
     playlist_name: Forest & Birds
     purpose: "Focus, Morning"
@@ -119,6 +122,7 @@ themes:
     pexels_queries: ["forest sunlight", "green forest canopy", "woodland morning"]
 
   stream:
+    thumb_title: "RIVER SOUNDS"    # thumbnail ust satiri
     playlist_id: ""
     playlist_name: Rivers & Streams
     purpose: "Meditation, Study"
@@ -129,6 +133,7 @@ themes:
     pexels_queries: ["mountain stream", "forest creek water", "river rocks"]
 
   thunderstorm:
+    thumb_title: "THUNDERSTORM"    # thumbnail ust satiri
     playlist_id: ""
     playlist_name: Thunderstorms
     purpose: "Deep Sleep"
@@ -139,6 +144,7 @@ themes:
     pexels_queries: ["thunderstorm clouds", "lightning night sky", "storm rain window"]
 
   wind:
+    thumb_title: "WIND SOUNDS"    # thumbnail ust satiri
     playlist_id: ""
     playlist_name: Wind Sounds
     purpose: "Relaxation"
@@ -149,6 +155,7 @@ themes:
     pexels_queries: ["wind grass field", "meadow wind slow motion", "windy hillside"]
 
   fireplace:
+    thumb_title: "FIREPLACE"    # thumbnail ust satiri
     playlist_id: ""
     playlist_name: Fireplace
     purpose: "Cozy, Sleep"
@@ -159,6 +166,7 @@ themes:
     pexels_queries: ["fireplace closeup", "burning logs fire", "cozy fire night"]
 
   night_crickets:
+    thumb_title: "NIGHT SOUNDS"    # thumbnail ust satiri
     playlist_id: ""
     playlist_name: Night Sounds
     purpose: "Sleep"
