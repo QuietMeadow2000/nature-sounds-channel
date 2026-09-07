@@ -6,14 +6,16 @@ channel:
   name: Quiet Meadow
   handle: "@quietmeadowsounds"
   language: en
-  # API audit onayi gelene kadar "private" (Bolum 3.3/7).
-  # Onay gelince "public" yapilir — tek satirlik degisiklik.
-  privacy_status: private
+  privacy_status: public
   # manual : video out/<tarih>/ altina birakilir, Studio'ya elle yuklersin.
-  #          Audit onayi beklenirken kullanilan mod — YouTube API'ye hic
-  #          ihtiyac yok, yani secret da gerekmiyor.
-  # api    : videos.insert ile dogrudan yukler. Audit onayi gelince gec.
-  publish_mode: manual
+  #          YouTube API'ye hic ihtiyac duymaz, secret gerekmez.
+  # api    : videos.insert ile dogrudan yukler, thumbnail atar, playlist'e ekler.
+  #
+  # NOT: "denetimden gecmemis proje public yukleyemez" varsayimi YANLIS cikti.
+  # 6 Eylul 2026'da olculdu: denetimsiz projeden privacyStatus: public ile
+  # yuklenen video public kaldi (bkz. veo-to-youtube projesi, video INzkY1mspdc).
+  # Audit basvurusu kota tavani icin faydali ama yukleme icin gerekmiyor.
+  publish_mode: api
   category_id: "10"              # 10 = Music, 22 = People & Blogs (A/B test, Bolum 17)
   made_for_kids: false
 

@@ -62,12 +62,18 @@ girmez (`drive.check_registered`).
 
 | Mod | Ne yapar | Ne gerektirir |
 |---|---|---|
-| `manual` *(şu an aktif)* | Video, thumbnail ve kopyala-yapıştır sayfasını `out/<tarih>/` altına bırakır. Studio'ya elle yüklersin. | YouTube API'ye **hiç** ihtiyaç yok — secret gerekmez |
-| `api` | `videos.insert` ile doğrudan yükler, thumbnail atar, playlist'e ekler, çevirileri yazar | Audit onayı + üç YouTube secret'ı |
+| `manual` | Video, thumbnail ve kopyala-yapıştır sayfasını `out/<tarih>/` altına bırakır. Studio'ya elle yüklersin. | YouTube API'ye **hiç** ihtiyaç yok — secret gerekmez |
+| `api` *(şu an aktif)* | `videos.insert` ile doğrudan yükler, thumbnail atar, playlist'e ekler, çevirileri yazar | Üç YouTube secret'ı |
 
-Manuel modda kalmamızın sebebi: YouTube, doğrulanmamış API projelerinden yüklenen
-videoları private'a kilitliyor ve doğrulama başvurusunun süresi belirsiz. Manuel yolla
-kanal beklemeden yayına başlar; onay gelince tek satır değişir.
+**Audit gerekmiyor.** Google'ın dokümanı *"denetimden geçmemiş projelerden yüklenen
+videolar private'a kısıtlanır"* diyor ve plan uzun süre buna göre kurgulanmıştı.
+6 Eylül 2026'da ölçüldü ve yanlış çıktı: denetimsiz bir projeden `privacyStatus: public`
+ile yüklenen video public kaldı (`~/projects/veo-to-youtube`, video `INzkY1mspdc`,
+oEmbed HTTP 200). Audit başvurusu kota tavanı için faydalı ama yükleme için gerekli değil.
+
+**Asıl risk OAuth uygulamasının "Testing" modunda kalması** — o modda refresh token
+7 günde bir geçersiz olur ve pipeline sessizce durur. Google Cloud → Auth Platform →
+Audience → **PUBLISH APP** ile production'a alınmalı.
 
 GitHub Actions'ta manuel mod çıktıyı **artifact** olarak bırakır (Actions → ilgili
 çalışma → Artifacts). Yerelde çalıştırırsan dosyalar zaten `out/` altında olur ve
