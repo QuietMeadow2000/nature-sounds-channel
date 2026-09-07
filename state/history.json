@@ -70,5 +70,55 @@
     "publish_mode": "manual",
     "privacy": "manual",
     "uploaded_at": "2026-09-06T21:04:36+00:00"
+  },
+  {
+    "date": "2026-09-07",
+    "channel": "main",
+    "theme": "ocean_waves",
+    "season_hint": null,
+    "seed": 27559461661568,
+    "title": "Ocean Waves Sounds for Sleep | 1 Hour",
+    "tags": [
+      "ocean waves sounds",
+      "sleep sounds",
+      "relaxing sounds",
+      "nature sounds",
+      "white noise",
+      "study music",
+      "focus sounds",
+      "ambient sounds",
+      "1 hour",
+      "calm"
+    ],
+    "metadata_by": "fallback_template",
+    "audio": {
+      "layers": [
+        {
+          "role": "main",
+          "match": "waves",
+          "source": "waves__freesound_451743.mp3",
+          "unit_len": 445.033,
+          "gain": 0.9768,
+          "offset": 0.0,
+          "normalize_db": 13.78
+        }
+      ],
+      "crossfade_sec": 5.0,
+      "edge_trim_sec": 10.0,
+      "target_lufs": -18.0,
+      "mix_correction_db": 1.03,
+      "duration_sec": 3600.0,
+      "seam_check_sec": 445.033
+    },
+    "video": {
+      "visual_kind": "clip",
+      "visual_source": "pexels:36658356",
+      "unit_len_sec": 19.38,
+      "size_mb": 5918.9
+    },
+    "video_id": null,
+    "publish_mode": "manual",
+    "privacy": "manual",
+    "uploaded_at": "2026-09-06T22:23:07+00:00"
   }
 ]

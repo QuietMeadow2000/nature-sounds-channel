@@ -40,6 +40,14 @@ video:
   # 1,2 GB'i asiyordu. Arka planda calan ambient video icin gorsel fark
   # ihmal edilebilir, ustelik YouTube zaten yeniden kodluyor.
   crf: 26
+  # Bitrate tavani (Mbps). CRF tek basina boyutu garanti etmiyor: ayni CRF'te
+  # yagmur 0,96 Mbps, gunes vuran tropik su 12,9 Mbps verdi (60 dk = 5,9 GB).
+  # 3 Mbps tavan en kotu durumda ~1,35 GB demek. Kolay icerik tavanin altinda
+  # kalir ve etkilenmez. 0 = tavan yok.
+  maxrate_mbps: 3
+  # Pexels'ten kac aday indirilip aralarindan en az hareketlisi secilecek.
+  # Sabit kamera hem dongude goze batmiyor hem cok daha az yer kapliyor.
+  pexels_candidates: 3
   preset: veryfast
   # Saat boyunca cok yavas renk/parlaklik kaymasi. 0 = kapali (o zaman
   # tune=stillimage devreye girer ve dosya kuculur, ama 288 tekrar
@@ -95,7 +103,10 @@ themes:
       - {role: main,  match: waves,        gain: 1.00}
       - {role: layer, match: seagull,      gain: 0.10}
       - {role: layer, match: beach_wind,   gain: 0.15}
-    pexels_queries: ["ocean waves slow", "calm sea sunset", "beach waves aerial"]
+    # Tropik tatil sahnesi: sezlong, palmiye, turkuaz su. Genel "dalga" terimleri
+    # kayalik sahil ve firtinali deniz getiriyordu.
+    pexels_queries: ["tropical beach lounger palm", "beach chair palm tree ocean",
+                     "coconut palm beach turquoise water", "tropical beach hut palm"]
 
   forest_birds:
     playlist_id: ""

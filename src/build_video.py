@@ -11,12 +11,14 @@ uygulanir (tek filtre, ek render maliyeti yok) — her dakika pikselde farkli ol
 """
 from __future__ import annotations
 
+import array
 import math
 import random
+import subprocess
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-from util import PipelineError, duration_sec, ffmpeg, ffprobe_json, log
+from util import PipelineError, _tool, duration_sec, ffmpeg, ffprobe_json, log
 
 PHOTO_EXTS = (".jpg", ".jpeg", ".png", ".webp")
 CLIP_EXTS = (".mp4", ".mov", ".mkv", ".webm")
@@ -29,6 +31,37 @@ def _probe_video(path: Path) -> Tuple[int, int, float]:
         raise PipelineError(f"{path.name}: video akisi yok")
     st = streams[0]
     return int(st["width"]), int(st["height"]), duration_sec(path, streams="v")
+
+
+def motion_score(path: Path, samples: int = 4) -> float:
+    """Kare-kare ortalama fark (0-255). Sabit kamera ~1, kaydirmali cekim ~12.
+
+    Iki sey icin onemli: kaydirmali cekim 19 saniyede bir basa sarinca dongu goze
+    batiyor, ve hareket sikistirmanin en pahali kismi — ayni CRF'te sabit kamera
+    0.96 Mbps, drone cekimi 12.9 Mbps verdi.
+    """
+    try:
+        dur = duration_sec(path, streams="v")
+    except PipelineError:
+        return 999.0
+    step = 1.0 / 24
+    diffs = []
+    for i in range(samples):
+        t = dur * (i + 1) / (samples + 1)
+        pair = []
+        for offset in (0.0, step):
+            out = subprocess.run(
+                [_tool("ffmpeg"), "-hide_banner", "-loglevel", "error",
+                 "-ss", f"{t + offset:.4f}", "-i", str(path), "-frames:v", "1",
+                 "-vf", "scale=160:90,format=gray", "-f", "rawvideo", "-"],
+                capture_output=True).stdout
+            pair.append(out)
+        if len(pair[0]) < 160 * 90 or len(pair[1]) < 160 * 90:
+            continue
+        a = array.array("B", pair[0][:160 * 90])
+        b = array.array("B", pair[1][:160 * 90])
+        diffs.append(sum(abs(x - y) for x, y in zip(a, b)) / len(a))
+    return sum(diffs) / len(diffs) if diffs else 999.0
 
 
 def _scale_pad(w: int, h: int) -> str:
@@ -58,12 +91,21 @@ def pick_source(
         try:
             import pexels
             queries = cfg["themes"][theme].get("pexels_queries") or [theme]
-            # rng'yi gecmek sart: gecmeden Pexels secimi rastgele olur ve
-            # --replay ayni videoyu uretemez (Bolum 16.5).
-            hit = pexels.fetch_video(rng.choice(queries), pexels_key, work, rng)
-            if hit:
-                log.info("Gorsel kaynagi: Pexels (%s)", hit["source"])
-                return hit
+            n = int(cfg["video"].get("pexels_candidates", 3))
+            # rng'yi gecmek sart: gecmeden secim rastgele olur ve --replay ayni
+            # videoyu uretemez (Bolum 16.5).
+            hits = pexels.fetch_candidates(rng.choice(queries), pexels_key, work, rng, n)
+            if hits:
+                scored = sorted(((motion_score(h["path"]), h) for h in hits),
+                                key=lambda x: x[0])
+                for score, h in scored:
+                    log.info("  aday %-18s hareket %.1f", h["source"], score)
+                best_score, best = scored[0]
+                for _, other in scored[1:]:           # secilmeyenleri hemen sil
+                    other["path"].unlink(missing_ok=True)
+                log.info("Gorsel kaynagi: Pexels (%s, hareket %.1f — en sakin aday)",
+                         best["source"], best_score)
+                return best
         except Exception as exc:                      # Bolum 16.8 — plan B'ye dus
             log.warning("Pexels basarisiz, yedege geciliyor: %s", exc)
 
@@ -180,6 +222,13 @@ def render_final(
         "-crf", str(vcfg["crf"]),
         "-r", str(vcfg["fps"]),
     ]
+    # CRF sabit KALITE demek, sabit boyut degil. Kolay icerikte (bulanik arka planli
+    # yagmur) ~1 Mbps cikiyor, zor icerikte (gunes vuran su yuzeyi, binlerce parlama)
+    # 13 Mbps'e firliyor ve 60 dakika 5,9 GB oluyor. Tavan sart.
+    # YouTube 1080p'yi zaten ~4 Mbps'e yeniden kodluyor; ustune cikmak bosa bit.
+    maxrate = float(vcfg.get("maxrate_mbps", 0) or 0)
+    if maxrate > 0:
+        args += ["-maxrate", f"{maxrate:.1f}M", "-bufsize", f"{maxrate * 2:.1f}M"]
     # tune=stillimage yalnizca goruntu gercekten sabitken kazanc saglar;
     # renk kaymasi acikken dosyayi buyutur, o yuzden atlanir.
     tune = vcfg.get("tune")
