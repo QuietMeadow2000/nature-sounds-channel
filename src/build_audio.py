@@ -88,17 +88,26 @@ def make_loop_unit(src: Path, dst: Path, crossfade: float, edge_trim: float = 0.
             f"Daha uzun bir kayit sec."
         )
     head_end = hi - crossfade
-    chain = (
-        f"[0:a]asplit=2[a][b];"
-        f"[a]atrim={lo:.6f}:{head_end:.6f},asetpts=PTS-STARTPTS[a1];"
-        f"[b]atrim={head_end:.6f}:{hi:.6f},asetpts=PTS-STARTPTS[b1];"
-        f"[b1][a1]acrossfade=d={crossfade:.6f}:c1=tri:c2=tri[out]"
-    )
-    ffmpeg(
-        ["-i", str(src), "-filter_complex", chain, "-map", "[out]",
-         "-c:a", "pcm_s24le", str(dst)],
-        f"loop unit {src.name}", out=dst,
-    )
+
+    # ONEMLI: bunu tek bir filtre grafiginde yapmak (asplit + iki ayri atrim +
+    # acrossfade) ffmpeg 6.x'te sifir kare uretiyor — acrossfade ilk girdisinin
+    # tamamini bekliyor, diger dal yuzlerce saniyeyi tamponluyor, grafik kilitleniyor.
+    # ffmpeg 9 tolere ediyor ama runner'da 6.x var. Iki parcayi ayri dosyalara
+    # cikarip birlestirmek surumden bagimsiz calisiyor.
+    head = dst.with_name(dst.stem + "_head.wav")
+    tail = dst.with_name(dst.stem + "_tail.wav")
+    try:
+        ffmpeg(["-ss", f"{lo:.6f}", "-to", f"{head_end:.6f}", "-i", str(src),
+                "-c:a", "pcm_s24le", str(head)], f"bas parca {src.name}", out=head)
+        ffmpeg(["-ss", f"{head_end:.6f}", "-to", f"{hi:.6f}", "-i", str(src),
+                "-c:a", "pcm_s24le", str(tail)], f"son parca {src.name}", out=tail)
+        ffmpeg(["-i", str(tail), "-i", str(head), "-filter_complex",
+                f"[0:a][1:a]acrossfade=d={crossfade:.6f}:c1=tri:c2=tri[out]",
+                "-map", "[out]", "-c:a", "pcm_s24le", str(dst)],
+               f"loop unit {src.name}", out=dst)
+    finally:
+        head.unlink(missing_ok=True)
+        tail.unlink(missing_ok=True)
     unit_len = duration_sec(dst)
     log.info("  %-42s %6.0f sn  (kenar -%.0f sn)  ->  birim %.0f sn",
              src.name, dur, lo, unit_len)

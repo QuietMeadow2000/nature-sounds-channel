@@ -136,18 +136,25 @@ def clip_loop_unit(src: Path, dst: Path, cfg: Dict[str, Any], xfade: float = 1.5
     xfade = min(xfade, dur / 4)
     head_end = dur - xfade
 
-    chain = (
-        f"[0:v]fps={fps},{_scale_pad(w, h)},format=yuv420p,split=2[a][b];"
-        f"[a]trim=0:{head_end:.4f},setpts=PTS-STARTPTS[a1];"
-        f"[b]trim={head_end:.4f}:{dur:.4f},setpts=PTS-STARTPTS[b1];"
-        f"[b1][a1]xfade=transition=fade:duration={xfade:.4f}:offset=0[out]"
-    )
-    ffmpeg(
-        ["-i", str(src), "-filter_complex", chain, "-map", "[out]",
-         "-an", "-c:v", "libx264", "-preset", "veryfast", "-crf", "18",
-         "-pix_fmt", "yuv420p", str(dst)],
-        f"dongu birimi {src.name}", out=dst,
-    )
+    # Ses tarafiyla ayni sebep: split + iki trim + xfade tek grafikte ffmpeg 6.x'te
+    # kilitleniyor. Parcalari ayri cikarip birlestiriyoruz.
+    vf = f"fps={fps},{_scale_pad(w, h)},format=yuv420p"
+    head = dst.with_name(dst.stem + "_head.mp4")
+    tail = dst.with_name(dst.stem + "_tail.mp4")
+    enc = ["-an", "-c:v", "libx264", "-preset", "veryfast", "-crf", "18",
+           "-pix_fmt", "yuv420p"]
+    try:
+        ffmpeg(["-i", str(src), "-t", f"{head_end:.4f}", "-vf", vf] + enc + [str(head)],
+               f"bas parca {src.name}", out=head)
+        ffmpeg(["-ss", f"{head_end:.4f}", "-i", str(src), "-vf", vf] + enc + [str(tail)],
+               f"son parca {src.name}", out=tail)
+        ffmpeg(["-i", str(tail), "-i", str(head), "-filter_complex",
+                f"[0:v][1:v]xfade=transition=fade:duration={xfade:.4f}:offset=0[out]",
+                "-map", "[out]"] + enc + [str(dst)],
+               f"dongu birimi {src.name}", out=dst)
+    finally:
+        head.unlink(missing_ok=True)
+        tail.unlink(missing_ok=True)
     unit_len = duration_sec(dst, streams="v")
     log.info("  klip %.1f sn  ->  dongu birimi %.1f sn (xfade %.1f sn)", dur, unit_len, xfade)
     return unit_len
