@@ -83,6 +83,29 @@ def pick(
 
     weights = effective_weights(cfg)             # yalnizca etkin temalar
 
+    # Haftalik takvim varsa tema seciminde o belirleyici. Sezonluk kural artik
+    # temayi degistirmiyor — takvimle catisirdi; yalnizca metne mevsim ipucu
+    # veriyor (title_hint), boylaca ikisi birlikte calisiyor.
+    planned = (cfg.get("weekly_schedule") or {}).get(today.weekday())
+    if planned:
+        if planned in weights:
+            log.info("Tema: %s  (haftalik takvim, %s)", planned,
+                     ["Pzt", "Sal", "Car", "Per", "Cum", "Cmt", "Paz"][today.weekday()])
+            # Mevsim ipucu yalnizca o gunun temasi sezonun tema listesindeyse
+            # verilir: "fallen leaves, misty morning" ipucunu okyanus videosuna
+            # yapistirmanin anlami yok.
+            hint = None
+            if season and planned in season.get("themes", []):
+                hint = season.get("title_hint")
+            return planned, {
+                "theme": planned, "reason": "haftalik takvim",
+                "season": season["name"] if season else None,
+                "title_hint": hint,
+                "avoided": recent, "weight": round(weights[planned], 4),
+            }
+        log.warning("Takvimdeki tema '%s' etkin degil — agirlikli secime dusuluyor.",
+                    planned)
+
     candidates: List[str] = []
     if forced_by_season:
         pool = [t for t in season["themes"] if t in weights]

@@ -83,6 +83,20 @@ metadata:
   recent_titles_shown: 10
   locales: [es, pt, de, fr, ja]  # Bolum 16.3 otomatik ceviri
 
+# Haftalik takvim: hangi gun hangi tema. Bos birakilirsa agirlikli rastgele
+# secime dusulur. Sira rastgele degil — yedi temanin miksleri olculup, benzeyen
+# temalar yan yana gelmeyecek sekilde dizildi (en yuksek komsu benzerligi 0.724;
+# en kotu cift yagmur-dere 0.936 idi, artik iki gun arayla).
+# 0 = Pazartesi ... 6 = Pazar
+weekly_schedule:
+  0: rain
+  1: fireplace
+  2: stream
+  3: thunderstorm
+  4: forest_birds
+  5: ocean_waves
+  6: night_crickets
+
 selection:
   avoid_last_n: 2                # son 2 temadan farkli olsun
   weight_floor: 0.05             # hicbir tema %5 altina inmez
@@ -148,7 +162,7 @@ themes:
     pexels_queries: ["mountain stream", "forest creek water", "river rocks"]
 
   thunderstorm:
-    enabled: false   # ses dosyasi yok
+    enabled: true
     thumb_title: "THUNDERSTORM"    # thumbnail ust satiri
     playlist_id: ""
     playlist_name: Thunderstorms
@@ -184,7 +198,7 @@ themes:
     pexels_queries: ["fireplace closeup", "burning logs fire", "cozy fire night"]
 
   night_crickets:
-    enabled: false   # ses dosyasi yok
+    enabled: true
     thumb_title: "NIGHT SOUNDS"    # thumbnail ust satiri
     playlist_id: ""
     playlist_name: Night Sounds

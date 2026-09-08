@@ -1,5 +1,10 @@
-# Bolum 16.6 — takvime bagli ozel temalar.
-# Sezon aktifken haftada 2 gun (weekdays) sezonluk tema zorunlu secilir.
+# Bolum 16.6 — takvime bagli mevsim ipuclari.
+#
+# NOT: haftalik takvim (channel_*.yaml > weekly_schedule) devreye girdikten sonra
+# sezon artik TEMA SECMIYOR — ikisi catisirdi. Sezonun tek isi, o gunun temasi
+# asagidaki `themes` listesindeyse metne bir mevsim ipucu vermek.
+# `weekdays` alani bu yuzden artik kullanilmiyor; ileride tekrar lazim olabilir
+# diye birakildi.
 # Tarihler MM-DD; yil asan araliklar (kis) desteklenir.
 
 seasons:
