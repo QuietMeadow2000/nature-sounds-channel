@@ -1,4 +1,5 @@
-# Yalnizca yerel test icin — kisa sure. Gercek kanala yuklenmez.
+# URETILMIS DOSYA — elle duzenleme. Kaynak: config/channel_main.yaml
+# Yeniden uretmek icin: python tools/sync_localtest.py
 # Quiet Meadow — ana kanal ayarlari
 # Ikinci bir kanal eklemek icin bu dosyayi kopyala (Bolum 12).
 
@@ -7,14 +8,16 @@ channel:
   name: Quiet Meadow
   handle: "@quietmeadowsounds"
   language: en
-  # API audit onayi gelene kadar "private" (Bolum 3.3/7).
-  # Onay gelince "public" yapilir — tek satirlik degisiklik.
-  privacy_status: private
+  privacy_status: public
   # manual : video out/<tarih>/ altina birakilir, Studio'ya elle yuklersin.
-  #          Audit onayi beklenirken kullanilan mod — YouTube API'ye hic
-  #          ihtiyac yok, yani secret da gerekmiyor.
-  # api    : videos.insert ile dogrudan yukler. Audit onayi gelince gec.
-  publish_mode: manual
+  #          YouTube API'ye hic ihtiyac duymaz, secret gerekmez.
+  # api    : videos.insert ile dogrudan yukler, thumbnail atar, playlist'e ekler.
+  #
+  # NOT: "denetimden gecmemis proje public yukleyemez" varsayimi YANLIS cikti.
+  # 6 Eylul 2026'da olculdu: denetimsiz projeden privacyStatus: public ile
+  # yuklenen video public kaldi (bkz. veo-to-youtube projesi, video INzkY1mspdc).
+  # Audit basvurusu kota tavani icin faydali ama yukleme icin gerekmiyor.
+  publish_mode: api
   category_id: "10"              # 10 = Music, 22 = People & Blogs (A/B test, Bolum 17)
   made_for_kids: false
 
@@ -91,8 +94,12 @@ retry:
   upload_attempts: 3
   upload_backoff_min: 20
 
+# enabled: false olan temalar secilmez. Sesi olmayan bir tema secilirse
+# pipeline 'ana katman icin dosya yok' diye durur; onun yerine bastan eliyoruz.
+# Yeni bir temanin sesleri Drive'a girince true yap.
 themes:
   rain:
+    enabled: true
     thumb_title: "RAIN SOUNDS"    # thumbnail ust satiri
     playlist_id: ""              # YouTube URL'sindeki list= sonrasi
     playlist_name: Rain Sounds
@@ -104,6 +111,7 @@ themes:
     pexels_queries: ["rain on window", "rain on leaves", "rainy forest"]
 
   ocean_waves:
+    enabled: true
     thumb_title: "OCEAN WAVES"    # thumbnail ust satiri
     playlist_id: ""
     playlist_name: Ocean Waves
@@ -118,6 +126,7 @@ themes:
                      "coconut palm beach turquoise water", "tropical beach hut palm"]
 
   forest_birds:
+    enabled: false   # ses dosyasi yok
     thumb_title: "FOREST BIRDS"    # thumbnail ust satiri
     playlist_id: ""
     playlist_name: Forest & Birds
@@ -129,6 +138,7 @@ themes:
     pexels_queries: ["forest sunlight", "green forest canopy", "woodland morning"]
 
   stream:
+    enabled: false   # ses dosyasi yok
     thumb_title: "RIVER SOUNDS"    # thumbnail ust satiri
     playlist_id: ""
     playlist_name: Rivers & Streams
@@ -140,6 +150,7 @@ themes:
     pexels_queries: ["mountain stream", "forest creek water", "river rocks"]
 
   thunderstorm:
+    enabled: false   # ses dosyasi yok
     thumb_title: "THUNDERSTORM"    # thumbnail ust satiri
     playlist_id: ""
     playlist_name: Thunderstorms
@@ -151,6 +162,7 @@ themes:
     pexels_queries: ["thunderstorm clouds", "lightning night sky", "storm rain window"]
 
   wind:
+    enabled: false   # ses dosyasi yok
     thumb_title: "WIND SOUNDS"    # thumbnail ust satiri
     playlist_id: ""
     playlist_name: Wind Sounds
@@ -162,6 +174,7 @@ themes:
     pexels_queries: ["wind grass field", "meadow wind slow motion", "windy hillside"]
 
   fireplace:
+    enabled: true
     thumb_title: "FIREPLACE"    # thumbnail ust satiri
     playlist_id: ""
     playlist_name: Fireplace
@@ -173,6 +186,7 @@ themes:
     pexels_queries: ["fireplace closeup", "burning logs fire", "cozy fire night"]
 
   night_crickets:
+    enabled: false   # ses dosyasi yok
     thumb_title: "NIGHT SOUNDS"    # thumbnail ust satiri
     playlist_id: ""
     playlist_name: Night Sounds
