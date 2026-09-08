@@ -29,3 +29,6 @@ assets/
 
 # Manuel yayin paketleri (video + thumbnail + metin)
 out/
+
+# Drive yonetim token (yalnizca yerel)
+.quiet-meadow-drive.json
