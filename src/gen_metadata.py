@@ -133,14 +133,40 @@ def _fallback(theme: str, cfg: Dict[str, Any]) -> Dict[str, Any]:
     purpose = (tcfg.get("purpose", "Relaxation").split(",")[0]).strip().lower()
     minutes = int(cfg["audio"]["duration_min"])
     log.warning("Metadata sablonu kullanildi (Claude API erisilemedi).")
+    layers = [l["match"].replace("_", " ") for l in (cfg.get("_layers") or [])]
+    layer_line = ", ".join(layers) if layers else theme.replace("_", " ")
+    label = duration_label(minutes).lower()
+    subject = theme.replace("_", " ")
+
+    description = "\n".join([
+        f"{duration_label(minutes)} of continuous {subject}. No music, no voices, "
+        f"no sudden events — the same weather from start to finish.",
+        "",
+        "WHAT'S IN THIS HOUR" if minutes == 60 else "WHAT'S IN THIS RECORDING",
+        f"– {layer_line}",
+        "– Layered and mixed for this video, not a single raw clip",
+        "– Looped so the seam is inaudible",
+        "– No interruptions, no fades in the middle, no narration",
+        "",
+        "GOOD FOR",
+        "– Falling asleep and staying asleep",
+        "– Reading or studying for long stretches",
+        "– Focused work that needs a steady background",
+        "– Quieting a room that feels too silent",
+        "– Long journeys and travel",
+        "",
+        "Built from real field recordings, layered and mixed for this video, then "
+        "looped so the join is inaudible. Nothing here is narrated or scripted.",
+        "",
+        CREDIT_LINE,
+        "",
+        f"#{subject.replace(' ', '')} #sleepsounds #naturesounds #ambient #whitenoise "
+        f"#{label.replace(' ', '')}",
+    ])
+
     return {
         "title": f"{pretty} Sounds for {purpose.title()} | {duration_label(minutes)}",
-        "description": (
-            f"{minutes} minutes of continuous {theme.replace('_', ' ')} sounds, "
-            f"mixed to loop without a noticeable seam.\n\n"
-            f"Useful as a background for {purpose}, reading or quiet work.\n\n"
-            f"{CREDIT_LINE}"
-        ),
+        "description": description,
         "tags": _trim_tags(
             [f"{theme.replace('_', ' ')} sounds", "sleep sounds", "relaxing sounds",
              "nature sounds", "white noise", "study music", "focus sounds",
@@ -161,6 +187,9 @@ def generate(
     model = mcfg.get("model") or DEFAULT_MODEL
     locales = list(mcfg.get("locales") or [])
     max_title = int(mcfg["max_title_chars"])
+
+    # Sablon, mikste gercekten kullanilan katmanlari yazabilsin diye tarifi gecir.
+    cfg = dict(cfg, _layers=audio_recipe.get("layers", []))
 
     if not api_key:
         return _fallback(theme, cfg)
