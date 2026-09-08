@@ -192,5 +192,60 @@
     "publish_mode": "api",
     "privacy": "public",
     "uploaded_at": "2026-09-08T00:15:12+00:00"
+  },
+  {
+    "date": "2026-09-08",
+    "channel": "main",
+    "theme": "fireplace",
+    "season_hint": null,
+    "seed": 276033429454401,
+    "title": "Fireplace Crackling for Cozy Sleep | 1 Hour",
+    "tags": [
+      "fireplacesounds",
+      "cozysleep",
+      "relaxingfireplace",
+      "sleepsounds",
+      "ambientfire",
+      "focusbackground",
+      "relaxationaudio",
+      "nighttimeambience",
+      "calmfireplace",
+      "sleepaid",
+      "studymusic",
+      "backgroundnoise"
+    ],
+    "metadata_by": "openai/gpt-oss-120b",
+    "audio": {
+      "layers": [
+        {
+          "role": "main",
+          "match": "fireplace",
+          "source": "fireplace__freesound_496130.flac",
+          "unit_len": 344.5,
+          "gain": 1.0195,
+          "offset": 0.0,
+          "normalize_db": 15.06
+        }
+      ],
+      "crossfade_sec": 5.0,
+      "edge_trim_sec": 10.0,
+      "target_lufs": -18.0,
+      "mix_correction_db": 0.87,
+      "duration_sec": 3600.0,
+      "seam_check_sec": 344.5
+    },
+    "video": {
+      "visual_kind": "clip",
+      "visual_source": "pexels:8149639",
+      "unit_len_sec": 35.54,
+      "size_mb": 1344.8,
+      "variants": 12,
+      "encoded_sec": 426.5,
+      "repeats": 102
+    },
+    "video_id": "FhAHP9Zrd30",
+    "publish_mode": "api",
+    "privacy": "public",
+    "uploaded_at": "2026-09-08T23:41:29+00:00"
   }
 ]
