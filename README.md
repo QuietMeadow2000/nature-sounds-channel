@@ -77,6 +77,17 @@ ffmpeg -i indirilen.wav -ar 44100 -sample_fmt s16 -c:a flac -compression_level 8
 `sources` defterinde **A sütunu dosya adı** olmalı; defterde olmayan dosya pipeline'a
 girmez (`drive.check_registered`).
 
+Defter **repo'da** tutuluyor: `state/sources.csv`. Git geçmişi zaman damgalı kanıt
+sağlıyor — Content ID itirazında "bu dosyayı ne zaman, nereden, hangi lisansla
+aldık" sorusunun cevabı orada. Drive'daki kopya pipeline'ın okuduğu yer:
+
+```bash
+python tools/sources_push.py     # CSV'yi Drive'a Google Sheet olarak yükler
+```
+
+Yeni ses eklerken önce `state/sources.csv`'ye satır ekle, sonra bu komutu çalıştır.
+Drive API yüklerken CSV'yi Sheet'e çeviriyor, Sheets API'ye gerek yok.
+
 ## Metadata üretimi
 
 Sağlayıcı sırası: `ANTHROPIC_API_KEY` varsa Claude, yoksa `GROQ_API_KEY` varsa
