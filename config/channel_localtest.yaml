@@ -142,7 +142,7 @@ themes:
   forest_birds:
     enabled: true
     thumb_title: "FOREST BIRDS"    # thumbnail ust satiri
-    playlist_id: ""
+    playlist_id: "PLHdRWS64-LpM"
     playlist_name: Forest & Birds
     purpose: "Focus, Morning"
     mix:
@@ -154,7 +154,7 @@ themes:
   stream:
     enabled: true
     thumb_title: "RIVER SOUNDS"    # thumbnail ust satiri
-    playlist_id: ""
+    playlist_id: "PLZoIcz5OD7Qo"
     playlist_name: Rivers & Streams
     purpose: "Meditation, Study"
     mix:
@@ -166,7 +166,7 @@ themes:
   thunderstorm:
     enabled: true
     thumb_title: "THUNDERSTORM"    # thumbnail ust satiri
-    playlist_id: ""
+    playlist_id: "PLdoORphPwFm8"
     playlist_name: Thunderstorms
     purpose: "Deep Sleep"
     mix:
@@ -190,7 +190,7 @@ themes:
   fireplace:
     enabled: true
     thumb_title: "FIREPLACE"    # thumbnail ust satiri
-    playlist_id: ""
+    playlist_id: "PLGzItGFiKRlQ"
     playlist_name: Fireplace
     purpose: "Cozy, Sleep"
     mix:
@@ -202,7 +202,7 @@ themes:
   night_crickets:
     enabled: true
     thumb_title: "NIGHT SOUNDS"    # thumbnail ust satiri
-    playlist_id: ""
+    playlist_id: "PLdggFKgrGX4w"
     playlist_name: Night Sounds
     purpose: "Sleep"
     mix:
