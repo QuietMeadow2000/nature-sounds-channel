@@ -113,7 +113,7 @@ themes:
   rain:
     enabled: true
     thumb_title: "RAIN SOUNDS"    # thumbnail ust satiri
-    playlist_id: ""              # YouTube URL'sindeki list= sonrasi
+    playlist_id: "PLHmxgV62C2po"              # YouTube URL'sindeki list= sonrasi
     playlist_name: Rain Sounds
     purpose: "Sleep, Study"
     mix:
@@ -125,7 +125,7 @@ themes:
   ocean_waves:
     enabled: true
     thumb_title: "OCEAN WAVES"    # thumbnail ust satiri
-    playlist_id: ""
+    playlist_id: "PLedkdmCNmfsg"
     playlist_name: Ocean Waves
     purpose: "Sleep, Relaxation"
     mix:
