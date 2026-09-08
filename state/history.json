@@ -124,5 +124,73 @@
     "publish_mode": "manual",
     "privacy": "manual",
     "uploaded_at": "2026-09-07T16:32:37+00:00"
+  },
+  {
+    "date": "2026-09-07",
+    "channel": "main",
+    "theme": "rain",
+    "season_hint": null,
+    "seed": 27559461661568,
+    "title": "Rain Sounds for Sleep | 1 Hour",
+    "tags": [
+      "rain sounds",
+      "sleep sounds",
+      "relaxing sounds",
+      "nature sounds",
+      "white noise",
+      "study music",
+      "focus sounds",
+      "ambient sounds",
+      "1 hour",
+      "calm"
+    ],
+    "metadata_by": "fallback_template",
+    "audio": {
+      "layers": [
+        {
+          "role": "main",
+          "match": "rain",
+          "source": "rain__freesound_200270.flac",
+          "unit_len": 375.0,
+          "gain": 0.9768,
+          "offset": 0.0,
+          "normalize_db": 15.84
+        },
+        {
+          "role": "layer",
+          "match": "distant_thunder",
+          "source": "distant_thunder__freesound_361401.flac",
+          "unit_len": 402.342,
+          "gain": 0.1935,
+          "offset": 170.403,
+          "normalize_db": 23.05
+        },
+        {
+          "role": "layer",
+          "match": "light_wind",
+          "source": "light_wind__freesound_670307.flac",
+          "unit_len": 309.113,
+          "gain": 0.0922,
+          "offset": 156.042,
+          "normalize_db": 6.03
+        }
+      ],
+      "crossfade_sec": 5.0,
+      "edge_trim_sec": 10.0,
+      "target_lufs": -18.0,
+      "mix_correction_db": 1.2,
+      "duration_sec": 3600.0,
+      "seam_check_sec": 375.0
+    },
+    "video": {
+      "visual_kind": "clip",
+      "visual_source": "pexels:28798458",
+      "unit_len_sec": 9.5,
+      "size_mb": 634.0
+    },
+    "video_id": "JDI6CLwylGE",
+    "publish_mode": "api",
+    "privacy": "public",
+    "uploaded_at": "2026-09-08T00:15:12+00:00"
   }
 ]
