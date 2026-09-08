@@ -172,7 +172,7 @@ themes:
     pexels_queries: ["wind grass field", "meadow wind slow motion", "windy hillside"]
 
   fireplace:
-    enabled: false   # ses dosyasi yok
+    enabled: true
     thumb_title: "FIREPLACE"    # thumbnail ust satiri
     playlist_id: ""
     playlist_name: Fireplace

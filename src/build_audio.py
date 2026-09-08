@@ -55,13 +55,20 @@ def measure_lufs(path: Path, target: float) -> float:
 # ---------------------------------------------------------------- adim 1-2
 
 def normalize_source(src: Path, dst: Path, target_lufs: float, sample_rate: int) -> float:
-    """Sabit kazancla hedef LUFS'a getir; 44.1k stereo float'a cevir. Uygulanan dB'yi dondur."""
+    """Sabit kazancla hedef LUFS'a getir; 44.1k stereo float'a cevir. Uygulanan dB'yi dondur.
+
+    Ara dosyalar 32-bit FLOAT: saha kayitlarinin tepe degeri cogu zaman tam olcege
+    yakin ama LUFS'u dusuk (ates citirtisi, gok gurultusu — yuksek tepe/ortalama orani).
+    -18 LUFS'a cekmek +15..+23 dB kazanc demek; tamsayi formatta bu, tepeleri kirpar.
+    Olculdu: 5 kaydin 4'u kirpiliyordu (%0.003 - %0.093 ornek). Float'ta kirpilma yok,
+    tepe kontrolu tek bir yerde — miksin sonundaki limiter — yapiliyor.
+    """
     measured = measure_lufs(src, target_lufs)
     delta = target_lufs - measured
     ffmpeg(
         ["-i", str(src),
          "-af", f"volume={delta:.3f}dB," + AFORMAT.format(sr=sample_rate),
-         "-c:a", "pcm_s24le", str(dst)],
+         "-c:a", "pcm_f32le", str(dst)],
         f"normalize {src.name}", out=dst,
     )
     log.info("  %-42s %6.1f LUFS  ->  %+.1f dB", src.name, measured, delta)
@@ -98,12 +105,12 @@ def make_loop_unit(src: Path, dst: Path, crossfade: float, edge_trim: float = 0.
     tail = dst.with_name(dst.stem + "_tail.wav")
     try:
         ffmpeg(["-ss", f"{lo:.6f}", "-to", f"{head_end:.6f}", "-i", str(src),
-                "-c:a", "pcm_s24le", str(head)], f"bas parca {src.name}", out=head)
+                "-c:a", "pcm_f32le", str(head)], f"bas parca {src.name}", out=head)
         ffmpeg(["-ss", f"{head_end:.6f}", "-to", f"{hi:.6f}", "-i", str(src),
-                "-c:a", "pcm_s24le", str(tail)], f"son parca {src.name}", out=tail)
+                "-c:a", "pcm_f32le", str(tail)], f"son parca {src.name}", out=tail)
         ffmpeg(["-i", str(tail), "-i", str(head), "-filter_complex",
                 f"[0:a][1:a]acrossfade=d={crossfade:.6f}:c1=tri:c2=tri[out]",
-                "-map", "[out]", "-c:a", "pcm_s24le", str(dst)],
+                "-map", "[out]", "-c:a", "pcm_f32le", str(dst)],
                f"loop unit {src.name}", out=dst)
     finally:
         head.unlink(missing_ok=True)
@@ -140,6 +147,11 @@ def _mix_filter(
         post.append(f"afade=t=in:st=0:d={fade_in:.3f}")
     if fade_out > 0:
         post.append(f"afade=t=out:st={total_sec - fade_out:.3f}:d={fade_out:.3f}")
+    # Tepe kontrolu zincirde TEK bir yerde: burada. Kaynaklar float olarak
+    # tasindigi icin buraya kadar hicbir sey kirpilmiyor; limiter da sert
+    # kesmek yerine tepeleri yumusatiyor. -1 dBFS tavan, AAC kodlamasinin
+    # kendi tepe artisina pay birakiyor.
+    post.append("alimiter=limit=0.891:attack=5:release=60:level=false")
     if post:
         parts.append(tail + ",".join(post) + "[out]")
         return ";".join(parts)
