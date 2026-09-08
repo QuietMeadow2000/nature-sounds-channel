@@ -44,11 +44,31 @@ def main() -> int:
     print(f"  kanal id : {ch['id']}")
     print(f"  video    : {st.get('videoCount')}   abone: {st.get('subscriberCount')}")
 
-    pl = svc.playlists().list(part="snippet", mine=True, maxResults=25).execute()
+    # Son yuklemeler — kanaldaki videolarin gercek durumu
+    ch = svc.channels().list(part="contentDetails", mine=True).execute()
+    up = ch["items"][0]["contentDetails"]["relatedPlaylists"]["uploads"]
+    items = svc.playlistItems().list(part="snippet,status", playlistId=up,
+                                     maxResults=25).execute().get("items", [])
+    print(f"\n  yuklemeler ({len(items)}):")
+    vids = [i["snippet"]["resourceId"]["videoId"] for i in items]
+    durum = {}
+    if vids:
+        r = svc.videos().list(part="status,snippet", id=",".join(vids)).execute()
+        durum = {v["id"]: v for v in r.get("items", [])}
+    for i in items:
+        vid = i["snippet"]["resourceId"]["videoId"]
+        v = durum.get(vid, {})
+        st = v.get("status", {})
+        print(f"    {vid}  {st.get('privacyStatus','?'):<9} "
+              f"{st.get('uploadStatus','?'):<10} {i['snippet']['title'][:44]}")
+
+    pl = svc.playlists().list(part="snippet,contentDetails", mine=True,
+                              maxResults=25).execute()
     plist = pl.get("items", [])
     print(f"\n  playlist ({len(plist)}):")
     for p in plist:
-        print(f"    {p['id']}  {p['snippet']['title']}")
+        n = p.get("contentDetails", {}).get("itemCount", "?")
+        print(f"    {p['id']}  {p['snippet']['title']:<22} ({n} video)")
     if not plist:
         print("    (yok — config'deki playlist_id alanlari bos kalabilir)")
     return 0
