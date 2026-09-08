@@ -77,6 +77,23 @@ ffmpeg -i indirilen.wav -ar 44100 -sample_fmt s16 -c:a flac -compression_level 8
 `sources` defterinde **A sütunu dosya adı** olmalı; defterde olmayan dosya pipeline'a
 girmez (`drive.check_registered`).
 
+## Metadata üretimi
+
+Sağlayıcı sırası: `ANTHROPIC_API_KEY` varsa Claude, yoksa `GROQ_API_KEY` varsa
+Groq, o da yoksa şablon. Üçü de aynı JSON şemasını kullanıyor.
+
+Şu an **Groq** (`openai/gpt-oss-120b`) — ücretsiz katman, günde tek istek atıyoruz.
+Ölçülen kullanım 1300 girdi / 3700–4900 çıktı token.
+
+İki tuzak, ikisi de yaşandı:
+- `max_tokens` düşük olursa beş çeviri bitmeden kesiliyor, JSON yarım kalıyor ve
+  Groq şema doğrulamasında **400** veriyor (`missing properties: 'ja'`). 8000 gerekiyor.
+- Ücretsiz katmanda dakikada 8000 token sınırı var; art arda istek atarsan **429**.
+  Üretimde bağlayıcı değil, ikisi için de yeniden deneme var.
+
+Groq anahtarı `fon-takip` projesiyle **ortak**. O projede yenilenirse burada da
+güncellemek gerekir.
+
 ## Yayın modu
 
 `config/channel_main.yaml` → `channel.publish_mode`:

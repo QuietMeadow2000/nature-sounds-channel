@@ -44,8 +44,12 @@ Write it in these five parts, in this order, separated by blank lines.
    layered and mixed for this video, looped so the seam is inaudible.
 
 5. HASHTAGS — one line, five to eight tags, starting with "#".
+   Each hashtag must be ONE word with no spaces: "#sleepsounds", not "#sleep sounds".
 
 Hard limits on the description:
+- Describe ONLY the audio layers listed under "Audio layers" above. If one layer
+  is listed, it is a single-layer recording — do not write about "layered" sound,
+  and do not invent elements (embers, birds, wind) that are not in that list.
 - Natural English throughout. No timestamps, no chapter list, no links.
 - NEVER claim a health or medical outcome. Do not write "cures insomnia",
   "relieves anxiety", "stress therapy", "reduces blood pressure" or anything

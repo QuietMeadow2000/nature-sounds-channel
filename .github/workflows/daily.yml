@@ -66,6 +66,7 @@ jobs:
           YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           GDRIVE_SA_JSON: ${{ secrets.GDRIVE_SA_JSON }}
 
       # Manuel yayin modunda (publish_mode: manual) video YouTube'a gitmez;

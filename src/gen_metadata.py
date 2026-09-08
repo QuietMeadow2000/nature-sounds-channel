@@ -10,12 +10,15 @@ Daha ucuz isteniyorsa config'de metadata.model: claude-sonnet-5 yeterli kalitede
 from __future__ import annotations
 
 import json
+import os
+import re
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from util import REPO, PipelineError, history, log
 
 DEFAULT_MODEL = "claude-opus-5"
+GROQ_MODEL = "openai/gpt-oss-120b"
 
 LOCALE_NAMES = {
     "es": "Spanish", "pt": "Portuguese (Brazil)", "de": "German",
@@ -99,6 +102,21 @@ def _prompt(
     )
 
 
+def _fix_hashtags(text: str) -> str:
+    """Hashtag'lerdeki bosluklari temizle.
+
+    Modeller "#sleep sounds" gibi bosluklu hashtag uretebiliyor; YouTube bunu
+    "#sleep" olarak kesiyor ve geri kalani duz metne cevriliyor.
+    """
+    out = []
+    for line in text.split("\n"):
+        if line.strip().startswith("#"):
+            etiketler = [t.strip() for t in line.split("#") if t.strip()]
+            line = " ".join("#" + re.sub(r"\s+", "", t) for t in etiketler)
+        out.append(line)
+    return "\n".join(out)
+
+
 def _trim_tags(tags: List[str], limit: int) -> List[str]:
     """YouTube toplam etiket karakter sinirini asma (virguller dahil sayilir)."""
     kept: List[str] = []
@@ -144,7 +162,8 @@ def _fallback(theme: str, cfg: Dict[str, Any]) -> Dict[str, Any]:
         "",
         "WHAT'S IN THIS HOUR" if minutes == 60 else "WHAT'S IN THIS RECORDING",
         f"– {layer_line}",
-        "– Layered and mixed for this video, not a single raw clip",
+        ("– Layered and mixed for this video, not a single raw clip"
+         if len(layers) > 1 else "– Mixed and levelled for this video"),
         "– Looped so the seam is inaudible",
         "– No interruptions, no fades in the middle, no narration",
         "",
@@ -155,8 +174,10 @@ def _fallback(theme: str, cfg: Dict[str, Any]) -> Dict[str, Any]:
         "– Quieting a room that feels too silent",
         "– Long journeys and travel",
         "",
-        "Built from real field recordings, layered and mixed for this video, then "
-        "looped so the join is inaudible. Nothing here is narrated or scripted.",
+        ("Built from real field recordings, layered and mixed for this video, then "
+         "looped so the join is inaudible." if len(layers) > 1 else
+         "Built from a real field recording, levelled for this video and looped so "
+         "the join is inaudible.") + " Nothing here is narrated or scripted.",
         "",
         CREDIT_LINE,
         "",
@@ -178,6 +199,77 @@ def _fallback(theme: str, cfg: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 
+def _groq(prompt: str, schema: Dict[str, Any], model: str, api_key: str) -> Dict[str, Any]:
+    """Groq uzerinden uret (OpenAI uyumlu ucnokta, json_schema destekli).
+
+    Ucretsiz katman gunde binlerce istek veriyor; biz gunde bir atiyoruz.
+    Kalite Claude'un altinda ama sablondan belirgin sekilde iyi — ozellikle
+    cevirilerde fark ediliyor.
+    """
+    import time
+
+    import requests
+
+    # Iki ayri sinir var, karistirmamak gerek:
+    #  - max_tokens: cikti kesilirse JSON yarim kalir ve Groq semaya uymadigi
+    #    icin 400 doner ("missing properties: 'ja'"). Bes ceviri yer tuttugu
+    #    icin 6000 yetmiyor; olculen gercek kullanim 3700-4900 token.
+    #  - TPM: ucretsiz katmanda dakikada 8000 token. Gunde tek istek attigimiz
+    #    icin uretimde bagliyici degil; 429 gelirse bekleyip tekrar deniyoruz.
+    body = {
+        "model": model,
+        "messages": [{"role": "user", "content": prompt}],
+        "response_format": {"type": "json_schema", "json_schema": {
+            "name": "metadata", "strict": True, "schema": schema}},
+        "max_tokens": 8000,
+        "temperature": 0.8,
+    }
+    for deneme in range(3):
+        r = requests.post(
+            "https://api.groq.com/openai/v1/chat/completions",
+            headers={"Authorization": f"Bearer {api_key}",
+                     "Content-Type": "application/json"},
+            json=body, timeout=180,
+        )
+        if r.status_code == 429:
+            bekle = float(r.headers.get("retry-after") or 0) or 20.0
+            log.warning("Groq hiz siniri; %.0f sn beklenip tekrar denenecek (%d/3)",
+                        bekle, deneme + 1)
+            time.sleep(min(bekle + 1, 60))
+            continue
+        # Uretim kesilip JSON yarim kalirsa Groq 400 doner — deterministik degil,
+        # tekrar denemek genelde tutuyor.
+        if r.status_code == 400 and "json_validate_failed" in r.text:
+            log.warning("Groq eksik JSON uretti, tekrar deneniyor (%d/3)", deneme + 1)
+            continue
+        break
+    r.raise_for_status()
+    d = r.json()
+    log.info("Metadata (groq/%s): %s tokens in / %s out", model,
+             d.get("usage", {}).get("prompt_tokens"),
+             d.get("usage", {}).get("completion_tokens"))
+    return json.loads(d["choices"][0]["message"]["content"])
+
+
+def _claude(prompt: str, schema: Dict[str, Any], model: str, api_key: str) -> Dict[str, Any]:
+    import anthropic
+
+    client = anthropic.Anthropic(api_key=api_key)
+    response = client.messages.create(
+        model=model,
+        max_tokens=16000,
+        thinking={"type": "adaptive"},
+        output_config={"effort": "medium",
+                       "format": {"type": "json_schema", "schema": schema}},
+        messages=[{"role": "user", "content": prompt}],
+    )
+    if response.stop_reason == "refusal":
+        raise PipelineError(f"Model istegi reddetti: {response.stop_details}")
+    log.info("Metadata (%s): %s tokens in / %s out", model,
+             response.usage.input_tokens, response.usage.output_tokens)
+    return json.loads(next(b.text for b in response.content if b.type == "text"))
+
+
 def generate(
     theme: str, cfg: Dict[str, Any], audio_recipe: Dict[str, Any],
     video_recipe: Dict[str, Any], season_hint: Optional[str] = None,
@@ -191,43 +283,30 @@ def generate(
     # Sablon, mikste gercekten kullanilan katmanlari yazabilsin diye tarifi gecir.
     cfg = dict(cfg, _layers=audio_recipe.get("layers", []))
 
-    if not api_key:
+    # Saglayici sirasi: Claude varsa o, yoksa Groq, o da yoksa sablon.
+    # Ikisi de ayni JSON semasini kullaniyor, kod tek yerden akiyor.
+    groq_key = os.environ.get("GROQ_API_KEY", "").strip()
+    if api_key:
+        saglayici, anahtar, ad = _claude, api_key, model
+    elif groq_key:
+        saglayici, anahtar, ad = _groq, groq_key, mcfg.get("groq_model", GROQ_MODEL)
+    else:
         return _fallback(theme, cfg)
 
     try:
-        import anthropic
-
-        client = anthropic.Anthropic(api_key=api_key)
-        response = client.messages.create(
-            model=model,
-            max_tokens=16000,
-            thinking={"type": "adaptive"},
-            output_config={
-                "effort": "medium",
-                "format": {"type": "json_schema", "schema": _schema(locales, max_title)},
-            },
-            messages=[{
-                "role": "user",
-                "content": _prompt(theme, cfg, audio_recipe, video_recipe, season_hint),
-            }],
-        )
-        if response.stop_reason == "refusal":
-            raise PipelineError(f"Model istegi reddetti: {response.stop_details}")
-
-        text = next(b.text for b in response.content if b.type == "text")
-        data = json.loads(text)
-        data["generated_by"] = model
-        log.info("Metadata: %s tokens in / %s out",
-                 response.usage.input_tokens, response.usage.output_tokens)
-
+        prompt = _prompt(theme, cfg, audio_recipe, video_recipe, season_hint)
+        data = saglayici(prompt, _schema(locales, max_title), ad, anahtar)
+        data["generated_by"] = ad
     except Exception as exc:                       # Bolum 16.8 plan B
-        log.warning("Claude API hatasi (%s) — sablona dusuluyor.", exc)
+        log.warning("Metadata uretimi basarisiz (%s: %s) — sablona dusuluyor.",
+                    type(exc).__name__, str(exc)[:160])
         return _fallback(theme, cfg)
 
     # Sabit kaynak satiri: Content ID itirazlarinda kanit (Bolum 9).
     if CREDIT_LINE not in data["description"]:
         data["description"] = data["description"].rstrip() + "\n\n" + CREDIT_LINE
 
+    data["description"] = _fix_hashtags(data["description"])
     data["title"] = data["title"][:max_title].rstrip()
     data["tags"] = _trim_tags(data["tags"], int(mcfg["max_tags_chars"]))
 
