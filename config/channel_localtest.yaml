@@ -49,6 +49,12 @@ video:
   # Pexels'ten kac aday indirilip aralarindan en az hareketlisi secilecek.
   # Sabit kamera hem dongude goze batmiyor hem cok daha az yer kapliyor.
   pexels_candidates: 3
+  # Hizli render: dongu birimi birkac renk fazinda kodlanip parcalar
+  # YENIDEN KODLANMADAN birlestiriliyor. Eskiden 3600 saniyenin tamami
+  # kodlaniyordu (60 dk video = 40 dk render); simdi sadece
+  # drift_variants x birim_suresi kodlaniyor.
+  fast_render: true
+  drift_variants: 12
   preset: veryfast
   # Saat boyunca cok yavas renk/parlaklik kaymasi. 0 = kapali (o zaman
   # tune=stillimage devreye girer ve dosya kuculur, ama 288 tekrar

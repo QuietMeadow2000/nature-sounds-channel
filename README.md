@@ -22,13 +22,21 @@ pipeline. Tamamen GitHub Actions üzerinde çalışır. Plan: `youtube-doga-sesl
 
 | | |
 |---|---|
-| 60 dk render, uçtan uca | 11 dk 40 sn (ses 63 sn, video 10,5 dk) |
+| 60 dk render, uçtan uca | **2 dk 15 sn** (ses ~80 sn, video ~50 sn) |
+| — eski yöntem (karşılaştırma) | 13 dk; runner'da 47 dk |
 | Çıktı boyutu | 475–480 MB (plan tahmini 500 MB–1 GB) |
 | Ses döngü ek yeri | sıçrama oranı 1,08 (1,0 = kusursuz); kasıtlı bozuk döngüde 2,54 |
 | Video döngü ek yeri | oran 1,46 (eşik 2,0) |
 
-GitHub runner (4 vCPU) bu makineden yavaş; CPU süresi 54 dk olduğuna göre runner'da
-kabaca 14–20 dk + yükleme beklenir. İş zaman aşımı 120 dk, GitHub sınırı 6 saat.
+**Hızlı render nasıl çalışıyor:** video, döngü biriminin yüzlerce kez tekrarı.
+Eskiden 3600 saniyenin tamamı kodlanıyordu çünkü renk kayması her tekrarı farklı
+yapıyor ve hiçbiri kopyalanamıyordu. Şimdi kayma parça düzeyine taşındı: birim
+12 farklı renk fazında kodlanıp parçalar **yeniden kodlanmadan** birleştiriliyor.
+Kodlanan süre 3600 → 347 saniye.
+
+Ölçüldü: varyant geçişi görünmüyor. Döngü ek yerindeki kare farkı 4,91/255 ve bu
+değer varyant sınırında da aynı (4,89–4,92) — yani geçiş, videonun zaten var olan
+crossfade'inin üstüne ölçülebilir bir şey eklemiyor.
 
 ## Kurulum durumu
 

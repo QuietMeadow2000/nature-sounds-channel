@@ -203,6 +203,95 @@ def drift_filter(scale: float) -> str:
     )
 
 
+def _still_drift(phase: float, scale: float) -> str:
+    """Sabit (zamana bagli olmayan) renk kaymasi — tek bir faz noktasi.
+
+    Ifade kullanmadigi icin her kare ayni; parca boyunca sabit kalir.
+    Parcalar arasi degistigi icin kayma yine olusur, ama saniye saniye
+    kodlama gerekmez.
+    """
+    import math
+    h = DRIFT_HUE_DEG * scale * math.sin(2 * math.pi * phase)
+    sat = 1 + DRIFT_SAT * scale * math.sin(2 * math.pi * phase + 1.1)
+    bri = DRIFT_BRIGHT * scale * math.sin(2 * math.pi * phase + 2.3)
+    return f"hue=h={h:.3f}:s={sat:.4f},eq=brightness={bri:.5f}"
+
+
+def render_final_fast(
+    unit: Path, unit_len: float, audio: Path, out: Path,
+    cfg: Dict[str, Any], drift: Optional[float] = None, variants: int = 12,
+) -> Dict[str, Any]:
+    """Dongu birimini birkac renk fazinda kodlayip yeniden kodlamadan birlestir.
+
+    Eski yontem 3600 saniyenin tamamini kodluyordu (60 dk video = 40 dk render),
+    cunku renk kaymasi her tekrari farkli yapiyor ve hicbiri kopyalanamiyor.
+    Burada kayma parca duzeyine tasiniyor: N varyant kodlanip sirayla, her biri
+    ard arda M kez tekrarlanacak sekilde diziliyor. Kodlanan sure 3600 yerine
+    N x unit_len oluyor — 12 varyant ve 9.5 sn birim icin 114 saniye.
+
+    Kayma da yavaslar: renk her M birimde bir degisir (saatte 12 kez), saniye
+    saniye degil. Zaten amaclanan hiz buydu.
+    """
+    vcfg = cfg["video"]
+    total = float(cfg["audio"]["duration_min"]) * 60.0
+    if drift is None:
+        drift = float(vcfg.get("drift", 1.0))
+    reps = math.ceil(total / unit_len)
+    variants = max(1, min(variants, reps))
+
+    enc = [
+        "-an", "-c:v", "libx264",
+        "-preset", str(vcfg.get("preset", "veryfast")),
+        "-crf", str(vcfg["crf"]),
+        "-r", str(vcfg["fps"]),
+        "-pix_fmt", "yuv420p",
+        # Parcalar -c copy ile birlestirilecek: her parca kendi anahtar karesiyle
+        # baslamali ve kodlayici parametreleri birebir ayni olmali.
+        "-g", str(int(vcfg["fps"]) * 2), "-keyint_min", str(int(vcfg["fps"])),
+        "-sc_threshold", "0",
+    ]
+    maxrate = float(vcfg.get("maxrate_mbps", 0) or 0)
+    if maxrate > 0:
+        enc += ["-maxrate", f"{maxrate:.1f}M", "-bufsize", f"{maxrate * 2:.1f}M"]
+
+    work = out.parent
+    parts: List[Path] = []
+    for i in range(variants):
+        p = work / f"var_{i:02d}.mp4"
+        vf = ["format=yuv420p"] if drift <= 0 else [_still_drift(i / variants, drift),
+                                                   "format=yuv420p"]
+        ffmpeg(["-i", str(unit), "-vf", ",".join(vf)] + enc + [str(p)],
+               f"varyant {i + 1}/{variants}", out=p)
+        parts.append(p)
+    log.info("  %d varyant kodlandi (%.0f sn video), %d tekrar birlestirilecek",
+             variants, variants * unit_len, reps)
+
+    # Her varyant ard arda M kez: renk yavas degisir, hizli titremez.
+    per = max(1, reps // variants)
+    order: List[Path] = []
+    while len(order) < reps:
+        for p in parts:
+            order += [p] * per
+            if len(order) >= reps:
+                break
+
+    listing = work / "concat.txt"
+    listing.write_text("".join(f"file '{p.name}'\n" for p in order[:reps]), encoding="utf-8")
+
+    silent = work / "video_full.mp4"
+    ffmpeg(["-f", "concat", "-safe", "0", "-i", str(listing), "-c", "copy", str(silent)],
+           "parcalari birlestir", out=silent)
+
+    ffmpeg(["-i", str(silent), "-i", str(audio), "-map", "0:v", "-map", "1:a",
+            "-c", "copy", "-t", f"{total:.3f}", "-movflags", "+faststart", str(out)],
+           "ses birlestirme", out=out)
+
+    for p in parts + [silent, listing]:
+        p.unlink(missing_ok=True)
+    return {"variants": variants, "encoded_sec": round(variants * unit_len, 1),
+            "repeats": reps}
+
+
 def render_final(
     unit: Path, unit_len: float, audio: Path, out: Path,
     cfg: Dict[str, Any], drift: Optional[float] = None,
@@ -264,16 +353,23 @@ def build(
         unit_len = clip_loop_unit(src["path"], unit, cfg)
 
     out = work / "final.mp4"
-    render_final(unit, unit_len, audio, out, cfg)
+    vcfg = cfg["video"]
+    extra: Dict[str, Any] = {}
+    if vcfg.get("fast_render", True):
+        extra = render_final_fast(
+            unit, unit_len, audio, out, cfg,
+            variants=int(vcfg.get("drift_variants", 12)))
+    else:
+        render_final(unit, unit_len, audio, out, cfg)
 
     size_mb = out.stat().st_size / 1e6
     log.info("Video hazir: %s (%.0f MB)", out.name, size_mb)
     return {
         "path": out,
-        "recipe": {
+        "recipe": dict({
             "visual_kind": src["kind"],
             "visual_source": src["source"],
             "unit_len_sec": round(unit_len, 2),
             "size_mb": round(size_mb, 1),
-        },
+        }, **extra),
     }
