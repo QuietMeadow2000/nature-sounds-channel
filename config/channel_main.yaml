@@ -124,7 +124,7 @@ themes:
                      "coconut palm beach turquoise water", "tropical beach hut palm"]
 
   forest_birds:
-    enabled: false   # ses dosyasi yok
+    enabled: true
     thumb_title: "FOREST BIRDS"    # thumbnail ust satiri
     playlist_id: ""
     playlist_name: Forest & Birds
@@ -136,7 +136,7 @@ themes:
     pexels_queries: ["forest sunlight", "green forest canopy", "woodland morning"]
 
   stream:
-    enabled: false   # ses dosyasi yok
+    enabled: true
     thumb_title: "RIVER SOUNDS"    # thumbnail ust satiri
     playlist_id: ""
     playlist_name: Rivers & Streams
