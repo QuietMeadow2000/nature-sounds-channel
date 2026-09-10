@@ -50,6 +50,12 @@ Hard limits on the description:
 - Describe ONLY the audio layers listed under "Audio layers" above. If one layer
   is listed, it is a single-layer recording — do not write about "layered" sound,
   and do not invent elements (embers, birds, wind) that are not in that list.
+- NEVER print the mix percentages or gain numbers. They are internal settings and
+  mean nothing to a listener. Write "with thunder rolling underneath", never
+  "thunder at 37% of the mix".
+- Do NOT describe how or where the recording was captured. You do not know whether
+  it was made outdoors, indoors, on a rooftop or from a car. "Field recording" is
+  the only claim you may make about its origin.
 - Natural English throughout. No timestamps, no chapter list, no links.
 - NEVER claim a health or medical outcome. Do not write "cures insomnia",
   "relieves anxiety", "stress therapy", "reduces blood pressure" or anything
