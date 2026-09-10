@@ -12,6 +12,7 @@ import hashlib
 import os
 import shutil
 import sys
+import time
 import traceback
 from datetime import date, datetime, timezone
 from pathlib import Path
@@ -20,6 +21,7 @@ from typing import Any, Dict, Optional
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import build_audio
+import guards
 import build_video
 import drive
 import gen_metadata
@@ -129,9 +131,27 @@ def run(cfg_path: Path, dry_run: bool, replay: Optional[str], keep_work: bool,
     )
 
     # 7) Yayin
-    #    manual : dosyalari out/ altina koyar, Studio'ya elle yuklersin (audit beklenirken)
-    #    api    : videos.insert ile dogrudan yukler (audit onayi geldikten sonra)
+    #    manual : dosyalari out/ altina koyar, Studio'ya elle yuklersin
+    #    api    : videos.insert ile dogrudan yukler
     mode = "manual" if manual else cfg["channel"].get("publish_mode", "api")
+
+    # Yayin hizi korumasi (9 Eylul 2026 askiya alinmasindan sonra). Sinir asilmissa
+    # video yine uretilir, sadece otomatik yuklenmez — manuel moda duser.
+    if mode == "api" and not dry_run:
+        svc_guard = None
+        try:
+            if all(secrets[k] for k in ("YT_CLIENT_ID", "YT_CLIENT_SECRET",
+                                        "YT_REFRESH_TOKEN")):
+                svc_guard = upload_youtube.client(
+                    secrets["YT_CLIENT_ID"], secrets["YT_CLIENT_SECRET"],
+                    secrets["YT_REFRESH_TOKEN"])
+        except Exception as exc:
+            log.warning("Koruma icin kanal bilgisi alinamadi (%s).", type(exc).__name__)
+        izin, gerekce = guards.may_publish(cfg, svc_guard)
+        if not izin:
+            log.warning("Otomatik yayin engellendi — %s. Manuel moda dusuluyor.", gerekce)
+            mode = "manual"
+
     video_id = None
     bundle = None
 
@@ -151,6 +171,13 @@ def run(cfg_path: Path, dry_run: bool, replay: Optional[str], keep_work: bool,
         log.info("  %-28s %.0f MB", video_name, (bundle / video_name).stat().st_size / 1e6)
         log.info("  %-28s kopyala-yapistir sayfasi", sheet.name)
     else:
+        bekle = guards.publish_jitter(cfg, rng)
+        if bekle:
+            log.info("Yayin oncesi %d dk %d sn bekleniyor — cron her gece ayni "
+                     "saniyede tetikleniyor, kayma makine desenini kiriyor.",
+                     bekle // 60, bekle % 60)
+            time.sleep(bekle)
+
         video_id = upload_youtube.publish(
             video["path"], thumb, meta, cfg, theme, secrets,
             synthetic=video["recipe"]["visual_kind"] == "clip"

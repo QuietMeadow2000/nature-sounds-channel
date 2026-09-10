@@ -15,7 +15,9 @@ channel:
   # 6 Eylul 2026'da olculdu: denetimsiz projeden privacyStatus: public ile
   # yuklenen video public kaldi (bkz. veo-to-youtube projesi, video INzkY1mspdc).
   # Audit basvurusu kota tavani icin faydali ama yukleme icin gerekmiyor.
-  publish_mode: api
+  # 9 Eylul askiya alinmasindan sonra manuel'e dondu. API'ye donmeden once
+  # kanalin organik gecmisi olusmali (bkz. publish_guard).
+  publish_mode: manual
   category_id: "10"              # 10 = Music, 22 = People & Blogs (A/B test, Bolum 17)
   made_for_kids: false
 
@@ -96,6 +98,17 @@ weekly_schedule:
   4: forest_birds
   5: ocean_waves
   6: night_crickets
+
+# Yayin hizi korumalari — 9 Eylul 2026 askiya alinmasindan sonra eklendi.
+# Hesap 6 Eylul'de acildi, 7-8 Eylul gecelerinde sabit saatte otomatik yukleme
+# yapti, 9 Eylul'de "bot" gerekcesiyle askiya alindi. Itiraz kabul edildi.
+# Bu ayarlar ayni desenin tekrarini KODLA engelliyor; sinir asilirsa pipeline
+# videoyu yine uretir ama otomatik yuklemez, manuel moda duser.
+publish_guard:
+  min_channel_age_days: 30   # yeni kanaldan otomatik yukleme yapma
+  max_per_week: 3            # haftada en fazla 3 otomatik yukleme
+  min_days_between: 1        # ard arda gunlerde yukleme yapma
+  jitter_minutes: 90         # yuklemeden once 0-90 dk rastgele bekle
 
 selection:
   avoid_last_n: 2                # son 2 temadan farkli olsun

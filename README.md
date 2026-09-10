@@ -88,6 +88,48 @@ python tools/sources_push.py     # CSV'yi Drive'a Google Sheet olarak yükler
 Yeni ses eklerken önce `state/sources.csv`'ye satır ekle, sonra bu komutu çalıştır.
 Drive API yüklerken CSV'yi Sheet'e çeviriyor, Sheets API'ye gerek yok.
 
+## Hesap askıya alınması — 9 Eylül 2026
+
+Google hesabı `quietmeadow2000@gmail.com` **askıya alındı**: *"birden fazla hesapla
+birlikte oluşturulmuş veya kullanılmış, bir bilgisayar programı tarafından
+oluşturulmuş olabilir."* Kanal, dört video ve Drive erişilemez oldu; OAuth
+istemcileri devre dışı bırakıldı. İtiraz edildi ve **kabul edildi**, her şey geri geldi.
+
+**Sebep, zaman çizelgesinden okunuyor:**
+
+| | |
+|---|---|
+| 6 Eyl ~13:00 | Google hesabı açıldı |
+| 6 Eyl ~20:00 | Cloud projesi + OAuth istemcisi |
+| 7 Eyl 18:14 | OAuth production'a alındı |
+| 7 Eyl 23:27 | **İlk tam otomatik yükleme** — hesap 1 günlük |
+| 8 Eyl 23:27 | İkinci otomatik yükleme, saniyesi aynı |
+| 9 Eyl | Askıya alma |
+
+Bir günlük hesabın, sabit saniyede tetiklenen bir cron'dan API ile video yüklemesi
+Google'ın bot tespitinin aradığı imzanın kendisi. Planlamada içerik riskleri
+(YPP, telif, Content ID) baştan sona düşünülmüştü ama **hesap düzeyindeki bu risk
+hiç gündeme gelmemişti.**
+
+### Bunun tekrarını engelleyen kod
+
+`src/guards.py` + `config > publish_guard`. Sınır aşılırsa video **yine üretilir**,
+sadece otomatik yüklenmez — manuel moda düşer:
+
+| Ayar | Değer | Neyi engelliyor |
+|---|---|---|
+| `min_channel_age_days` | 30 | Yeni kanaldan API yüklemesi |
+| `max_per_week` | 3 | Günlük tempo |
+| `min_days_between` | 1 | Ard arda günler |
+| `jitter_minutes` | 90 | Sabit saat deseni |
+
+`publish_mode` da **manual**'e döndürüldü. API'ye dönüş bilinçli bir karar olmalı,
+varsayılan olmamalı.
+
+**Kodla ilgisi olmayan ama aynı derecede önemli olanlar:** aynı cihazdan yeni Google
+hesabı açma, hesabı ara sıra normal kullan (API dışı aktivite), ve otomasyona
+dönerken kademeli git.
+
 ## Metadata üretimi
 
 Sağlayıcı sırası: `ANTHROPIC_API_KEY` varsa Claude, yoksa `GROQ_API_KEY` varsa
