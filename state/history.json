@@ -500,5 +500,151 @@
     "publish_mode": "manual",
     "privacy": "manual",
     "uploaded_at": "2026-09-11T08:24:32+00:00"
+  },
+  {
+    "date": "2026-09-14",
+    "channel": "main",
+    "theme": "rain",
+    "season_hint": null,
+    "seed": 33390048510909,
+    "title": "Rain Sounds on a Gentle Breeze | 1 Hour",
+    "tags": [
+      "rain sounds",
+      "sleep",
+      "study",
+      "relaxing rain",
+      "ambient",
+      "nature sounds",
+      "focus",
+      "deep sleep",
+      "rainstorm",
+      "white noise",
+      "calm",
+      "background"
+    ],
+    "metadata_by": "openai/gpt-oss-120b",
+    "audio": {
+      "layers": [
+        {
+          "role": "main",
+          "match": "rain",
+          "source": "rain__freesound_200270.flac",
+          "unit_len": 375.0,
+          "gain": 0.9276,
+          "offset": 0.0,
+          "normalize_db": 15.84
+        },
+        {
+          "role": "layer",
+          "match": "distant_thunder",
+          "source": "distant_thunder__freesound_361401.flac",
+          "unit_len": 402.342,
+          "gain": 0.1802,
+          "offset": 255.452,
+          "normalize_db": 23.05
+        },
+        {
+          "role": "layer",
+          "match": "light_wind",
+          "source": "light_wind__freesound_670307.flac",
+          "unit_len": 309.113,
+          "gain": 0.103,
+          "offset": 208.417,
+          "normalize_db": 6.03
+        }
+      ],
+      "crossfade_sec": 5.0,
+      "edge_trim_sec": 10.0,
+      "target_lufs": -18.0,
+      "mix_correction_db": 1.76,
+      "duration_sec": 3600.0,
+      "seam_check_sec": 375.0
+    },
+    "video": {
+      "visual_kind": "clip",
+      "visual_source": "pexels:9187448",
+      "unit_len_sec": 13.0,
+      "size_mb": 1238.4,
+      "variants": 12,
+      "encoded_sec": 156.0,
+      "repeats": 277
+    },
+    "video_id": null,
+    "publish_mode": "manual",
+    "privacy": "manual",
+    "uploaded_at": "2026-09-11T09:54:24+00:00"
+  },
+  {
+    "date": "2026-09-16",
+    "channel": "main",
+    "theme": "stream",
+    "season_hint": null,
+    "seed": 217371908544223,
+    "title": "Stream Sounds with Gentle Water Flow and Birds | 1 Hour",
+    "tags": [
+      "stream sounds",
+      "nature sounds",
+      "sleep sounds",
+      "relaxing stream",
+      "birdsong",
+      "leaves rustle",
+      "ambient nature",
+      "focus music",
+      "meditation audio",
+      "study background",
+      "calm water",
+      "quiet ambience"
+    ],
+    "metadata_by": "openai/gpt-oss-120b",
+    "audio": {
+      "layers": [
+        {
+          "role": "main",
+          "match": "stream",
+          "source": "stream__freesound_512224.flac",
+          "unit_len": 297.316,
+          "gain": 1.0633,
+          "offset": 0.0,
+          "normalize_db": 7.08
+        },
+        {
+          "role": "layer",
+          "match": "birdsong",
+          "source": "birdsong__freesound_674085.flac",
+          "unit_len": 276.0,
+          "gain": 0.1212,
+          "offset": 85.617,
+          "normalize_db": 10.05
+        },
+        {
+          "role": "layer",
+          "match": "leaves_wind",
+          "source": "leaves_wind__freesound_670307.flac",
+          "unit_len": 309.113,
+          "gain": 0.0944,
+          "offset": 158.606,
+          "normalize_db": 6.03
+        }
+      ],
+      "crossfade_sec": 5.0,
+      "edge_trim_sec": 10.0,
+      "target_lufs": -18.0,
+      "mix_correction_db": -0.56,
+      "duration_sec": 3600.0,
+      "seam_check_sec": 297.316
+    },
+    "video": {
+      "visual_kind": "clip",
+      "visual_source": "pexels:3266802",
+      "unit_len_sec": 26.67,
+      "size_mb": 2861.2,
+      "variants": 12,
+      "encoded_sec": 320.0,
+      "repeats": 135
+    },
+    "video_id": null,
+    "publish_mode": "manual",
+    "privacy": "manual",
+    "uploaded_at": "2026-09-11T10:00:34+00:00"
   }
 ]

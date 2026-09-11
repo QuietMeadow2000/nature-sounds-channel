@@ -38,8 +38,8 @@ audio:
   gain_jitter: 0.10              # katman seviyeleri her gun +-%10 oynar
 
 video:
-  width: 2560
-  height: 1440
+  width: 3840
+  height: 2160
   fps: 24
   # 26, 23'ten kabaca yari boyut verir. Yagmur/su goruntusu sikistirmanin
   # en zor icerigi (binlerce hareketli damla = gurultu); CRF 23'te 60 dk
@@ -54,7 +54,10 @@ video:
   # H.264 veriyor. VP9 her izleme kalitesinde daha iyi goruntu demek — 1080p
   # izleyen de kazaniyor. Olculdu: 1080p 1.37 GB/saat, 1440p 2.68, 4K 5.29.
   # Render suresi uzunluktan bagimsiz (sadece varyantlar kodlaniyor): 2/3/6 dk.
-  maxrate_mbps: 6
+  maxrate_mbps: 12
+  # 4K (kullanicinin tercihi, 11 Eylul 2026). Olculen maliyet: ~5.3 GB/saat,
+  # render ~6 dk. 1440p 2.68 GB ve 1080p 1.37 GB idi. Kalite disinda ek getirisi
+  # baslikta "4K" yazabilmek — bu turde tiklanmayi artiriyor.
   # Pexels'ten kac aday indirilip aralarindan en az hareketlisi secilecek.
   # Sabit kamera hem dongude goze batmiyor hem cok daha az yer kapliyor.
   pexels_candidates: 3

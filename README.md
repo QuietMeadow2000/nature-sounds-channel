@@ -22,8 +22,25 @@ pipeline. Tamamen GitHub Actions üzerinde çalışır. Plan: `youtube-doga-sesl
 
 | | |
 |---|---|
-| 60 dk render, uçtan uca | **2 dk 15 sn** (ses ~80 sn, video ~50 sn) |
+| Çözünürlük | **3840×2160 (4K)**, 24 fps, H.264, tavan 12 Mbps |
+| 60 dk render, uçtan uca | **~7 dk** (ses ~80 sn, video ~6 dk) |
+| 60 dk çıktı boyutu | 3,5–5,4 GB (içeriğin hareketine göre) |
 | — eski yöntem (karşılaştırma) | 13 dk; runner'da 47 dk |
+
+**Çözünürlük seçimi ölçümle yapıldı** (4 dk test, 60 dk'ya çevrildi):
+
+| | render | boyut/saat | YouTube codec |
+|---|---|---|---|
+| 1080p | 2 dk | 1,37 GB | H.264 |
+| 1440p | 3 dk | 2,68 GB | VP9 |
+| **4K** | **6 dk** | **5,29 GB** | **VP9** |
+
+YouTube 1440p ve üzerini yalnızca VP9 ile kodluyor; altını H.264 ile. VP9 her
+izleme kalitesinde daha iyi görüntü veriyor — 1080p izleyen de kazanıyor.
+4K ayrıca başlıkta "4K" yazma hakkı veriyor, bu türde tıklanmayı artırıyor.
+
+Render süresi **video uzunluğundan neredeyse bağımsız**: hızlı render yalnızca
+12 varyantı kodluyor, geri kalan yeniden kodlamasız birleştirme.
 | Çıktı boyutu | 475–480 MB (plan tahmini 500 MB–1 GB) |
 | Ses döngü ek yeri | sıçrama oranı 1,08 (1,0 = kusursuz); kasıtlı bozuk döngüde 2,54 |
 | Video döngü ek yeri | oran 1,46 (eşik 2,0) |

@@ -279,15 +279,16 @@ def render_final_fast(
     listing = work / "concat.txt"
     listing.write_text("".join(f"file '{p.name}'\n" for p in order[:reps]), encoding="utf-8")
 
-    silent = work / "video_full.mp4"
-    ffmpeg(["-f", "concat", "-safe", "0", "-i", str(listing), "-c", "copy", str(silent)],
-           "parcalari birlestir", out=silent)
-
-    ffmpeg(["-i", str(silent), "-i", str(audio), "-map", "0:v", "-map", "1:a",
+    # Birlestirme ve ses ekleme TEK adimda: concat demuxer bir girdi, ses oteki.
+    # Ayri yapilirsa sessiz ara dosya ile cikti ayni anda diskte durur ve tepe
+    # kullanim iki katina cikar — 4K'da 10.6 GB, GitHub runner'inin 14 GB'inda
+    # tehlikeli derecede dar. Tek adimda tepe, ciktinin kendisi kadar.
+    ffmpeg(["-f", "concat", "-safe", "0", "-i", str(listing),
+            "-i", str(audio), "-map", "0:v", "-map", "1:a",
             "-c", "copy", "-t", f"{total:.3f}", "-movflags", "+faststart", str(out)],
-           "ses birlestirme", out=out)
+           "birlestir ve sesi ekle", out=out)
 
-    for p in parts + [silent, listing]:
+    for p in parts + [listing]:
         p.unlink(missing_ok=True)
     return {"variants": variants, "encoded_sec": round(variants * unit_len, 1),
             "repeats": reps}
