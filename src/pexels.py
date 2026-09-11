@@ -29,18 +29,29 @@ def search(query: str, api_key: str, per_page: int = 30) -> List[Dict[str, Any]]
     return resp.json().get("videos", [])
 
 
-def _best_file(video: Dict[str, Any]) -> Optional[Dict[str, Any]]:
-    """1080p veya uzeri, en dusuk uygun cozunurluk (gereksiz 4K indirme)."""
+def _best_file(video: Dict[str, Any],
+               want_height: int = MIN_HEIGHT) -> Optional[Dict[str, Any]]:
+    """Hedef yuksekligi karsilayan en kucuk dosya; yoksa mevcut en buyugu.
+
+    Eskiden her zaman >=1080p'nin en dusugu seciliyordu ("gereksiz 4K indirme").
+    Olculdu: adaylarin tamami 2160p sunuyor, yani o kural cikti cozunurlugune
+    tavan koyuyordu. Artik hedef ne ise ona gore seciyoruz — 1080p uretirken
+    4K indirip kucultmek de bosa bant genisligi."""
     files = [
         f for f in video.get("video_files", [])
-        if f.get("height") and f["height"] >= MIN_HEIGHT and f.get("link")
+        if f.get("height") and f.get("link")
         and (f.get("file_type") or "").endswith("mp4")
     ]
-    return min(files, key=lambda f: f["height"]) if files else None
+    if not files:
+        return None
+    yeterli = [f for f in files if f["height"] >= want_height]
+    return min(yeterli, key=lambda f: f["height"]) if yeterli else max(
+        files, key=lambda f: f["height"])
 
 
-def _download(video: Dict[str, Any], query: str, work: Path) -> Dict[str, Any]:
-    vfile = _best_file(video)
+def _download(video: Dict[str, Any], query: str, work: Path,
+              want_height: int = MIN_HEIGHT) -> Dict[str, Any]:
+    vfile = _best_file(video, want_height)
     dst = work / f"pexels_{video['id']}.mp4"
     with requests.get(vfile["link"], stream=True, timeout=TIMEOUT) as resp:
         resp.raise_for_status()
@@ -65,7 +76,8 @@ def _download(video: Dict[str, Any], query: str, work: Path) -> Dict[str, Any]:
 
 def fetch_candidates(query: str, api_key: str, work: Path,
                      rng: Optional[random.Random] = None,
-                     count: int = 3) -> List[Dict[str, Any]]:
+                     count: int = 3,
+                     want_height: int = MIN_HEIGHT) -> List[Dict[str, Any]]:
     """Birkac uygun klip indir. Cagiran aralarindan en az hareketlisini secer.
 
     Tek klip indirip kabul etmek riskli: drone/kaydirmali cekimler hem dongude
@@ -83,7 +95,7 @@ def fetch_candidates(query: str, api_key: str, work: Path,
     out = []
     for video in pool[:count]:
         try:
-            out.append(_download(video, query, work))
+            out.append(_download(video, query, work, want_height))
         except Exception:
             continue
     return out

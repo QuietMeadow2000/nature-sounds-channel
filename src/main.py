@@ -58,12 +58,17 @@ def replay_entry(day: str) -> Dict[str, Any]:
 
 
 def run(cfg_path: Path, dry_run: bool, replay: Optional[str], keep_work: bool,
-        force_theme: Optional[str] = None, manual: bool = False) -> int:
+        force_theme: Optional[str] = None, manual: bool = False,
+        for_date: Optional[str] = None) -> int:
     cfg = load_yaml(cfg_path)
     channel_key = cfg["channel"].get("key", "main")
     secrets = load_secrets()
 
     today = date.today()
+    # --date: yayini onceden hazirlamak icin. Tema secimi ve tohum bu tarihe gore
+    # hesaplanir, yani cumartesi yayinlanacak video cumartesinin temasini alir.
+    if for_date:
+        today = date.fromisoformat(for_date)
     day = replay or today.isoformat()
     seed = seed_for(day, channel_key)
 
@@ -219,6 +224,8 @@ def main() -> int:
     parser.add_argument("--channel", default="config/channel_main.yaml")
     parser.add_argument("--dry-run", action="store_true", help="uretir ama yuklemez")
     parser.add_argument("--replay", metavar="YYYY-MM-DD", help="gecmis bir videoyu yeniden uret")
+    parser.add_argument("--date", metavar="YYYY-MM-DD",
+                        help="uretim tarihini degistir (ileri tarihli video hazirlamak icin)")
     parser.add_argument("--theme", help="tema secimini atla (test/hata ayiklama)")
     parser.add_argument("--manual", action="store_true",
                         help="yuklemeden, dosyalari out/<tarih>/ altina birak")
@@ -242,7 +249,7 @@ def main() -> int:
     cfg_path = REPO / args.channel if not Path(args.channel).is_absolute() else Path(args.channel)
     try:
         return run(cfg_path, args.dry_run, args.replay, args.keep_work,
-                   args.theme, args.manual)
+                   args.theme, args.manual, for_date=args.date)
     except PipelineError as exc:
         log.error("%s", exc)
         log_error(str(exc).replace("\n", " | "))

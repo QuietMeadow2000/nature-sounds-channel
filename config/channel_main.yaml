@@ -36,8 +36,8 @@ audio:
   gain_jitter: 0.10              # katman seviyeleri her gun +-%10 oynar
 
 video:
-  width: 1920
-  height: 1080
+  width: 2560
+  height: 1440
   fps: 24
   # 26, 23'ten kabaca yari boyut verir. Yagmur/su goruntusu sikistirmanin
   # en zor icerigi (binlerce hareketli damla = gurultu); CRF 23'te 60 dk
@@ -48,7 +48,11 @@ video:
   # yagmur 0,96 Mbps, gunes vuran tropik su 12,9 Mbps verdi (60 dk = 5,9 GB).
   # 3 Mbps tavan en kotu durumda ~1,35 GB demek. Kolay icerik tavanin altinda
   # kalir ve etkilenmez. 0 = tavan yok.
-  maxrate_mbps: 3
+  # 1440p: YouTube 1440p ve uzerini YALNIZCA VP9 ile kodluyor, 1080p ve altina
+  # H.264 veriyor. VP9 her izleme kalitesinde daha iyi goruntu demek — 1080p
+  # izleyen de kazaniyor. Olculdu: 1080p 1.37 GB/saat, 1440p 2.68, 4K 5.29.
+  # Render suresi uzunluktan bagimsiz (sadece varyantlar kodlaniyor): 2/3/6 dk.
+  maxrate_mbps: 6
   # Pexels'ten kac aday indirilip aralarindan en az hareketlisi secilecek.
   # Sabit kamera hem dongude goze batmiyor hem cok daha az yer kapliyor.
   pexels_candidates: 3

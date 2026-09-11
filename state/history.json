@@ -313,5 +313,192 @@
     "publish_mode": "manual",
     "privacy": "manual",
     "uploaded_at": "2026-09-10T08:05:14+00:00"
+  },
+  {
+    "date": "2026-09-11",
+    "channel": "main",
+    "theme": "forest_birds",
+    "season_hint": null,
+    "seed": 23380225253102,
+    "title": "Birdsong in Forest for Morning Focus | 1 Hour",
+    "tags": [
+      "bird sounds",
+      "forest ambience",
+      "nature sounds",
+      "focus music",
+      "sleep sounds",
+      "study background",
+      "morning birds",
+      "relaxing nature",
+      "ambient loop",
+      "calm environment",
+      "white noise",
+      "quiet background",
+      "nature relaxation",
+      "birdsong",
+      "natural ambience"
+    ],
+    "metadata_by": "openai/gpt-oss-120b",
+    "audio": {
+      "layers": [
+        {
+          "role": "main",
+          "match": "birdsong",
+          "source": "birdsong__freesound_674085.flac",
+          "unit_len": 276.0,
+          "gain": 1.0601,
+          "offset": 0.0,
+          "normalize_db": 10.05
+        },
+        {
+          "role": "layer",
+          "match": "leaves_wind",
+          "source": "leaves_wind__freesound_670307.flac",
+          "unit_len": 309.113,
+          "gain": 0.2079,
+          "offset": 133.354,
+          "normalize_db": 6.03
+        }
+      ],
+      "crossfade_sec": 5.0,
+      "edge_trim_sec": 10.0,
+      "target_lufs": -18.0,
+      "mix_correction_db": -0.66,
+      "duration_sec": 3600.0,
+      "seam_check_sec": 276.0
+    },
+    "video": {
+      "visual_kind": "clip",
+      "visual_source": "pexels:38518979",
+      "unit_len_sec": 23.33,
+      "size_mb": 1455.5,
+      "variants": 12,
+      "encoded_sec": 280.0,
+      "repeats": 155
+    },
+    "video_id": null,
+    "publish_mode": "manual",
+    "privacy": "manual",
+    "uploaded_at": "2026-09-11T07:31:55+00:00"
+  },
+  {
+    "date": "2026-09-12",
+    "channel": "main",
+    "theme": "ocean_waves",
+    "season_hint": null,
+    "seed": 166400862590891,
+    "title": "Ocean Waves Rolling Gently onto Shore | 1 Hour",
+    "tags": [
+      "ocean waves",
+      "sleep sounds",
+      "relaxing ocean",
+      "nature sounds",
+      "white noise",
+      "focus audio",
+      "meditation music",
+      "deep sleep",
+      "calm ambience",
+      "1 hour ocean",
+      "wave loop",
+      "soothing sounds",
+      "ambient sleep",
+      "nature relaxation",
+      "sleep aid"
+    ],
+    "metadata_by": "openai/gpt-oss-120b",
+    "audio": {
+      "layers": [
+        {
+          "role": "main",
+          "match": "waves",
+          "source": "waves__freesound_451743.mp3",
+          "unit_len": 445.033,
+          "gain": 0.963,
+          "offset": 0.0,
+          "normalize_db": 13.78
+        }
+      ],
+      "crossfade_sec": 5.0,
+      "edge_trim_sec": 10.0,
+      "target_lufs": -18.0,
+      "mix_correction_db": 1.29,
+      "duration_sec": 3600.0,
+      "seam_check_sec": 445.033
+    },
+    "video": {
+      "visual_kind": "clip",
+      "visual_source": "pexels:6473350",
+      "unit_len_sec": 10.0,
+      "size_mb": 1168.4,
+      "variants": 12,
+      "encoded_sec": 120.0,
+      "repeats": 360
+    },
+    "video_id": null,
+    "publish_mode": "manual",
+    "privacy": "manual",
+    "uploaded_at": "2026-09-11T07:33:48+00:00"
+  },
+  {
+    "date": "2026-09-13",
+    "channel": "main",
+    "theme": "night_crickets",
+    "season_hint": null,
+    "seed": 139614848703257,
+    "title": "Cricket Night Sounds for Sleep | 1 Hour",
+    "tags": [
+      "crickets",
+      "night",
+      "sleep",
+      "relaxation",
+      "ambient",
+      "nature",
+      "soundscape",
+      "focus",
+      "meditation",
+      "background"
+    ],
+    "metadata_by": "openai/gpt-oss-120b",
+    "audio": {
+      "layers": [
+        {
+          "role": "main",
+          "match": "crickets",
+          "source": "crickets__freesound_479041.flac",
+          "unit_len": 500.781,
+          "gain": 1.0366,
+          "offset": 0.0,
+          "normalize_db": -3.43
+        },
+        {
+          "role": "layer",
+          "match": "night_wind",
+          "source": "night_wind__freesound_670307.flac",
+          "unit_len": 309.113,
+          "gain": 0.1551,
+          "offset": 118.168,
+          "normalize_db": 6.03
+        }
+      ],
+      "crossfade_sec": 5.0,
+      "edge_trim_sec": 10.0,
+      "target_lufs": -18.0,
+      "mix_correction_db": 0.02,
+      "duration_sec": 3600.0,
+      "seam_check_sec": 500.781
+    },
+    "video": {
+      "visual_kind": "clip",
+      "visual_source": "pexels:5004222",
+      "unit_len_sec": 22.46,
+      "size_mb": 372.3,
+      "variants": 12,
+      "encoded_sec": 269.5,
+      "repeats": 161
+    },
+    "video_id": null,
+    "publish_mode": "manual",
+    "privacy": "manual",
+    "uploaded_at": "2026-09-11T08:24:32+00:00"
   }
 ]

@@ -3,3 +3,6 @@
 2026-09-07 18:52:17Z  unit_0.wav: sure okunamadi (bozuk dosya?)
 2026-09-07 19:13:03Z  unit_0.wav: sure okunamadi (bozuk dosya?)
 2026-09-07 19:14:34Z  loop unit norm_0.wav: ffmpeg 0 dondu ama unit_0.wav bos/kusurlu (168 bayt). | ffmpeg ciktisi: | [aost#0:0/pcm_s24le @ 0x559f58313880] No filtered frames for output stream, trying to initialize anyway. | [out#0/wav @ 0x559f58312e00] Output file is empty, nothing was encoded(check -ss / -t / -frames parameters if used)
+2026-09-11 09:32:51Z  'stream' icin hicbir gorsel kaynak yok: klip yok, Pexels basarisiz, fotograf yok. | En az bir yedek gerekli: /Users/aksel/projects/nature-sounds-channel/assets/photos/stream/*.jpg
+2026-09-11 09:33:40Z  'stream' icin hicbir gorsel kaynak yok: klip yok, Pexels basarisiz, fotograf yok. | En az bir yedek gerekli: /Users/aksel/projects/nature-sounds-channel/assets/photos/stream/*.jpg
+2026-09-11 09:34:29Z  'stream' icin hicbir gorsel kaynak yok: klip yok, Pexels basarisiz, fotograf yok. | En az bir yedek gerekli: /Users/aksel/projects/nature-sounds-channel/assets/photos/stream/*.jpg

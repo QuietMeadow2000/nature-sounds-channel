@@ -94,7 +94,8 @@ def pick_source(
             n = int(cfg["video"].get("pexels_candidates", 3))
             # rng'yi gecmek sart: gecmeden secim rastgele olur ve --replay ayni
             # videoyu uretemez (Bolum 16.5).
-            hits = pexels.fetch_candidates(rng.choice(queries), pexels_key, work, rng, n)
+            hits = pexels.fetch_candidates(rng.choice(queries), pexels_key, work, rng, n,
+                                           want_height=int(cfg['video']['height']))
             if hits:
                 scored = sorted(((motion_score(h["path"]), h) for h in hits),
                                 key=lambda x: x[0])
