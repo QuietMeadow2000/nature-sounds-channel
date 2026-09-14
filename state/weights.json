@@ -1,6 +1,7 @@
 {
-  "updated": null,
-  "note": "Ilk 4 hafta esit agirlik; fetch_analytics.py Pazartesileri gunceller (Bolum 16.2).",
+  "updated": "2026-09-14",
+  "window_days": 28,
+  "videos_measured": 2,
   "weights": {
     "rain": 0.125,
     "ocean_waves": 0.125,
