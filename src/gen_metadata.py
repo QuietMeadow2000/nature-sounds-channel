@@ -174,6 +174,25 @@ def duration_label(minutes: int) -> str:
     return f"{hours:.1f} Hours"
 
 
+def _ozet(character: str) -> str:
+    """character alanindan baslik olacak kisa bir tanim cikar.
+
+    "heavy rain heard from inside a parked car, drumming on the roof..."
+      -> "Heavy Rain Heard From Inside a Parked Car"
+    Ilk virgule kadar olan kismi alip basliga uygun hale getiriyor.
+    """
+    if not character:
+        return ""
+    bas = character.split(",")[0].strip()
+    bas = re.sub(r"^(a|an|the)\s+", "", bas, flags=re.I)
+    kucuk = {"a", "an", "the", "in", "on", "at", "of", "from", "with", "over", "and", "to"}
+    kelimeler = bas.split()
+    if len(kelimeler) > 8:
+        kelimeler = kelimeler[:8]
+    return " ".join(w if (i and w.lower() in kucuk) else w.capitalize()
+                    for i, w in enumerate(kelimeler))
+
+
 def _fallback(theme: str, cfg: Dict[str, Any]) -> Dict[str, Any]:
     """Bolum 16.8 — Claude erisilemezse gun bos gecmesin. Kalite duser, yayin durmaz."""
     tcfg = cfg["themes"][theme]
@@ -215,8 +234,15 @@ def _fallback(theme: str, cfg: Dict[str, Any]) -> Dict[str, Any]:
         f"#{label.replace(' ', '')}",
     ])
 
+    # Sablon da BELIRLI aciyi kullanmali: Groq'un basarisiz oldugu bir videoda
+    # jenerik basliga dusmek, tum stratejiyi yedek yoldan sizarak bozuyordu.
+    karakter = (cfg.get("themes", {}).get(theme, {}) or {}).get("character") or ""
+    ozel = _ozet(karakter)
+    baslik = (f"{ozel} for {purpose.split(',')[0].strip().title()} | {duration_label(minutes)}"
+              if ozel else
+              f"{pretty} Sounds for {purpose.split(',')[0].strip().title()} | {duration_label(minutes)}")
     return {
-        "title": f"{pretty} Sounds for {purpose.title()} | {duration_label(minutes)}",
+        "title": baslik[:70].rstrip(),
         "description": description,
         "tags": _trim_tags(
             [f"{theme.replace('_', ' ')} sounds", "sleep sounds", "relaxing sounds",
@@ -272,6 +298,9 @@ def _groq(prompt: str, schema: Dict[str, Any], model: str, api_key: str) -> Dict
         if r.status_code == 400 and "json_validate_failed" in r.text:
             log.warning("Groq eksik JSON uretti, tekrar deneniyor (%d/3)", deneme + 1)
             continue
+        if r.status_code >= 400:
+            # Govdeyi yaz: teshis olmadan 400'u kovalamak zaman kaybi.
+            log.warning("Groq %s: %s", r.status_code, r.text[:300])
         break
     r.raise_for_status()
     d = r.json()
