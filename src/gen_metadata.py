@@ -103,6 +103,31 @@ def _prompt(
     )
 
 
+DURAK = {
+    "a", "an", "the", "and", "or", "of", "in", "on", "at", "to", "from", "with",
+    "no", "not", "over", "into", "by", "for", "its", "it", "sounds", "sound",
+    "ambience", "ambient", "noise", "heard", "still", "air", "water",
+}
+
+
+def _specific_enough(title: str, character: str) -> bool:
+    """Baslik kaydin karakterinden en az bir ayirt edici kelime tasiyor mu.
+
+    Model bazen kurali yok sayip jenerik bir baslik uretiyor ("Ocean Waves
+    Sounds for Sleep"). Jenerik baslik 10M aboneli kanallarla yarisiyor —
+    bu kontrol olmadan tekrar uretmenin anlami kalmiyor.
+    """
+    import re as _re
+    kelimeler = {
+        w for w in _re.findall(r"[a-z]+", character.lower())
+        if len(w) > 3 and w not in DURAK
+    }
+    if not kelimeler:
+        return True
+    baslik = title.lower()
+    return any(w[:max(4, len(w) - 2)] in baslik for w in kelimeler)
+
+
 def _fix_hashtags(text: str) -> str:
     """Hashtag'lerdeki bosluklari temizle.
 
@@ -294,9 +319,17 @@ def generate(
     else:
         return _fallback(theme, cfg)
 
+    karakter = cfg["themes"][theme].get("character") or ""
     try:
         prompt = _prompt(theme, cfg, audio_recipe, video_recipe, season_hint)
-        data = saglayici(prompt, _schema(locales, max_title), ad, anahtar)
+        for deneme in range(3):
+            data = saglayici(prompt, _schema(locales, max_title), ad, anahtar)
+            if _specific_enough(data["title"], karakter):
+                break
+            log.warning("Baslik cok jenerik (%r) — tekrar deneniyor (%d/3)",
+                        data["title"], deneme + 1)
+        else:
+            log.warning("Baslik 3 denemede de jenerik kaldi, yine de kullaniliyor.")
         data["generated_by"] = ad
     except Exception as exc:                       # Bolum 16.8 plan B
         log.warning("Metadata uretimi basarisiz (%s: %s) — sablona dusuluyor.",
