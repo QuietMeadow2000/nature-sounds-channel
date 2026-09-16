@@ -104,7 +104,9 @@ jobs:
           if-no-files-found: ignore
 
   weekly-analytics:
-    if: github.event_name == 'schedule' && github.event.schedule == '42 5 * * 1'
+    if: >-
+      (github.event_name == 'schedule' && github.event.schedule == '42 5 * * 1')
+      || (github.event_name == 'workflow_dispatch' && inputs.run_analytics)
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
