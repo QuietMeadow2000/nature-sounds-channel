@@ -318,20 +318,22 @@
     "theme": "forest_birds",
     "season_hint": null,
     "seed": 23380225253102,
-    "title": "Forest Birds Sounds for Focus | 1 Hour",
+    "title": "Amazon Riverbank Dawn Birds for Focus | 1 Hour",
     "tags": [
-      "forest birds sounds",
-      "sleep sounds",
-      "relaxing sounds",
-      "nature sounds",
-      "white noise",
-      "study music",
-      "focus sounds",
-      "ambient sounds",
-      "1 hour",
-      "calm"
+      "amazon",
+      "rainforest",
+      "forestbirds",
+      "birdsong",
+      "dawnbirds",
+      "riverbank",
+      "nature",
+      "focus",
+      "relaxation",
+      "sleep",
+      "ambient",
+      "1hour"
     ],
-    "metadata_by": "fallback_template",
+    "metadata_by": "openai/gpt-oss-120b",
     "audio": {
       "layers": [
         {
