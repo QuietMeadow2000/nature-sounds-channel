@@ -1,7 +1,7 @@
 {
-  "updated": "2026-09-14",
+  "updated": "2026-09-16",
   "window_days": 28,
-  "videos_measured": 2,
+  "videos_measured": 3,
   "weights": {
     "rain": 0.125,
     "ocean_waves": 0.125,
