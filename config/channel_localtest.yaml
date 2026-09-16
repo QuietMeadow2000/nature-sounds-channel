@@ -128,13 +128,19 @@ retry:
   upload_attempts: 3
   upload_backoff_min: 20
 
+# character: kaydin GERCEK karakteri. Baslik ve etiketler bunu kullanmak zorunda —
+# jenerik "Rain Sounds" basligi 10M aboneli kanallarla yarisiyor ve kaybediyor;
+# "Rain on a Car Roof" gibi belirli aramalar sifir aboneli kanalin kazanabilecegi
+# tek yer. Kaynak: state/sources.csv
+#
 # enabled: false olan temalar secilmez. Sesi olmayan bir tema secilirse
 # pipeline 'ana katman icin dosya yok' diye durur; onun yerine bastan eliyoruz.
 # Yeni bir temanin sesleri Drive'a girince true yap.
 themes:
   rain:
     enabled: true
-    thumb_title: "RAIN SOUNDS"    # thumbnail ust satiri
+    character: "heavy rain in open countryside, no shelter, steady downpour"
+    thumb_title: "HEAVY RAIN"    # thumbnail ust satiri
     playlist_id: "PLHmxgV62C2po"              # YouTube URL'sindeki list= sonrasi
     playlist_name: Rain Sounds
     purpose: "Sleep, Study"
@@ -146,7 +152,8 @@ themes:
 
   ocean_waves:
     enabled: true
-    thumb_title: "OCEAN WAVES"    # thumbnail ust satiri
+    character: "a tropical island shore, reef water, warm still air"
+    thumb_title: "TROPICAL SHORE"    # thumbnail ust satiri
     playlist_id: "PLedkdmCNmfsg"
     playlist_name: Ocean Waves
     purpose: "Sleep, Relaxation"
@@ -161,7 +168,8 @@ themes:
 
   forest_birds:
     enabled: true
-    thumb_title: "FOREST BIRDS"    # thumbnail ust satiri
+    character: "a river bank in the Amazon rainforest at dawn, birds and insects"
+    thumb_title: "RAINFOREST DAWN"    # thumbnail ust satiri
     playlist_id: "PLHdRWS64-LpM"
     playlist_name: Forest & Birds
     purpose: "Focus, Morning"
@@ -173,7 +181,8 @@ themes:
 
   stream:
     enabled: true
-    thumb_title: "RIVER SOUNDS"    # thumbnail ust satiri
+    character: "a small creek running over stones in early spring"
+    thumb_title: "MOUNTAIN CREEK"    # thumbnail ust satiri
     playlist_id: "PLZoIcz5OD7Qo"
     playlist_name: Rivers & Streams
     purpose: "Meditation, Study"
@@ -185,7 +194,8 @@ themes:
 
   thunderstorm:
     enabled: true
-    thumb_title: "THUNDERSTORM"    # thumbnail ust satiri
+    character: "heavy rain heard from inside a parked car, drumming on the roof and windscreen"
+    thumb_title: "RAIN ON A CAR"    # thumbnail ust satiri
     playlist_id: "PLdoORphPwFm8"
     playlist_name: Thunderstorms
     purpose: "Deep Sleep"
@@ -209,6 +219,7 @@ themes:
 
   fireplace:
     enabled: true
+    character: "a stone fireplace indoors, dry wood burning down"
     thumb_title: "FIREPLACE"    # thumbnail ust satiri
     playlist_id: "PLGzItGFiKRlQ"
     playlist_name: Fireplace
@@ -221,7 +232,8 @@ themes:
 
   night_crickets:
     enabled: true
-    thumb_title: "NIGHT SOUNDS"    # thumbnail ust satiri
+    character: "a warm night near the coast in Mexico, cricket chorus"
+    thumb_title: "CRICKETS AT NIGHT"    # thumbnail ust satiri
     playlist_id: "PLdggFKgrGX4w"
     playlist_name: Night Sounds
     purpose: "Sleep"

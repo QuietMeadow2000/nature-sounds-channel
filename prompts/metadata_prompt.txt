@@ -5,6 +5,8 @@ The audience is English-speaking and global.
 Today's video
 -------------
 Theme:            {theme}
+What this recording actually is:
+                  {character}
 Intended use:     {purpose}
 Duration:         {duration_min} minutes
 Audio layers:     {mix_description}
@@ -17,9 +19,13 @@ Your last 10 titles on this channel (do NOT repeat their wording or structure):
 TITLE
 -----
 - At most {max_title_chars} characters, including spaces.
-- Lead with the search keyword people actually type ("Rain Sounds", "Ocean Waves").
-- End with the duration, e.g. "| 1 Hour".
-- Concrete and sensory, not vague. "Gentle Rain on a Tin Roof" beats "Relaxing Rain".
+- The title MUST name the specific thing described under "What this recording
+  actually is". This is the single most important rule.
+  Write "Rain on a Car Roof", not "Rain Sounds". Write "Amazon Rainforest at
+  Dawn", not "Forest Birds". A generic category title competes with channels
+  that have millions of subscribers and loses; a specific one is findable.
+- Then add what it is for, and end with the duration: "| 3 Hours".
+- Concrete and sensory. "Heavy Rain on a Car Roof for Sleep | 3 Hours" is right.
 - Must not reuse the distinctive phrasing or the sentence shape of any recent title above.
 - No emoji, no ALL CAPS words, no clickbait.
 
@@ -70,7 +76,9 @@ Hard limits on the description:
 TAGS
 ----
 - Between 10 and 15 tags, lowercase, no "#".
-- Mix broad ("sleep sounds") and specific ("rain on tin roof asmr").
+- At least half the tags must describe the SPECIFIC recording ("rain on car roof",
+  "rain inside car", "car rain asmr"); the rest can be broad ("sleep sounds").
+- Include a duration tag ("3 hour rain").
 - Combined length of all tags must stay under {max_tags_chars} characters.
 
 TRANSLATIONS

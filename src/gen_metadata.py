@@ -88,6 +88,7 @@ def _prompt(
     template = (REPO / "prompts" / "metadata_prompt.txt").read_text(encoding="utf-8")
     return template.format(
         channel_name=cfg["channel"]["name"],
+        character=(tcfg.get("character") or theme.replace("_", " ")),
         theme=theme.replace("_", " "),
         purpose=tcfg.get("purpose", ""),
         duration_min=int(cfg["audio"]["duration_min"]),
