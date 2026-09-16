@@ -110,7 +110,7 @@ DURAK = {
 }
 
 
-def _specific_enough(title: str, character: str) -> bool:
+def _specific_enough(title: str, character: str, theme: str = "") -> bool:
     """Baslik kaydin karakterinden en az bir ayirt edici kelime tasiyor mu.
 
     Model bazen kurali yok sayip jenerik bir baslik uretiyor ("Ocean Waves
@@ -118,9 +118,13 @@ def _specific_enough(title: str, character: str) -> bool:
     bu kontrol olmadan tekrar uretmenin anlami kalmiyor.
     """
     import re as _re
+    # Temanin kendi adindaki kelimeler ayirt edici SAYILMAZ: 'forest_birds'
+    # temasinda "birds" jenerik kategorinin ta kendisi, karakterde de gectigi
+    # icin kontrolu yanlis yere gecirirdi.
+    jenerik = set(_re.findall(r"[a-z]+", theme.lower().replace("_", " ")))
     kelimeler = {
         w for w in _re.findall(r"[a-z]+", character.lower())
-        if len(w) > 3 and w not in DURAK
+        if len(w) > 3 and w not in DURAK and w not in jenerik
     }
     if not kelimeler:
         return True
@@ -324,7 +328,7 @@ def generate(
         prompt = _prompt(theme, cfg, audio_recipe, video_recipe, season_hint)
         for deneme in range(3):
             data = saglayici(prompt, _schema(locales, max_title), ad, anahtar)
-            if _specific_enough(data["title"], karakter):
+            if _specific_enough(data["title"], karakter, theme):
                 break
             log.warning("Baslik cok jenerik (%r) — tekrar deneniyor (%d/3)",
                         data["title"], deneme + 1)
