@@ -14,6 +14,10 @@ on:
         description: "Uret ama YouTube'a yukleme"
         default: true
         type: boolean
+      run_analytics:
+        description: "Sadece analytics calistir (video uretme)"
+        default: false
+        type: boolean
 
 concurrency:
   group: qm-${{ github.workflow }}
