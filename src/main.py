@@ -60,7 +60,8 @@ def replay_entry(day: str) -> Dict[str, Any]:
 def run(cfg_path: Path, dry_run: bool, replay: Optional[str], keep_work: bool,
         force_theme: Optional[str] = None, manual: bool = False,
         for_date: Optional[str] = None,
-        publish_at: Optional[str] = None) -> int:
+        publish_at: Optional[str] = None,
+        force_publish: bool = False) -> int:
     cfg = load_yaml(cfg_path)
     if publish_at:
         # Tampon videolar: her biri kendi gunune zamanlaniyor, "bir sonraki
@@ -160,6 +161,9 @@ def run(cfg_path: Path, dry_run: bool, replay: Optional[str], keep_work: bool,
         except Exception as exc:
             log.warning("Koruma icin kanal bilgisi alinamadi (%s).", type(exc).__name__)
         izin, gerekce = guards.may_publish(cfg, svc_guard)
+        if not izin and force_publish:
+            log.warning("Koruma asildi (--force-publish): %s", gerekce)
+            izin = True
         if not izin:
             log.warning("Otomatik yayin engellendi — %s. Manuel moda dusuluyor.", gerekce)
             mode = "manual"
@@ -183,7 +187,9 @@ def run(cfg_path: Path, dry_run: bool, replay: Optional[str], keep_work: bool,
         log.info("  %-28s %.0f MB", video_name, (bundle / video_name).stat().st_size / 1e6)
         log.info("  %-28s kopyala-yapistir sayfasi", sheet.name)
     else:
-        bekle = guards.publish_jitter(cfg, rng)
+        # Tampon yuklemesinde kayma anlamsiz: cron deseni kirmak icin var,
+        # bu bilincli ve tek seferlik bir islem.
+        bekle = 0 if force_publish else guards.publish_jitter(cfg, rng)
         if bekle:
             log.info("Yayin oncesi %d dk %d sn bekleniyor — cron her gece ayni "
                      "saniyede tetikleniyor, kayma makine desenini kiriyor.",
@@ -231,6 +237,8 @@ def main() -> int:
     parser.add_argument("--channel", default="config/channel_main.yaml")
     parser.add_argument("--dry-run", action="store_true", help="uretir ama yuklemez")
     parser.add_argument("--replay", metavar="YYYY-MM-DD", help="gecmis bir videoyu yeniden uret")
+    parser.add_argument("--force-publish", action="store_true",
+                        help="korumalari atla (bilincli tampon yuklemesi)")
     parser.add_argument("--publish-at", metavar="YYYY-MM-DDTHH:MMZ",
                         help="yayin anini elle belirle (tampon videolar icin)")
     parser.add_argument("--date", metavar="YYYY-MM-DD",
@@ -258,7 +266,7 @@ def main() -> int:
     cfg_path = REPO / args.channel if not Path(args.channel).is_absolute() else Path(args.channel)
     try:
         return run(cfg_path, args.dry_run, args.replay, args.keep_work,
-                   args.theme, args.manual, for_date=args.date, publish_at=args.publish_at)
+                   args.theme, args.manual, for_date=args.date, publish_at=args.publish_at, force_publish=args.force_publish)
     except PipelineError as exc:
         log.error("%s", exc)
         log_error(str(exc).replace("\n", " | "))

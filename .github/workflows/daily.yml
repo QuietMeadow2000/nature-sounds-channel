@@ -8,14 +8,26 @@ on:
     inputs:
       channel:
         description: "Ayar dosyasi"
-        default: config/channel_test.yaml
+        default: config/channel_main.yaml
         type: string
       dry_run:
         description: "Uret ama YouTube'a yukleme"
-        default: true
+        default: false
         type: boolean
       run_analytics:
         description: "Sadece analytics calistir (video uretme)"
+        default: false
+        type: boolean
+      date:
+        description: "Uretim tarihi (YYYY-MM-DD) — tema bu gune gore secilir"
+        required: false
+        type: string
+      publish_at:
+        description: "Yayin ani (YYYY-MM-DDTHH:MM:SSZ)"
+        required: false
+        type: string
+      force_publish:
+        description: "Korumalari atla (bilincli tampon yuklemesi)"
         default: false
         type: boolean
 
@@ -63,7 +75,10 @@ jobs:
         run: |
           python src/main.py \
             --channel "${{ inputs.channel || 'config/channel_main.yaml' }}" \
-            ${{ (inputs.dry_run == true) && '--dry-run' || '' }}
+            ${{ (inputs.dry_run == true) && '--dry-run' || '' }} \
+            ${{ inputs.date && format('--date {0}', inputs.date) || '' }} \
+            ${{ inputs.publish_at && format('--publish-at {0}', inputs.publish_at) || '' }} \
+            ${{ (inputs.force_publish == true) && '--force-publish' || '' }}
         env:
           YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
           YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
