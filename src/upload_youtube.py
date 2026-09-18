@@ -117,8 +117,14 @@ def upload_video(
                     progress = int(status.progress() * 100)
                     log.info("  yukleniyor... %d%%", progress)
             video_id = response["id"]
-            log.info("Yuklendi: https://youtu.be/%s (%s)", video_id,
-                     cfg["channel"]["privacy_status"])
+            # Gercekte GONDERILEN durumu yaz. Eskiden config'deki privacy_status
+            # yaziliyordu; zamanlanmis yayinda video private inip sonra aciliyor
+            # ama log "public" diyordu — yanlis teshise yol aciyordu.
+            st = (response.get("status") or {})
+            durum = st.get("privacyStatus", "?")
+            ne_zaman = st.get("publishAt")
+            log.info("Yuklendi: https://youtu.be/%s (%s%s)", video_id, durum,
+                     f", yayin {ne_zaman}" if ne_zaman else "")
             return video_id
 
         except HttpError as exc:
