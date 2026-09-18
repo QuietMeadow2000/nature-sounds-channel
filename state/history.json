@@ -963,17 +963,17 @@
     "theme": "fireplace",
     "season_hint": null,
     "seed": 208821838626104,
-    "title": "Stone Fireplace Crackling Wood for Cozy Sleep | 3 Hours",
+    "title": "Stone Fireplace Flames for Cozy Sleep | 3 Hours",
     "tags": [
       "stone fireplace",
-      "indoor fireplace",
       "fireplace crackling",
+      "fireplace sounds",
       "cozy fire",
-      "fire ambience",
+      "fireplace for sleep",
       "sleep sounds",
-      "relaxation sounds",
-      "background noise",
-      "focus ambience",
+      "relaxation audio",
+      "ambient noise",
+      "focus sounds",
       "3 hour fireplace"
     ],
     "metadata_by": "openai/gpt-oss-120b",
@@ -1000,14 +1000,14 @@
       "visual_kind": "clip",
       "visual_source": "pexels:6984877",
       "unit_len_sec": 7.0,
-      "size_mb": 4278.2,
+      "size_mb": 4270.8,
       "variants": 12,
       "encoded_sec": 84.0,
       "repeats": 1543
     },
-    "video_id": null,
-    "publish_mode": "manual",
-    "privacy": "manual",
-    "uploaded_at": "2026-09-18T19:42:17+00:00"
+    "video_id": "f9_am5fknkU",
+    "publish_mode": "api",
+    "privacy": "public",
+    "uploaded_at": "2026-09-18T20:00:20+00:00"
   }
 ]
