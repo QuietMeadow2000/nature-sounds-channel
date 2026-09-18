@@ -17,7 +17,13 @@ channel:
   # Audit basvurusu kota tavani icin faydali ama yukleme icin gerekmiyor.
   # 9 Eylul askiya alinmasindan sonra manuel'e dondu. API'ye donmeden once
   # kanalin organik gecmisi olusmali (bkz. publish_guard).
-  publish_mode: manual
+  publish_mode: api
+  # Zamanlanmis yayin: video private yuklenir, asagidaki saatte kendiliginden
+  # acilir (Studio'daki "Schemalägg" ile ayni sey). Aninda yayina dusmuyor ve
+  # acilmadan once gozden gecirilebiliyor. YouTube publishAt'i yalnizca
+  # privacyStatus private iken kabul ediyor; kod bunu kendisi ayarliyor.
+  schedule_publish: true
+  publish_time_utc: "00:00"    # = 02:00 Isvec, 20:00 ABD Dogu
   category_id: "10"              # 10 = Music, 22 = People & Blogs (A/B test, Bolum 17)
   made_for_kids: false
 
@@ -112,8 +118,11 @@ weekly_schedule:
 # Bu ayarlar ayni desenin tekrarini KODLA engelliyor; sinir asilirsa pipeline
 # videoyu yine uretir ama otomatik yuklemez, manuel moda duser.
 publish_guard:
-  min_channel_age_days: 30   # yeni kanaldan otomatik yukleme yapma
-  max_per_week: 3            # haftada en fazla 3 otomatik yukleme
+  # 9 Eylul askiya alinmasindan sonra konuldu. 17 = kanal 6 Eylul'de acildi,
+  # yani ilk otomatik yayin 23 Eylul. Kullanicinin karari; asil koruma artik
+  # bu degil, zamanlanmis yayin (video private inip saatinde aciliyor).
+  min_channel_age_days: 17   # yeni kanaldan otomatik yukleme yapma
+  max_per_week: 7        # gunluk yayin            # haftada en fazla 3 otomatik yukleme
   min_days_between: 1        # ard arda gunlerde yukleme yapma
   jitter_minutes: 90         # yuklemeden once 0-90 dk rastgele bekle
 

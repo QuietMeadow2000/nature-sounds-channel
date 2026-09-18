@@ -5,6 +5,7 @@ videos.update ~50 birim. Gunluk toplam ~1750 / 10.000.
 """
 from __future__ import annotations
 
+from datetime import datetime, timedelta, timezone
 import random
 import time
 from pathlib import Path
@@ -39,12 +40,39 @@ def client(client_id: str, client_secret: str, refresh_token: str, service: str 
     return build(service, version, credentials=creds, cache_discovery=False)
 
 
+def _publish_at(ch: Dict[str, Any]) -> Optional[str]:
+    """Bir sonraki yayin ani (RFC3339 UTC) ya da zamanlama kapaliysa None."""
+    if not ch.get("schedule_publish"):
+        return None
+    saat = str(ch.get("publish_time_utc", "00:00"))
+    try:
+        sa, dk = (int(x) for x in saat.split(":"))
+    except ValueError:
+        log.warning("publish_time_utc okunamadi (%r) — zamanlama atlandi.", saat)
+        return None
+    simdi = datetime.now(timezone.utc)
+    hedef = simdi.replace(hour=sa, minute=dk, second=0, microsecond=0)
+    # En az 15 dakika sonrasi olmali: yukleme + islenme suresi gerekiyor,
+    # gecmis bir publishAt'i YouTube reddediyor.
+    while hedef <= simdi + timedelta(minutes=15):
+        hedef += timedelta(days=1)
+    return hedef.strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
 def _body(meta: Dict[str, Any], cfg: Dict[str, Any], synthetic: bool) -> Dict[str, Any]:
     ch = cfg["channel"]
     status: Dict[str, Any] = {
         "privacyStatus": ch["privacy_status"],
         "selfDeclaredMadeForKids": bool(ch.get("made_for_kids", False)),
     }
+    # Zamanlanmis yayin: video private olarak yuklenir, publishAt'te kendiliginden
+    # acilir. Iki faydasi var — icerik aninda yayina dusmuyor, ve acilmadan once
+    # gozden gecirilebiliyor. YouTube publishAt'i YALNIZCA privacyStatus private
+    # iken kabul ediyor; public ile gonderirsen sessizce yok sayiyor.
+    when = _publish_at(ch)
+    if when:
+        status["privacyStatus"] = "private"
+        status["publishAt"] = when
     if synthetic:
         # Bolum 11 — AI gorsel kullanildiginda "altered or synthetic content" beyani.
         # NOT: alan adini kurulum gunu API dokumantasyonundan dogrula; YouTube bu
