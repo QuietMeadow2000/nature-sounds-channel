@@ -44,6 +44,9 @@ def _publish_at(ch: Dict[str, Any]) -> Optional[str]:
     """Bir sonraki yayin ani (RFC3339 UTC) ya da zamanlama kapaliysa None."""
     if not ch.get("schedule_publish"):
         return None
+    kesin = ch.get("publish_at_exact")
+    if kesin:
+        return str(kesin)
     saat = str(ch.get("publish_time_utc", "00:00"))
     try:
         sa, dk = (int(x) for x in saat.split(":"))

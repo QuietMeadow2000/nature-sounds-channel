@@ -121,7 +121,9 @@ publish_guard:
   # 9 Eylul askiya alinmasindan sonra konuldu. 17 = kanal 6 Eylul'de acildi,
   # yani ilk otomatik yayin 23 Eylul. Kullanicinin karari; asil koruma artik
   # bu degil, zamanlanmis yayin (video private inip saatinde aciliyor).
-  min_channel_age_days: 17   # yeni kanaldan otomatik yukleme yapma
+  # 19 = 25 Eylul. Tampon videolar 23/24/25 Eylul'u kapsiyor, cron 25 Eylul
+  # gecesi devralip 26 Eylul'u yayinliyor. Boylece cakisma olmuyor.
+  min_channel_age_days: 19   # yeni kanaldan otomatik yukleme yapma
   max_per_week: 7        # gunluk yayin            # haftada en fazla 3 otomatik yukleme
   min_days_between: 1        # ard arda gunlerde yukleme yapma
   jitter_minutes: 90         # yuklemeden once 0-90 dk rastgele bekle
