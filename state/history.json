@@ -1009,5 +1009,76 @@
     "publish_mode": "api",
     "privacy": "public",
     "uploaded_at": "2026-09-18T20:00:20+00:00"
+  },
+  {
+    "date": "2026-09-23",
+    "channel": "main",
+    "theme": "stream",
+    "season_hint": null,
+    "seed": 188753175403978,
+    "title": "Gentle Spring Stream Over Pebbles for Study | 3 Hours",
+    "tags": [
+      "spring stream over stones",
+      "creek over stones",
+      "spring creek ambience",
+      "stream with birdsong",
+      "leaves rustling stream",
+      "sleep sounds",
+      "focus sounds",
+      "relaxation audio",
+      "meditation background",
+      "3 hour stream"
+    ],
+    "metadata_by": "openai/gpt-oss-120b",
+    "audio": {
+      "layers": [
+        {
+          "role": "main",
+          "match": "stream",
+          "source": "stream__freesound_512224.flac",
+          "unit_len": 297.316,
+          "gain": 1.0708,
+          "offset": 0.0,
+          "normalize_db": 7.08
+        },
+        {
+          "role": "layer",
+          "match": "birdsong",
+          "source": "birdsong__freesound_674085.flac",
+          "unit_len": 276.0,
+          "gain": 0.1293,
+          "offset": 163.362,
+          "normalize_db": 10.05
+        },
+        {
+          "role": "layer",
+          "match": "leaves_wind",
+          "source": "leaves_wind__freesound_670307.flac",
+          "unit_len": 309.113,
+          "gain": 0.0911,
+          "offset": 171.156,
+          "normalize_db": 6.03
+        }
+      ],
+      "crossfade_sec": 5.0,
+      "edge_trim_sec": 10.0,
+      "target_lufs": -18.0,
+      "mix_correction_db": -0.62,
+      "duration_sec": 10800.0,
+      "seam_check_sec": 297.316
+    },
+    "video": {
+      "visual_kind": "clip",
+      "visual_source": "pexels:6571279",
+      "unit_len_sec": 24.38,
+      "size_mb": 8623.5,
+      "variants": 12,
+      "encoded_sec": 292.5,
+      "repeats": 444
+    },
+    "video_id": "uWpNYe4WS1c",
+    "publish_mode": "api",
+    "privacy": "public",
+    "uploaded_at": "2026-09-18T20:43:39+00:00"
   }
 ]
