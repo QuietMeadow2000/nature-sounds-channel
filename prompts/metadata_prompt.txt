@@ -76,6 +76,10 @@ Hard limits on the description:
 TAGS
 ----
 - Between 10 and 15 tags, lowercase, no "#".
+- Tags are SEARCH PHRASES, written with normal spaces: "amazon riverbank",
+  "rain on a car roof", "dawn chorus". NEVER run words together — a tag like
+  "amazonriverbank" matches nothing anyone types and is wasted. The no-spaces
+  rule applies ONLY to the hashtag line in the description, never here.
 - At least half the tags must describe the SPECIFIC recording ("rain on car roof",
   "rain inside car", "car rain asmr"); the rest can be broad ("sleep sounds").
 - Include a duration tag ("3 hour rain").

@@ -699,5 +699,70 @@
     "publish_mode": "manual",
     "privacy": "manual",
     "uploaded_at": "2026-09-16T08:03:58+00:00"
+  },
+  {
+    "date": "2026-09-18",
+    "channel": "main",
+    "theme": "forest_birds",
+    "season_hint": "autumn rain, fallen leaves, misty morning",
+    "seed": 33154446197212,
+    "title": "Amazon Riverbank Dawn Chorus for Focus | 1 Hour",
+    "tags": [
+      "amazonriverbank",
+      "dawnbirds",
+      "rainforestbirds",
+      "riverbankbirds",
+      "amazondawn",
+      "amazonforest",
+      "riverbank",
+      "birds",
+      "naturesounds",
+      "focus",
+      "relaxation",
+      "ambient",
+      "1hour"
+    ],
+    "metadata_by": "openai/gpt-oss-120b",
+    "audio": {
+      "layers": [
+        {
+          "role": "main",
+          "match": "birdsong",
+          "source": "birdsong__freesound_674085.flac",
+          "unit_len": 276.0,
+          "gain": 0.9403,
+          "offset": 0.0,
+          "normalize_db": 10.05
+        },
+        {
+          "role": "layer",
+          "match": "leaves_wind",
+          "source": "leaves_wind__freesound_670307.flac",
+          "unit_len": 309.113,
+          "gain": 0.183,
+          "offset": 148.052,
+          "normalize_db": 6.03
+        }
+      ],
+      "crossfade_sec": 5.0,
+      "edge_trim_sec": 10.0,
+      "target_lufs": -18.0,
+      "mix_correction_db": 0.37,
+      "duration_sec": 3600.0,
+      "seam_check_sec": 276.0
+    },
+    "video": {
+      "visual_kind": "clip",
+      "visual_source": "pexels:37218119",
+      "unit_len_sec": 22.88,
+      "size_mb": 5579.1,
+      "variants": 12,
+      "encoded_sec": 274.5,
+      "repeats": 158
+    },
+    "video_id": null,
+    "publish_mode": "manual",
+    "privacy": "manual",
+    "uploaded_at": "2026-09-18T15:20:38+00:00"
   }
 ]

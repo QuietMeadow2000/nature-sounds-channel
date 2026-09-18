@@ -147,6 +147,25 @@ def _fix_hashtags(text: str) -> str:
     return "\n".join(out)
 
 
+def _drop_concatenated(tags: List[str]) -> List[str]:
+    """Bitisik yazilmis etiketleri at.
+
+    Model hashtag kuralini etiketlere tasiyabiliyor: "amazonriverbank",
+    "rainforestbirds". Kimse bunlari aramaya yazmaz, yani etiket yuvasini
+    bosa harciyorlar. Bolmek guvenilir degil — atmak daha durust.
+    Gercek tek kelimeler ("thunderstorm", "asmr") kisa oldugu icin kalir.
+    """
+    out, atilan = [], []
+    for t in tags:
+        if " " not in t and len(t) >= 13:
+            atilan.append(t)
+        else:
+            out.append(t)
+    if atilan:
+        log.warning("Bitisik etiket atildi: %s", ", ".join(atilan))
+    return out
+
+
 def _trim_tags(tags: List[str], limit: int) -> List[str]:
     """YouTube toplam etiket karakter sinirini asma (virguller dahil sayilir)."""
     kept: List[str] = []
@@ -373,6 +392,7 @@ def generate(
     if CREDIT_LINE not in data["description"]:
         data["description"] = data["description"].rstrip() + "\n\n" + CREDIT_LINE
 
+    data["tags"] = _drop_concatenated(data.get("tags") or [])
     data["description"] = _fix_hashtags(data["description"])
     data["title"] = data["title"][:max_title].rstrip()
     data["tags"] = _trim_tags(data["tags"], int(mcfg["max_tags_chars"]))
