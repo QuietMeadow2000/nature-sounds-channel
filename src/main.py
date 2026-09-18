@@ -86,7 +86,8 @@ def run(cfg_path: Path, dry_run: bool, replay: Optional[str], keep_work: bool,
         theme, info = pick_theme.pick(cfg, today, seed)
         season_hint = info.get("title_hint")
 
-    check_disk(float(cfg["audio"]["duration_min"]))
+    check_disk(float(cfg["audio"]["duration_min"]),
+               maxrate_mbps=float(cfg["video"].get("maxrate_mbps", 0) or 0))
 
     work = workdir(day)
     assets = work / "assets"

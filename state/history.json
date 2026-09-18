@@ -764,5 +764,197 @@
     "publish_mode": "manual",
     "privacy": "manual",
     "uploaded_at": "2026-09-18T15:20:38+00:00"
+  },
+  {
+    "date": "2026-09-19",
+    "channel": "main",
+    "theme": "ocean_waves",
+    "season_hint": null,
+    "seed": 101098040432785,
+    "title": "Tropical Island Shore Waves for Deep Sleep | 3 Hours",
+    "tags": [
+      "tropical island shore waves",
+      "island wave sounds",
+      "ocean wave ambience",
+      "wave sounds for sleep",
+      "sleep sounds",
+      "relaxation sounds",
+      "focus background",
+      "meditation audio",
+      "study ambience",
+      "deep sleep aid",
+      "3 hour waves",
+      "nature sounds"
+    ],
+    "metadata_by": "openai/gpt-oss-120b",
+    "audio": {
+      "layers": [
+        {
+          "role": "main",
+          "match": "waves",
+          "source": "waves__freesound_451743.mp3",
+          "unit_len": 445.033,
+          "gain": 1.01,
+          "offset": 0.0,
+          "normalize_db": 13.78
+        }
+      ],
+      "crossfade_sec": 5.0,
+      "edge_trim_sec": 10.0,
+      "target_lufs": -18.0,
+      "mix_correction_db": 0.91,
+      "duration_sec": 10800.0,
+      "seam_check_sec": 445.033
+    },
+    "video": {
+      "visual_kind": "clip",
+      "visual_source": "pexels:6473354",
+      "unit_len_sec": 27.79,
+      "size_mb": 8475.0,
+      "variants": 12,
+      "encoded_sec": 333.5,
+      "repeats": 389
+    },
+    "video_id": null,
+    "publish_mode": "manual",
+    "privacy": "manual",
+    "uploaded_at": "2026-09-18T18:07:13+00:00"
+  },
+  {
+    "date": "2026-09-20",
+    "channel": "main",
+    "theme": "night_crickets",
+    "season_hint": null,
+    "seed": 276954624071272,
+    "title": "Night Crickets by the Mexican Coast for Sleep | 3 Hours",
+    "tags": [
+      "mexican night crickets",
+      "night crickets",
+      "coastal night crickets",
+      "cricket chorus",
+      "cricket sounds",
+      "night wind",
+      "sleep sounds",
+      "relaxation audio",
+      "ambient nature",
+      "focus background",
+      "deep sleep",
+      "3 hour crickets"
+    ],
+    "metadata_by": "openai/gpt-oss-120b",
+    "audio": {
+      "layers": [
+        {
+          "role": "main",
+          "match": "crickets",
+          "source": "crickets__freesound_479041.flac",
+          "unit_len": 500.781,
+          "gain": 1.0247,
+          "offset": 0.0,
+          "normalize_db": -3.43
+        },
+        {
+          "role": "layer",
+          "match": "night_wind",
+          "source": "night_wind__freesound_670307.flac",
+          "unit_len": 309.113,
+          "gain": 0.1598,
+          "offset": 193.979,
+          "normalize_db": 6.03
+        }
+      ],
+      "crossfade_sec": 5.0,
+      "edge_trim_sec": 10.0,
+      "target_lufs": -18.0,
+      "mix_correction_db": 0.1,
+      "duration_sec": 10800.0,
+      "seam_check_sec": 500.781
+    },
+    "video": {
+      "visual_kind": "clip",
+      "visual_source": "pexels:39429663",
+      "unit_len_sec": 12.67,
+      "size_mb": 4534.3,
+      "variants": 12,
+      "encoded_sec": 152.0,
+      "repeats": 853
+    },
+    "video_id": null,
+    "publish_mode": "manual",
+    "privacy": "manual",
+    "uploaded_at": "2026-09-18T18:11:15+00:00"
+  },
+  {
+    "date": "2026-09-21",
+    "channel": "main",
+    "theme": "rain",
+    "season_hint": "autumn rain, fallen leaves, misty morning",
+    "seed": 24636566688858,
+    "title": "Steady Downpour Across Open Fields for Sleep | 3 Hours",
+    "tags": [
+      "rain in open countryside",
+      "heavy rain outdoors",
+      "downpour field",
+      "distant thunder rain",
+      "light wind rain",
+      "autumn rain",
+      "misty morning rain",
+      "sleep sounds",
+      "study sounds",
+      "relaxation audio",
+      "nature ambience",
+      "3 hour rain"
+    ],
+    "metadata_by": "openai/gpt-oss-120b",
+    "audio": {
+      "layers": [
+        {
+          "role": "main",
+          "match": "rain",
+          "source": "rain__freesound_200270.flac",
+          "unit_len": 375.0,
+          "gain": 0.9659,
+          "offset": 0.0,
+          "normalize_db": 15.84
+        },
+        {
+          "role": "layer",
+          "match": "distant_thunder",
+          "source": "distant_thunder__freesound_361401.flac",
+          "unit_len": 402.342,
+          "gain": 0.2168,
+          "offset": 91.678,
+          "normalize_db": 23.05
+        },
+        {
+          "role": "layer",
+          "match": "light_wind",
+          "source": "light_wind__freesound_670307.flac",
+          "unit_len": 309.113,
+          "gain": 0.1018,
+          "offset": 228.371,
+          "normalize_db": 6.03
+        }
+      ],
+      "crossfade_sec": 5.0,
+      "edge_trim_sec": 10.0,
+      "target_lufs": -18.0,
+      "mix_correction_db": 1.38,
+      "duration_sec": 10800.0,
+      "seam_check_sec": 375.0
+    },
+    "video": {
+      "visual_kind": "clip",
+      "visual_source": "pexels:39542085",
+      "unit_len_sec": 11.08,
+      "size_mb": 7561.6,
+      "variants": 12,
+      "encoded_sec": 133.0,
+      "repeats": 975
+    },
+    "video_id": null,
+    "publish_mode": "manual",
+    "privacy": "manual",
+    "uploaded_at": "2026-09-18T18:19:55+00:00"
   }
 ]

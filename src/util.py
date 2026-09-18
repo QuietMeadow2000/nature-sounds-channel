@@ -173,13 +173,21 @@ def log_error(message: str) -> None:
         fh.write(f"{stamp}  {message}\n")
 
 
-def check_disk(duration_min: float, path: Path = REPO) -> None:
+def check_disk(duration_min: float, path: Path = REPO,
+               maxrate_mbps: float = 0) -> None:
     """Render'a baslamadan once yer var mi bak.
 
-    60 dakikalik 1080p cikti CRF 26'da ~600 MB, ara dosyalar (dongu birimleri +
-    ses) ~400 MB. Yetersizse 11 dakika render edip sonda patlamak yerine hemen dur.
+    Tahmin BITRATE'ten hesaplanmali. Eskiden sabit "dakikada 12 MB" varsayimi
+    vardi (1080p/60 dk doneminden) ve 1440p/3 saat videoda 3.9 GB tahmin edip
+    gercekte 7.6 GB yaziyordu — iki kattan fazla yanilma, hem de korumayi tam
+    ihtiyac duyulan yerde islevsiz birakiyordu.
     """
-    need_mb = 400 + duration_min * 12 * 1.6        # cikti tahmini + %60 pay
+    if maxrate_mbps > 0:
+        cikti_mb = maxrate_mbps * 60.0 * duration_min / 8.0   # Mbps -> MB
+    else:
+        cikti_mb = duration_min * 12.0                        # bilinmiyorsa eski varsayim
+    ses_mb = duration_min * 1.5                               # 192k AAC + ara WAV'lar
+    need_mb = (cikti_mb + ses_mb + 400) * 1.35                # + %35 emniyet payi
     free_mb = shutil.disk_usage(path).free / 1e6
     log.info("Disk: %.1f GB bos, tahmini ihtiyac %.1f GB", free_mb / 1000, need_mb / 1000)
     if free_mb < need_mb:
