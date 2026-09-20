@@ -826,20 +826,20 @@
     "theme": "night_crickets",
     "season_hint": null,
     "seed": 276954624071272,
-    "title": "Night Crickets by the Mexican Coast for Sleep | 3 Hours",
+    "title": "Coastal Mexican Night Crickets for Sleep | 3 Hours",
     "tags": [
-      "mexican night crickets",
       "night crickets",
+      "mexican coast crickets",
       "coastal night crickets",
       "cricket chorus",
       "cricket sounds",
-      "night wind",
       "sleep sounds",
       "relaxation audio",
       "ambient nature",
-      "focus background",
       "deep sleep",
-      "3 hour crickets"
+      "focus background",
+      "3 hour crickets",
+      "3 hour sleep"
     ],
     "metadata_by": "openai/gpt-oss-120b",
     "audio": {
@@ -872,17 +872,17 @@
     },
     "video": {
       "visual_kind": "clip",
-      "visual_source": "pexels:39429663",
-      "unit_len_sec": 12.67,
-      "size_mb": 4534.3,
+      "visual_source": "pexels:6279024",
+      "unit_len_sec": 18.71,
+      "size_mb": 3383.6,
       "variants": 12,
-      "encoded_sec": 152.0,
-      "repeats": 853
+      "encoded_sec": 224.5,
+      "repeats": 578
     },
     "video_id": null,
     "publish_mode": "manual",
     "privacy": "manual",
-    "uploaded_at": "2026-09-18T18:11:15+00:00"
+    "uploaded_at": "2026-09-20T23:40:32+00:00"
   },
   {
     "date": "2026-09-21",
