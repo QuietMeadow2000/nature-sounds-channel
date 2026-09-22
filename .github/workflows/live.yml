@@ -1,0 +1,71 @@
+name: Canli yayin (deneysel)
+
+# Bilerek YALNIZCA elle tetiklenir, gece cron'una baglanmadi. Bir kac kez
+# basariyla test edilip guvenilir oldugu gorulunce daily.yml'e tasinir.
+#
+# ON KOSUL: kanalda "Canli yayin" ozelligi Studio > Ayarlar > Kanal >
+# Ozellik uygunlugu'ndan acilmis olmali VE ~24 saat gecmis olmali
+# (YouTube'un kendi guvenlik penceresi, API ile atlanamiyor).
+on:
+  workflow_dispatch:
+    inputs:
+      channel:
+        description: "Ayar dosyasi"
+        default: config/channel_main.yaml
+        type: string
+      date:
+        description: "Uretim tarihi (bos = bugun)"
+        required: false
+        type: string
+      theme:
+        description: "Tema elle sec (bos = takvimden)"
+        required: false
+        type: string
+
+concurrency:
+  group: qm-live
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    # 3 saatlik video + render + RTMP guvenlik payi. GitHub'in mutlak
+    # sinirinin (360 dk) altinda tutuluyor.
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends ffmpeg
+      - run: pip install -r requirements.txt
+
+      - name: Uret ve canli yayinla
+        run: |
+          python tools/live_publish.py \
+            --channel "${{ inputs.channel || 'config/channel_main.yaml' }}" \
+            ${{ inputs.date && format('--date {0}', inputs.date) || '' }} \
+            ${{ inputs.theme && format('--theme {0}', inputs.theme) || '' }}
+        env:
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GDRIVE_SA_JSON: ${{ secrets.GDRIVE_SA_JSON }}
+
+      # live_stream_id.txt kalici — bir sonraki calistirmada ayni akisi
+      # yeniden kullanmak icin commit'lenmesi lazim.
+      - name: state/ commit
+        if: always()
+        run: |
+          git config user.name "quiet-meadow-bot"
+          git config user.email "actions@github.com"
+          git add state
+          git diff --staged --quiet || git commit -m "live: $(date -u +%F)"
+          git push
