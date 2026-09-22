@@ -93,6 +93,39 @@ def run(cfg_path: Path, dry_run: bool, replay: Optional[str], keep_work: bool,
         theme, info = pick_theme.pick(cfg, today, seed)
         season_hint = info.get("title_hint")
 
+    # Yayin hizi korumasi RENDER'DAN ONCE calisiyor (18-21 Eylul geceleri
+    # bunu ihmal etmisti: guard kontrolu eskiden yukleme adiminda yapiliyordu,
+    # yani engellenecek gecelerde bile pipeline tam bir 3 saatlik 1440p video
+    # render ediyordu — bosa gidiyordu ve ustune uc gece runner'in diskini
+    # doldurup "No space left on device" ile cokertti (18, 19, 21 Eylul).
+    #
+    # Simdi: mode "api" olacaksa (elle --manual / --dry-run istenmedigi surece)
+    # guard erkenden kontrol ediliyor. Engellenirse ve bu duz bir otomatik
+    # calismaysa (dry_run degil, --manual degil) render'a hic girilmeden cikilir.
+    mode = "manual" if manual else cfg["channel"].get("publish_mode", "api")
+    if mode == "api" and not dry_run:
+        svc_guard = None
+        try:
+            if all(secrets[k] for k in ("YT_CLIENT_ID", "YT_CLIENT_SECRET",
+                                        "YT_REFRESH_TOKEN")):
+                svc_guard = upload_youtube.client(
+                    secrets["YT_CLIENT_ID"], secrets["YT_CLIENT_SECRET"],
+                    secrets["YT_REFRESH_TOKEN"])
+        except Exception as exc:
+            log.warning("Koruma icin kanal bilgisi alinamadi (%s).", type(exc).__name__)
+        izin, gerekce = guards.may_publish(cfg, svc_guard)
+        if not izin and force_publish:
+            log.warning("Koruma asildi (--force-publish): %s", gerekce)
+            izin = True
+        if not izin:
+            # Buraya yalnizca mode=="api" iken girilir, yani --manual zaten
+            # gecilmemis demektir (o durumda mode zirdaki satirda "manual" olur
+            # ve bu blogun tamami atlanir). Yani "yine de render et" secenegi yok
+            # — sadece cikiyoruz.
+            log.warning("Otomatik yayin engellendi — %s. Render'a girilmeden "
+                        "cikiliyor (bosa harcama yok).", gerekce)
+            return 0
+
     check_disk(float(cfg["audio"]["duration_min"]),
                maxrate_mbps=float(cfg["video"].get("maxrate_mbps", 0) or 0))
 
@@ -143,31 +176,9 @@ def run(cfg_path: Path, dry_run: bool, replay: Optional[str], keep_work: bool,
         api_key=secrets["ANTHROPIC_API_KEY"] or None,
     )
 
-    # 7) Yayin
+    # 7) Yayin — mode ve guard kontrolu yukarida (render'dan once) yapildi.
     #    manual : dosyalari out/ altina koyar, Studio'ya elle yuklersin
     #    api    : videos.insert ile dogrudan yukler
-    mode = "manual" if manual else cfg["channel"].get("publish_mode", "api")
-
-    # Yayin hizi korumasi (9 Eylul 2026 askiya alinmasindan sonra). Sinir asilmissa
-    # video yine uretilir, sadece otomatik yuklenmez — manuel moda duser.
-    if mode == "api" and not dry_run:
-        svc_guard = None
-        try:
-            if all(secrets[k] for k in ("YT_CLIENT_ID", "YT_CLIENT_SECRET",
-                                        "YT_REFRESH_TOKEN")):
-                svc_guard = upload_youtube.client(
-                    secrets["YT_CLIENT_ID"], secrets["YT_CLIENT_SECRET"],
-                    secrets["YT_REFRESH_TOKEN"])
-        except Exception as exc:
-            log.warning("Koruma icin kanal bilgisi alinamadi (%s).", type(exc).__name__)
-        izin, gerekce = guards.may_publish(cfg, svc_guard)
-        if not izin and force_publish:
-            log.warning("Koruma asildi (--force-publish): %s", gerekce)
-            izin = True
-        if not izin:
-            log.warning("Otomatik yayin engellendi — %s. Manuel moda dusuluyor.", gerekce)
-            mode = "manual"
-
     video_id = None
     bundle = None
 
