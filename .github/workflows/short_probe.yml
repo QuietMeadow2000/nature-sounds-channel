@@ -1,0 +1,31 @@
+name: Shorts probe
+on: workflow_dispatch
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install google-api-python-client google-auth google-auth-httplib2
+      - run: |
+          python -c "
+          import os, sys, json
+          sys.path.insert(0, 'src')
+          import upload_youtube as yt
+          svc = yt.client(os.environ['YT_CLIENT_ID'], os.environ['YT_CLIENT_SECRET'], os.environ['YT_REFRESH_TOKEN'])
+          r = svc.videos().list(part='contentDetails,snippet,status,player', id='5PNAKDHgZ9o').execute()
+          it = r['items'][0]
+          print('sure       :', it['contentDetails']['duration'])
+          print('baslik     :', it['snippet']['title'])
+          print('aciklama   :', it['snippet']['description'][:200])
+          print('privacy    :', it['status']['privacyStatus'])
+          print('publishAt  :', it['status'].get('publishAt'))
+          print('player h   :', it.get('player',{}).get('embedHeight'))
+          print('player w   :', it.get('player',{}).get('embedWidth'))
+          "
+        env:
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
