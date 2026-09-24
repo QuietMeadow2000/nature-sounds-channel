@@ -53,14 +53,19 @@ def main() -> int:
     vids = [i["snippet"]["resourceId"]["videoId"] for i in items]
     durum = {}
     if vids:
-        r = svc.videos().list(part="status,snippet", id=",".join(vids)).execute()
+        r = svc.videos().list(part="status,snippet,statistics", id=",".join(vids)).execute()
         durum = {v["id"]: v for v in r.get("items", [])}
     for i in items:
         vid = i["snippet"]["resourceId"]["videoId"]
         v = durum.get(vid, {})
         st = v.get("status", {})
+        stat = v.get("statistics", {})
+        views = stat.get("viewCount", "?")
+        embed = "goml" if st.get("embeddable", True) else "GOMLENEMEZ"
+        kamu = "istatistik-acik" if st.get("publicStatsViewable", True) else "istatistik-GIZLI"
         print(f"    {vid}  {st.get('privacyStatus','?'):<9} "
-              f"{st.get('uploadStatus','?'):<10} {i['snippet']['title'][:44]}")
+              f"{st.get('uploadStatus','?'):<10} izlenme:{views:<6} {embed:<12} {kamu:<16} "
+              f"{i['snippet']['title'][:38]}")
 
     pl = svc.playlists().list(part="snippet,contentDetails", mine=True,
                               maxResults=25).execute()
