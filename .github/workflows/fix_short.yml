@@ -15,10 +15,19 @@ jobs:
           sys.path.insert(0, 'src')
           import upload_youtube as yt
           svc = yt.client(os.environ['YT_CLIENT_ID'], os.environ['YT_CLIENT_SECRET'], os.environ['YT_REFRESH_TOKEN'])
+          # ONCEKI HATA: videos.update() gonderilen 'status' altini TAMAMEN
+          # degistiriyor, eksik birakilan alanlar varsayilana (False) donuyor.
+          # embeddable/publicStatsViewable yanlislikla False oldu, digerlerini
+          # de acikca gonderiyoruz.
           for vid in ('cUpFBncPoIk', 'KnNsUo2CYgQ'):
               r = svc.videos().update(part='status', body={
                   'id': vid,
-                  'status': {'privacyStatus': 'public', 'selfDeclaredMadeForKids': False},
+                  'status': {
+                      'privacyStatus': 'public',
+                      'selfDeclaredMadeForKids': False,
+                      'embeddable': True,
+                      'publicStatsViewable': True,
+                  },
               }).execute()
               print(vid, '->', r['status'])
           "
