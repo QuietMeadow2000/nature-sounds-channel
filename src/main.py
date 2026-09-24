@@ -28,6 +28,7 @@ import gen_metadata
 import make_thumbnail
 import pick_theme
 import publish_sheet
+import shorts
 import upload_youtube
 from util import (
     OUT, REPO, WORK, PipelineError, append_history, check_disk, clean_work, history,
@@ -212,6 +213,22 @@ def run(cfg_path: Path, dry_run: bool, replay: Optional[str], keep_work: bool,
             synthetic=video["recipe"]["visual_kind"] == "clip"
             and not video["recipe"]["visual_source"].startswith("pexels:"),
         )
+
+        # Shorts: uzun formdan kesilen 45 sn'lik dikey klip. Kesif icin —
+        # sifir aboneli kanalda YouTube'un Shorts akisi ana yuklemeden cok
+        # daha genis ve neredeyse bedava (render zaten var, sadece kirpma).
+        # Hata verirse ana videonun basarisini etkilemesin diye izole edildi.
+        if cfg["channel"].get("publish_shorts", True):
+            try:
+                short_path = work / "short.mp4"
+                shorts.extract_clip(video["path"], short_path, cfg)
+                short_meta = shorts.build_meta(theme, cfg, meta["title"], video_id)
+                short_id = upload_youtube.publish_short(
+                    short_path, None, short_meta, cfg, secrets)
+                log.info("Shorts yuklendi: https://youtu.be/%s", short_id)
+            except Exception as exc:
+                log.warning("Shorts basarisiz (%s: %s) — ana video etkilenmedi.",
+                            type(exc).__name__, str(exc)[:200])
 
     # 8) Kayit (Bolum 16.5 — bu kayit videoyu birebir yeniden uretmeye yeter)
     # Dry-run YAZMAZ: yuklenmemis bir video "son 2 tema" kuralini ve "son 10 baslik"

@@ -210,6 +210,27 @@ def set_localizations(yt, video_id: str, meta: Dict[str, Any], cfg: Dict[str, An
         log.warning("Ceviriler eklenemedi: %s", exc)
 
 
+def publish_short(video: Path, thumb: Optional[Path], meta: Dict[str, Any],
+                  cfg: Dict[str, Any], secrets: Dict[str, str]) -> str:
+    """Shorts icin hafif yayin — playlist/localization yok, sadece yukle+thumbnail.
+
+    Ana videoyla ayni cfg["channel"] ayarlarini (privacy_status, schedule_publish)
+    kullanir, yani ana video zamanlanmis ise Short da AYNI anda aciliyor — erken
+    izleyen biri "tam video"ya tiklarsa henuz private bir seye dusmesin diye.
+    """
+    yt = client(secrets.get("YT_CLIENT_ID", ""), secrets.get("YT_CLIENT_SECRET", ""),
+                secrets.get("YT_REFRESH_TOKEN", ""))
+    rcfg = cfg.get("retry", {})
+    video_id = upload_video(
+        yt, video, meta, cfg, synthetic=False,
+        attempts=int(rcfg.get("upload_attempts", 3)),
+        backoff_min=int(rcfg.get("upload_backoff_min", 20)),
+    )
+    if thumb and thumb.exists():
+        set_thumbnail(yt, video_id, thumb)
+    return video_id
+
+
 def publish(
     video: Path, thumb: Optional[Path], meta: Dict[str, Any], cfg: Dict[str, Any],
     theme: str, secrets: Dict[str, str], synthetic: bool = False,

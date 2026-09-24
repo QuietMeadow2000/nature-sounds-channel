@@ -15,7 +15,7 @@ TEST = REPO / "config" / "channel_localtest.yaml"
 # (aranan, yerine) — test dosyasinda farkli olmasi gereken tek sey bunlar
 OVERRIDES = [
     ("  key: main", "  key: localtest"),
-    ("  duration_min: 60", "  duration_min: 2   # YEREL TEST"),
+    ("  duration_min: 180", "  duration_min: 2   # YEREL TEST"),
 ]
 HEADER = "# URETILMIS DOSYA — elle duzenleme. Kaynak: config/channel_main.yaml\n" \
          "# Yeniden uretmek icin: python tools/sync_localtest.py\n"

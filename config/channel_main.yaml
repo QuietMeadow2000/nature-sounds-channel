@@ -24,6 +24,10 @@ channel:
   # privacyStatus private iken kabul ediyor; kod bunu kendisi ayarliyor.
   schedule_publish: true
   publish_time_utc: "00:00"    # = 02:00 Isvec, 20:00 ABD Dogu
+  # Her gunun videosundan 45 sn'lik dikey (9:16) kirpma cikarip Shorts olarak da yukle.
+  # Sifir aboneli kanalda YouTube's Shorts kesif akisi ana yuklemeden cok
+  # daha genis; maliyeti neredeyse bedava (render zaten var, sadece kirpma).
+  publish_shorts: true
   category_id: "10"              # 10 = Music, 22 = People & Blogs (A/B test, Bolum 17)
   made_for_kids: false
 
