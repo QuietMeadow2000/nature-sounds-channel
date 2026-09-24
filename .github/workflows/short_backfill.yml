@@ -1,0 +1,37 @@
+name: Shorts geriye donuk
+
+on:
+  workflow_dispatch:
+    inputs:
+      date:
+        description: "Var olan bir video icin Shorts uret (YYYY-MM-DD)"
+        required: true
+        type: string
+      channel:
+        default: config/channel_main.yaml
+        type: string
+
+concurrency:
+  group: qm-short-backfill
+  cancel-in-progress: false
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends ffmpeg
+      - run: pip install -r requirements.txt
+      - name: Shorts uret ve yukle
+        run: python tools/short_backfill.py --channel "${{ inputs.channel }}" --date "${{ inputs.date }}"
+        env:
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          GDRIVE_SA_JSON: ${{ secrets.GDRIVE_SA_JSON }}
