@@ -1145,5 +1145,67 @@
     "publish_mode": "api",
     "privacy": "public",
     "uploaded_at": "2026-09-18T21:09:41+00:00"
+  },
+  {
+    "date": "2026-09-25",
+    "channel": "main",
+    "theme": "forest_birds",
+    "season_hint": "autumn rain, fallen leaves, misty morning",
+    "seed": 99405755055988,
+    "title": "Morning Amazon Riverbank Birdsong for Focus | 3 Hours",
+    "tags": [
+      "amazon riverbank dawn",
+      "amazon birdsong",
+      "riverbank birds",
+      "morning birdsong",
+      "nature sounds",
+      "focus sounds",
+      "relaxing background",
+      "study music",
+      "3 hour nature",
+      "ambient nature"
+    ],
+    "metadata_by": "openai/gpt-oss-120b",
+    "audio": {
+      "layers": [
+        {
+          "role": "main",
+          "match": "birdsong",
+          "source": "birdsong__freesound_674085.flac",
+          "unit_len": 276.0,
+          "gain": 1.0761,
+          "offset": 0.0,
+          "normalize_db": 10.05
+        },
+        {
+          "role": "layer",
+          "match": "leaves_wind",
+          "source": "leaves_wind__freesound_670307.flac",
+          "unit_len": 309.113,
+          "gain": 0.1861,
+          "offset": 198.935,
+          "normalize_db": 6.03
+        }
+      ],
+      "crossfade_sec": 5.0,
+      "edge_trim_sec": 10.0,
+      "target_lufs": -18.0,
+      "mix_correction_db": -0.77,
+      "duration_sec": 10800.0,
+      "seam_check_sec": 276.0
+    },
+    "video": {
+      "visual_kind": "clip",
+      "visual_source": "pexels:5909376",
+      "unit_len_sec": 20.62,
+      "size_mb": 7255.6,
+      "variants": 12,
+      "encoded_sec": 247.5,
+      "repeats": 524
+    },
+    "video_id": "iXBMax_cVBQ",
+    "publish_mode": "api",
+    "privacy": "public",
+    "uploaded_at": "2026-09-24T19:24:12+00:00"
   }
 ]
