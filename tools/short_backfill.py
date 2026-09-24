@@ -65,7 +65,11 @@ def main() -> int:
     clip = work / "short.mp4"
     shorts.extract_clip(video["path"], clip, cfg)
     meta = shorts.build_meta(theme, cfg, e["title"], video_id)
-    short_id = upload_youtube.publish_short(clip, None, meta, cfg, secrets)
+    # Ana video zaten gunlerdir yayinda — Short'u onunla "senkron ac" diye
+    # zamanlamanin bir anlami yok (o mantik SADECE aninda uretilen gunun
+    # videosu icin gecerli). Burada aninda public yayinliyoruz.
+    backfill_cfg = dict(cfg, channel=dict(cfg["channel"], schedule_publish=False))
+    short_id = upload_youtube.publish_short(clip, None, meta, backfill_cfg, secrets)
     log.info("Yuklendi: https://youtu.be/%s  (ana video: https://youtu.be/%s)",
              short_id, video_id)
     # history.json'a KASITLI olarak yazmiyoruz — bu bir backfill, gunun
