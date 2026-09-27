@@ -113,7 +113,17 @@ jobs:
           git config user.email "actions@github.com"
           git add state
           git diff --staged --quiet || git commit -m "log: $(date -u +%F)"
-          git push
+          # Baska bir calisma (elle push, esanli bir is) ayni anda main'e
+          # yazarsa git push 'fetch first' ile reddedilir ve kayit sessizce
+          # kaybolur (27 Eylul'de tam bu oldu — gercek bir yukleme yapildi
+          # ama history.json'a hic girmedi). Cakismada pull --rebase edip
+          # tekrar dene.
+          for i in 1 2 3; do
+            git push && break
+            echo "push basarisiz (deneme $i/3), pull --rebase sonrasi tekrar"
+            git pull --rebase origin main
+            sleep 5
+          done
 
       - if: failure()
         name: QC kesitini sakla (hata ayiklama)
@@ -151,4 +161,14 @@ jobs:
           git config user.email "actions@github.com"
           git add state
           git diff --staged --quiet || git commit -m "weights: $(date -u +%F)"
-          git push
+          # Baska bir calisma (elle push, esanli bir is) ayni anda main'e
+          # yazarsa git push 'fetch first' ile reddedilir ve kayit sessizce
+          # kaybolur (27 Eylul'de tam bu oldu — gercek bir yukleme yapildi
+          # ama history.json'a hic girmedi). Cakismada pull --rebase edip
+          # tekrar dene.
+          for i in 1 2 3; do
+            git push && break
+            echo "push basarisiz (deneme $i/3), pull --rebase sonrasi tekrar"
+            git pull --rebase origin main
+            sleep 5
+          done
