@@ -1207,5 +1207,43 @@
     "publish_mode": "api",
     "privacy": "public",
     "uploaded_at": "2026-09-24T19:24:12+00:00"
+  },
+  {
+    "date": "2026-09-27",
+    "channel": "main",
+    "theme": "night_crickets",
+    "season_hint": null,
+    "seed": 208746495992711,
+    "title": "Warm Mexican Beach Night Crickets for Sleep | 3 Hours",
+    "tags": [],
+    "metadata_by": "groq/openai/gpt-oss-120b",
+    "audio": {
+      "duration_sec": 10800,
+      "crossfade_sec": 5.0,
+      "edge_trim_sec": 10.0,
+      "target_lufs": -18.0,
+      "mix_correction_db": -0.3,
+      "layers": [
+        {
+          "match": "crickets",
+          "unit_len": 501
+        },
+        {
+          "match": "night_wind",
+          "unit_len": 309
+        }
+      ]
+    },
+    "video": {
+      "visual_kind": "clip",
+      "visual_source": "pexels:39429663",
+      "unit_len_sec": 12.7,
+      "variants": 12,
+      "encoded_sec": 152.0,
+      "repeats": 853,
+      "size_mb": 4346.0
+    },
+    "video_id": "55OOvMnjt-8",
+    "_reconstructed_note": "27 Eylul gercek otomatik calismasi basariyla urettim+yukledi ama 'state/ commit' adimi git push cakismasiyla (fetch first) basarisiz oldu — bu yuzden kayit kayboldu. Log'dan elle yeniden olusturuldu. Etiketler (12 adet, Groq ciktisi) kurtarilamadi, video_id/tema/tarih kesin (log'dan)."
   }
 ]
