@@ -43,7 +43,11 @@ jobs:
     # Pazartesi 05:42 tetiklemesi bu isi calistirmaz.
     if: github.event_name != 'schedule' || github.event.schedule == '17 23 * * *'
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    # 300: render (~15-20 dk) + jitter (0-90 dk, publish_guard.jitter_minutes)
+    # + yukleme (birkac dk) toplami kotu ihtimalde 120'yi asabiliyordu — is
+    # yukleme ortasinda kesilip yarim video birakabilirdi. Ilk gercek otomatik
+    # calismada (27 Eylul) bu ilk kez gercekten sinandi.
+    timeout-minutes: 300
     steps:
       - uses: actions/checkout@v4
 
