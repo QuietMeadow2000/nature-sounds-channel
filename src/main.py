@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import os
+import random
 import shutil
 import sys
 import time
@@ -79,6 +80,12 @@ def run(cfg_path: Path, dry_run: bool, replay: Optional[str], keep_work: bool,
         today = date.fromisoformat(for_date)
     day = replay or today.isoformat()
     seed = seed_for(day, channel_key)
+    # publish_jitter icin: gizli kalmis eski bir hata (Bolum 17'den beri —
+    # 'rng' tanimlanmadan kullaniliyordu, ama hicbir test bu satira ulasmadi
+    # cunku her calisma ya --force-publish (bu satiri atlar) ya da guard
+    # tarafindan daha once durduruluyordu. 26 Eylul gecesi guard'in GERCEKTEN
+    # izin verdigi ilk an oldu ve NameError verdi.)
+    rng = random.Random(seed)
 
     if replay:
         past = replay_entry(replay)
