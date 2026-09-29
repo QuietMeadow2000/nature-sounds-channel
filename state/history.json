@@ -1245,5 +1245,78 @@
     },
     "video_id": "55OOvMnjt-8",
     "_reconstructed_note": "27 Eylul gercek otomatik calismasi basariyla urettim+yukledi ama 'state/ commit' adimi git push cakismasiyla (fetch first) basarisiz oldu — bu yuzden kayit kayboldu. Log'dan elle yeniden olusturuldu. Etiketler (12 adet, Groq ciktisi) kurtarilamadi, video_id/tema/tarih kesin (log'dan)."
+  },
+  {
+    "date": "2026-09-28",
+    "channel": "main",
+    "theme": "rain",
+    "season_hint": "autumn rain, fallen leaves, misty morning",
+    "seed": 107946747628285,
+    "title": "Heavy Rain in Open Countryside for Sleep & Study | 3 Hours",
+    "tags": [
+      "heavy rain countryside",
+      "rain in open fields",
+      "distant thunder",
+      "light wind",
+      "autumn rain",
+      "rain sounds for sleep",
+      "rain sounds for study",
+      "relaxing rain",
+      "sleep sounds",
+      "focus music",
+      "3 hour rain",
+      "nature ambience"
+    ],
+    "metadata_by": "openai/gpt-oss-120b",
+    "audio": {
+      "layers": [
+        {
+          "role": "main",
+          "match": "rain",
+          "source": "rain__freesound_200270.flac",
+          "unit_len": 375.0,
+          "gain": 1.0859,
+          "offset": 0.0,
+          "normalize_db": 15.84
+        },
+        {
+          "role": "layer",
+          "match": "distant_thunder",
+          "source": "distant_thunder__freesound_361401.flac",
+          "unit_len": 402.342,
+          "gain": 0.1809,
+          "offset": 128.847,
+          "normalize_db": 23.05
+        },
+        {
+          "role": "layer",
+          "match": "light_wind",
+          "source": "light_wind__freesound_670307.flac",
+          "unit_len": 309.113,
+          "gain": 0.0984,
+          "offset": 191.023,
+          "normalize_db": 6.03
+        }
+      ],
+      "crossfade_sec": 5.0,
+      "edge_trim_sec": 10.0,
+      "target_lufs": -18.0,
+      "mix_correction_db": 0.49,
+      "duration_sec": 10800.0,
+      "seam_check_sec": 375.0
+    },
+    "video": {
+      "visual_kind": "clip",
+      "visual_source": "pexels:4584730",
+      "unit_len_sec": 13.5,
+      "size_mb": 3366.3,
+      "variants": 12,
+      "encoded_sec": 162.0,
+      "repeats": 800
+    },
+    "video_id": "LHia1vNB9QE",
+    "publish_mode": "api",
+    "privacy": "public",
+    "uploaded_at": "2026-09-29T00:33:32+00:00"
   }
 ]
