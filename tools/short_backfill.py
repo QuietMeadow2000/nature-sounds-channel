@@ -62,9 +62,10 @@ def main() -> int:
     video = build_video.build(theme, cfg, assets, work, audio["path"], seed,
                               pexels_key=secrets["PEXELS_API_KEY"] or None)
 
-    clip = work / "short.mp4"
-    shorts.extract_clip(video["path"], clip, cfg)
     meta = shorts.build_meta(theme, cfg, e["title"], video_id)
+    clip = work / "short.mp4"
+    shorts.extract_clip(video["path"], clip, cfg,
+                        top_text=meta["caption_top"], bottom_text=meta["caption_bottom"])
     # Ana video zaten gunlerdir yayinda — Short'u onunla "senkron ac" diye
     # zamanlamanin bir anlami yok (o mantik SADECE aninda uretilen gunun
     # videosu icin gecerli). Burada aninda public yayinliyoruz.
@@ -72,6 +73,12 @@ def main() -> int:
     short_id = upload_youtube.publish_short(clip, None, meta, backfill_cfg, secrets)
     log.info("Yuklendi: https://youtu.be/%s  (ana video: https://youtu.be/%s)",
              short_id, video_id)
+    try:
+        yt = upload_youtube.client(secrets["YT_CLIENT_ID"], secrets["YT_CLIENT_SECRET"],
+                                   secrets["YT_REFRESH_TOKEN"])
+        upload_youtube.post_comment(yt, short_id, meta["comment_text"])
+    except Exception as exc:
+        log.warning("Yorum birakilamadi (%s) — video etkilenmedi.", type(exc).__name__)
     # history.json'a KASITLI olarak yazmiyoruz — bu bir backfill, gunun
     # normal uretim kaydini kirletmemeli.
     return 0
