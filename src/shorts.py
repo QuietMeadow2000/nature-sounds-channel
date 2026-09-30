@@ -25,28 +25,56 @@ def _dtext(text: str) -> str:
             .replace("'", "\\'").replace("%", "\\%"))
 
 
+def _wrap(text: str, max_chars: int = 20) -> list:
+    """Uzun basligi en fazla 2 satira bol.
+
+    Sabit fontsize'da tek satir denedik: 45 karakterlik gercek bir baslik
+    ("Tropical Island Shore Wave Ambience for Sleep") ekranin HER IKI
+    kenarindan tastigi ve tamamen okunamaz oldugu goruldu (18 karakterlik
+    test gecmisti, gercek basliklarimiz 37-45 karakter). Font kucultmek
+    yerine 2 satira bolmek daha guvenilir — her satir ayri drawtext oldugu
+    icin kendi genisligine gore ortalaniyor.
+    """
+    kelimeler = text.split()
+    if len(text) <= max_chars or len(kelimeler) < 2:
+        return [text]
+    orta = len(text) / 2
+    en_iyi, uzunluk = 1, abs(len(kelimeler[0]) - orta)
+    toplam = len(kelimeler[0])
+    for i in range(1, len(kelimeler)):
+        toplam += 1 + len(kelimeler[i])
+        fark = abs(toplam - orta)
+        if fark < uzunluk:
+            en_iyi, uzunluk = i + 1, fark
+    return [" ".join(kelimeler[:en_iyi]), " ".join(kelimeler[en_iyi:])]
+
+
 def _caption_filter(top: str, bottom: str) -> str:
     """Kisayi acanin video icinde gordugu tek sey aciklama degil — Shorts'ta
     kimse 'daha fazla'ya dokunup aciklamayi okumuyor. Cagri, piksellerin
     icinde olmak zorunda. Thumbnail ile ayni stil: beyaz metin + yumusak
     siyah golge (make_thumbnail.py'deki draw.text golge deseniyle tutarli).
 
-    Konumlar: y=140 ust guvenli bolge (Shorts'un ust ilerleme cubugunun
-    altinda). y=h-360 alt metin icin — Shorts UI'i (begeni/yorum/paylas,
-    kullanici adi, aciklama basi) ekranin alt ~%15-18'ini kapladigi icin
-    oradan acikca uzak tutuluyor.
+    Konumlar: ust blok y=110'dan basliyor (Shorts'un ust ilerleme cubugunun
+    altinda). Alt metin y=h-360 — Shorts UI'i (begeni/yorum/paylas, kullanici
+    adi, aciklama basi) ekranin alt ~%15-18'ini kapladigi icin oradan acikca
+    uzak tutuluyor.
     """
-    top_t, bot_t = _dtext(top.upper()), _dtext(bottom.upper())
-    parcalar = [
-        f"drawtext=fontfile='{FONT_TOP}':text='{top_t}':fontsize=72:"
-        f"fontcolor=black@0.65:x=(w-text_w)/2+3:y=143",
-        f"drawtext=fontfile='{FONT_TOP}':text='{top_t}':fontsize=72:"
-        f"fontcolor=white:x=(w-text_w)/2:y=140",
-        f"drawtext=fontfile='{FONT_BOTTOM}':text='{bot_t}':fontsize=44:"
-        f"fontcolor=black@0.65:x=(w-text_w)/2+2:y=h-358",
-        f"drawtext=fontfile='{FONT_BOTTOM}':text='{bot_t}':fontsize=44:"
-        f"fontcolor=white:x=(w-text_w)/2:y=h-360",
-    ]
+    parcalar = []
+    satirlar = _wrap(top.upper())
+    for i, satir in enumerate(satirlar):
+        t = _dtext(satir)
+        y = 110 + i * 84
+        parcalar.append(f"drawtext=fontfile='{FONT_TOP}':text='{t}':fontsize=64:"
+                        f"fontcolor=black@0.65:x=(w-text_w)/2+3:y={y + 3}")
+        parcalar.append(f"drawtext=fontfile='{FONT_TOP}':text='{t}':fontsize=64:"
+                        f"fontcolor=white:x=(w-text_w)/2:y={y}")
+
+    bot_t = _dtext(bottom.upper())
+    parcalar.append(f"drawtext=fontfile='{FONT_BOTTOM}':text='{bot_t}':fontsize=40:"
+                    f"fontcolor=black@0.65:x=(w-text_w)/2+2:y=h-358")
+    parcalar.append(f"drawtext=fontfile='{FONT_BOTTOM}':text='{bot_t}':fontsize=40:"
+                    f"fontcolor=white:x=(w-text_w)/2:y=h-360")
     return ",".join(parcalar)
 
 
