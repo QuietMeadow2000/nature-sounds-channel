@@ -227,12 +227,24 @@ def run(cfg_path: Path, dry_run: bool, replay: Optional[str], keep_work: bool,
         # Hata verirse ana videonun basarisini etkilemesin diye izole edildi.
         if cfg["channel"].get("publish_shorts", True):
             try:
-                short_path = work / "short.mp4"
-                shorts.extract_clip(video["path"], short_path, cfg)
+                # Once meta: caption_top/bottom klibin icine yazilacak, yani
+                # extract_clip'ten ONCE meta uretilmis olmali.
                 short_meta = shorts.build_meta(theme, cfg, meta["title"], video_id)
+                short_path = work / "short.mp4"
+                shorts.extract_clip(video["path"], short_path, cfg,
+                                    top_text=short_meta["caption_top"],
+                                    bottom_text=short_meta["caption_bottom"])
                 short_id = upload_youtube.publish_short(
                     short_path, None, short_meta, cfg, secrets)
                 log.info("Shorts yuklendi: https://youtu.be/%s", short_id)
+                try:
+                    yt_short = upload_youtube.client(
+                        secrets["YT_CLIENT_ID"], secrets["YT_CLIENT_SECRET"],
+                        secrets["YT_REFRESH_TOKEN"])
+                    upload_youtube.post_comment(yt_short, short_id, short_meta["comment_text"])
+                except Exception as exc:
+                    log.warning("Shorts yorumu birakilamadi (%s) — video etkilenmedi.",
+                                type(exc).__name__)
             except Exception as exc:
                 log.warning("Shorts basarisiz (%s: %s) — ana video etkilenmedi.",
                             type(exc).__name__, str(exc)[:200])

@@ -210,6 +210,22 @@ def set_localizations(yt, video_id: str, meta: Dict[str, Any], cfg: Dict[str, An
         log.warning("Ceviriler eklenemedi: %s", exc)
 
 
+def post_comment(yt, video_id: str, text: str) -> None:
+    """Kanal sahibi olarak videoya bir yorum birak.
+
+    ONEMLI: Shorts'ta yorumlardaki linkler DE tiklanmiyor (aciklamayla ayni
+    spam onlemi, pekistirilmis olsa bile). Yani bu yorum bir "tikla-git"
+    mekanizmasi degil — sadece baglam/guven veriyor ("evet uzun hali var").
+    Gercek tek-dokunuslu eylem ekrandaki kanal adina dokunmak; comment_text
+    bunu soyluyor. Pekistirme (pin) zaten API'den desteklenmiyor.
+    """
+    yt.commentThreads().insert(
+        part="snippet",
+        body={"snippet": {"videoId": video_id,
+                          "topLevelComment": {"snippet": {"textOriginal": text}}}},
+    ).execute()
+
+
 def publish_short(video: Path, thumb: Optional[Path], meta: Dict[str, Any],
                   cfg: Dict[str, Any], secrets: Dict[str, str]) -> str:
     """Shorts icin hafif yayin — playlist/localization yok, sadece yukle+thumbnail.
