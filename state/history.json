@@ -1446,5 +1446,70 @@
     "publish_mode": "api",
     "privacy": "public",
     "uploaded_at": "2026-10-01T00:24:22+00:00"
+  },
+  {
+    "date": "2026-10-01",
+    "channel": "main",
+    "theme": "thunderstorm",
+    "season_hint": null,
+    "seed": 255615299276147,
+    "title": "Rain on a Car Roof for Deep Sleep | 3 Hours",
+    "tags": [
+      "rain on car roof",
+      "rain inside car",
+      "car rain asmr",
+      "heavy rain car",
+      "car roof thunder",
+      "rain and thunder",
+      "rain car interior",
+      "thunderstorm sounds",
+      "sleep sounds",
+      "deep sleep",
+      "relaxing rain",
+      "study background",
+      "3 hour rain"
+    ],
+    "metadata_by": "openai/gpt-oss-120b",
+    "audio": {
+      "layers": [
+        {
+          "role": "main",
+          "match": "heavy_rain",
+          "source": "heavy_rain__freesound_522901.flac",
+          "unit_len": 575.0,
+          "gain": 1.0369,
+          "offset": 0.0,
+          "normalize_db": 8.58
+        },
+        {
+          "role": "layer",
+          "match": "thunder",
+          "source": "thunder__freesound_361401.flac",
+          "unit_len": 402.342,
+          "gain": 0.3589,
+          "offset": 243.374,
+          "normalize_db": 23.05
+        }
+      ],
+      "crossfade_sec": 5.0,
+      "edge_trim_sec": 10.0,
+      "target_lufs": -18.0,
+      "mix_correction_db": 4.99,
+      "duration_sec": 10800.0,
+      "seam_check_sec": 575.0
+    },
+    "video": {
+      "visual_kind": "clip",
+      "visual_source": "pexels:8223945",
+      "unit_len_sec": 33.42,
+      "size_mb": 3439.4,
+      "variants": 12,
+      "encoded_sec": 401.0,
+      "repeats": 324
+    },
+    "video_id": "e3JeIw8UWKE",
+    "publish_mode": "api",
+    "privacy": "public",
+    "uploaded_at": "2026-10-02T00:14:37+00:00"
   }
 ]
