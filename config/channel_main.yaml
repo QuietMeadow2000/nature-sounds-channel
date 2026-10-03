@@ -28,7 +28,12 @@ channel:
   # Sifir aboneli kanalda YouTube's Shorts kesif akisi ana yuklemeden cok
   # daha genis; maliyeti neredeyse bedava (render zaten var, sadece kirpma).
   publish_shorts: true
-  category_id: "10"              # 10 = Music, 22 = People & Blogs (A/B test, Bolum 17)
+  category_id: "10"              # category_options yoksa / manuel modda varsayilan
+  # Gun-parite ile 10 (Music) / 22 (People & Blogs) arasinda donuyor. Ikisi de
+  # ambient ses icin makul secenek, hangisi daha cok izlenme getiriyor bilmiyoruz.
+  # history.json'a hangi kategori kullanildigi yaziliyor — yeterli veri
+  # birikince fetch_analytics.py ile karsilastirilabilir.
+  category_options: ["10", "22"]
   made_for_kids: false
 
 audio:

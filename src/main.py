@@ -87,6 +87,13 @@ def run(cfg_path: Path, dry_run: bool, replay: Optional[str], keep_work: bool,
     # izin verdigi ilk an oldu ve NameError verdi.)
     rng = random.Random(seed)
 
+    # Kategori A/B: gun-parite ile Music(10)/People&Blogs(22) arasinda donuyor.
+    # Hangisi daha cok izlenme getiriyor bilmiyoruz — history.json'a yazilip
+    # yeterli veri birikince karsilastirilacak.
+    secenekler = cfg["channel"].get("category_options") or [cfg["channel"]["category_id"]]
+    category_id = secenekler[today.toordinal() % len(secenekler)]
+    cfg["channel"] = dict(cfg["channel"], category_id=category_id)
+
     if replay:
         past = replay_entry(replay)
         theme, season_hint = past["theme"], past.get("season_hint")
@@ -269,6 +276,7 @@ def run(cfg_path: Path, dry_run: bool, replay: Optional[str], keep_work: bool,
             "audio": audio["recipe"],
             "video": video["recipe"],
             "video_id": video_id,
+            "category_id": category_id,
             "publish_mode": mode,
             "privacy": cfg["channel"]["privacy_status"] if mode == "api" else "manual",
             "uploaded_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
