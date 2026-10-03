@@ -1511,5 +1511,67 @@
     "publish_mode": "api",
     "privacy": "public",
     "uploaded_at": "2026-10-02T00:14:37+00:00"
+  },
+  {
+    "date": "2026-10-02",
+    "channel": "main",
+    "theme": "forest_birds",
+    "season_hint": "autumn rain, fallen leaves, misty morning",
+    "seed": 26853626270842,
+    "title": "Amazon Rainforest Riverbank Dawn Birds for Focus | 3 Hours",
+    "tags": [
+      "amazon riverbank",
+      "dawn birds",
+      "rainforest birdsong",
+      "riverbank birds",
+      "morning birds",
+      "nature sounds",
+      "focus sounds",
+      "sleep sounds",
+      "relaxing nature",
+      "3 hour"
+    ],
+    "metadata_by": "openai/gpt-oss-120b",
+    "audio": {
+      "layers": [
+        {
+          "role": "main",
+          "match": "birdsong",
+          "source": "birdsong__freesound_674085.flac",
+          "unit_len": 276.0,
+          "gain": 1.0222,
+          "offset": 0.0,
+          "normalize_db": 10.05
+        },
+        {
+          "role": "layer",
+          "match": "leaves_wind",
+          "source": "leaves_wind__freesound_670307.flac",
+          "unit_len": 309.113,
+          "gain": 0.1962,
+          "offset": 194.793,
+          "normalize_db": 6.03
+        }
+      ],
+      "crossfade_sec": 5.0,
+      "edge_trim_sec": 10.0,
+      "target_lufs": -18.0,
+      "mix_correction_db": -0.36,
+      "duration_sec": 10800.0,
+      "seam_check_sec": 276.0
+    },
+    "video": {
+      "visual_kind": "clip",
+      "visual_source": "pexels:3150369",
+      "unit_len_sec": 11.29,
+      "size_mb": 8873.6,
+      "variants": 12,
+      "encoded_sec": 135.5,
+      "repeats": 957
+    },
+    "video_id": "6TOHBoczSJw",
+    "publish_mode": "api",
+    "privacy": "public",
+    "uploaded_at": "2026-10-03T01:11:04+00:00"
   }
 ]
