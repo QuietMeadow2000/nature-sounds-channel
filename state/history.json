@@ -1573,5 +1573,70 @@
     "publish_mode": "api",
     "privacy": "public",
     "uploaded_at": "2026-10-03T01:11:04+00:00"
+  },
+  {
+    "date": "2026-10-04",
+    "channel": "main",
+    "theme": "night_crickets",
+    "season_hint": null,
+    "seed": 189200930792502,
+    "title": "Coastal Night Crickets for Sleep | 3 Hours",
+    "tags": [
+      "coastal night crickets",
+      "night crickets",
+      "cricket sounds",
+      "sleep sounds",
+      "relaxation sounds",
+      "nature ambience",
+      "3 hour crickets",
+      "3 hour sleep",
+      "ambient sleep",
+      "night wind",
+      "nature sleep",
+      "coastal ambience"
+    ],
+    "metadata_by": "openai/gpt-oss-120b",
+    "audio": {
+      "layers": [
+        {
+          "role": "main",
+          "match": "crickets",
+          "source": "crickets__freesound_479041.flac",
+          "unit_len": 500.781,
+          "gain": 0.9377,
+          "offset": 0.0,
+          "normalize_db": -3.43
+        },
+        {
+          "role": "layer",
+          "match": "night_wind",
+          "source": "night_wind__freesound_670307.flac",
+          "unit_len": 309.113,
+          "gain": 0.1578,
+          "offset": 256.139,
+          "normalize_db": 6.03
+        }
+      ],
+      "crossfade_sec": 5.0,
+      "edge_trim_sec": 10.0,
+      "target_lufs": -18.0,
+      "mix_correction_db": 0.84,
+      "duration_sec": 10800.0,
+      "seam_check_sec": 500.781
+    },
+    "video": {
+      "visual_kind": "clip",
+      "visual_source": "pexels:7615698",
+      "unit_len_sec": 13.38,
+      "size_mb": 3288.1,
+      "variants": 12,
+      "encoded_sec": 160.5,
+      "repeats": 808
+    },
+    "video_id": "sZvnLCxwjyE",
+    "category_id": "22",
+    "publish_mode": "api",
+    "privacy": "public",
+    "uploaded_at": "2026-10-04T03:19:36+00:00"
   }
 ]
