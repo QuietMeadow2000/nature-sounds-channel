@@ -1638,5 +1638,77 @@
     "publish_mode": "api",
     "privacy": "public",
     "uploaded_at": "2026-10-04T03:19:36+00:00"
+  },
+  {
+    "date": "2026-10-05",
+    "channel": "main",
+    "theme": "rain",
+    "season_hint": "autumn rain, fallen leaves, misty morning",
+    "seed": 111188486278832,
+    "title": "Heavy Rain in Open Countryside – Perfect for Sleep & Study | 3 Hours",
+    "tags": [
+      "heavy rain open countryside",
+      "rain sounds",
+      "rain for sleep",
+      "rain for study",
+      "thunder ambience",
+      "wind ambience",
+      "sleep sounds",
+      "focus sounds",
+      "relaxation audio",
+      "3 hour rain"
+    ],
+    "metadata_by": "openai/gpt-oss-120b",
+    "audio": {
+      "layers": [
+        {
+          "role": "main",
+          "match": "rain",
+          "source": "rain__freesound_200270.flac",
+          "unit_len": 375.0,
+          "gain": 0.9522,
+          "offset": 0.0,
+          "normalize_db": 15.84
+        },
+        {
+          "role": "layer",
+          "match": "distant_thunder",
+          "source": "distant_thunder__freesound_361401.flac",
+          "unit_len": 402.342,
+          "gain": 0.1926,
+          "offset": 74.902,
+          "normalize_db": 23.05
+        },
+        {
+          "role": "layer",
+          "match": "light_wind",
+          "source": "light_wind__freesound_670307.flac",
+          "unit_len": 309.113,
+          "gain": 0.0916,
+          "offset": 216.102,
+          "normalize_db": 6.03
+        }
+      ],
+      "crossfade_sec": 5.0,
+      "edge_trim_sec": 10.0,
+      "target_lufs": -18.0,
+      "mix_correction_db": 1.52,
+      "duration_sec": 10800.0,
+      "seam_check_sec": 375.0
+    },
+    "video": {
+      "visual_kind": "clip",
+      "visual_source": "pexels:5910560",
+      "unit_len_sec": 38.38,
+      "size_mb": 4513.0,
+      "variants": 12,
+      "encoded_sec": 460.5,
+      "repeats": 282
+    },
+    "video_id": "zCb6ltaL8gs",
+    "category_id": "10",
+    "publish_mode": "api",
+    "privacy": "public",
+    "uploaded_at": "2026-10-06T00:55:39+00:00"
   }
 ]
