@@ -1829,5 +1829,68 @@
     "publish_mode": "api",
     "privacy": "public",
     "uploaded_at": "2026-10-08T03:53:54+00:00"
+  },
+  {
+    "date": "2026-10-09",
+    "channel": "main",
+    "theme": "forest_birds",
+    "season_hint": "autumn rain, fallen leaves, misty morning",
+    "seed": 77562457013219,
+    "title": "River Bank in the Amazon Rainforest at Dawn for Focus | 3 Hours",
+    "tags": [
+      "forest birds sounds",
+      "sleep sounds",
+      "relaxing sounds",
+      "nature sounds",
+      "white noise",
+      "study music",
+      "focus sounds",
+      "ambient sounds",
+      "3 hours",
+      "calm"
+    ],
+    "metadata_by": "fallback_template",
+    "audio": {
+      "layers": [
+        {
+          "role": "main",
+          "match": "birdsong",
+          "source": "birdsong__freesound_674085.flac",
+          "unit_len": 276.0,
+          "gain": 1.0533,
+          "offset": 0.0,
+          "normalize_db": 10.05
+        },
+        {
+          "role": "layer",
+          "match": "leaves_wind",
+          "source": "leaves_wind__freesound_670307.flac",
+          "unit_len": 309.113,
+          "gain": 0.216,
+          "offset": 76.775,
+          "normalize_db": 6.03
+        }
+      ],
+      "crossfade_sec": 5.0,
+      "edge_trim_sec": 10.0,
+      "target_lufs": -18.0,
+      "mix_correction_db": -0.58,
+      "duration_sec": 10800.0,
+      "seam_check_sec": 276.0
+    },
+    "video": {
+      "visual_kind": "clip",
+      "visual_source": "pexels:8190888",
+      "unit_len_sec": 11.17,
+      "size_mb": 6595.5,
+      "variants": 12,
+      "encoded_sec": 134.0,
+      "repeats": 968
+    },
+    "video_id": "dVlfo0kVs5k",
+    "category_id": "10",
+    "publish_mode": "api",
+    "privacy": "public",
+    "uploaded_at": "2026-10-09T03:41:37+00:00"
   }
 ]
