@@ -2139,5 +2139,77 @@
     "publish_mode": "api",
     "privacy": "public",
     "uploaded_at": "2026-10-13T04:50:56+00:00"
+  },
+  {
+    "date": "2026-10-14",
+    "channel": "main",
+    "theme": "stream",
+    "season_hint": null,
+    "seed": 236118871950531,
+    "title": "Gentle Spring Creek Over Stones for Study | 3 Hours",
+    "tags": [
+      "spring creek",
+      "creek over stones",
+      "stream sounds",
+      "birdsong",
+      "wind leaves",
+      "nature sleep sounds",
+      "study focus music",
+      "relaxation audio",
+      "3 hour stream",
+      "ambient nature"
+    ],
+    "metadata_by": "openai/gpt-oss-120b",
+    "audio": {
+      "layers": [
+        {
+          "role": "main",
+          "match": "stream",
+          "source": "stream__freesound_512224.flac",
+          "unit_len": 297.316,
+          "gain": 1.0943,
+          "offset": 0.0,
+          "normalize_db": 7.08
+        },
+        {
+          "role": "layer",
+          "match": "birdsong",
+          "source": "birdsong__freesound_674085.flac",
+          "unit_len": 276.0,
+          "gain": 0.1255,
+          "offset": 113.306,
+          "normalize_db": 10.05
+        },
+        {
+          "role": "layer",
+          "match": "leaves_wind",
+          "source": "leaves_wind__freesound_670307.flac",
+          "unit_len": 309.113,
+          "gain": 0.095,
+          "offset": 128.059,
+          "normalize_db": 6.03
+        }
+      ],
+      "crossfade_sec": 5.0,
+      "edge_trim_sec": 10.0,
+      "target_lufs": -18.0,
+      "mix_correction_db": -0.8,
+      "duration_sec": 10800.0,
+      "seam_check_sec": 297.316
+    },
+    "video": {
+      "visual_kind": "clip",
+      "visual_source": "pexels:5963476",
+      "unit_len_sec": 19.5,
+      "size_mb": 8658.1,
+      "variants": 12,
+      "encoded_sec": 234.0,
+      "repeats": 554
+    },
+    "video_id": "AELu_BPCUjs",
+    "category_id": "22",
+    "publish_mode": "api",
+    "privacy": "public",
+    "uploaded_at": "2026-10-14T03:14:45+00:00"
   }
 ]
