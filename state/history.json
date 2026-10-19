@@ -2459,5 +2459,80 @@
     "publish_mode": "api",
     "privacy": "public",
     "uploaded_at": "2026-10-18T02:12:54+00:00"
+  },
+  {
+    "date": "2026-10-19",
+    "channel": "main",
+    "theme": "rain",
+    "season_hint": "autumn rain, fallen leaves, misty morning",
+    "seed": 74217079105265,
+    "title": "Heavy Rain Over Open Countryside for Sleep | 3 Hours",
+    "tags": [
+      "heavy rain countryside",
+      "rain open field",
+      "rain and thunder",
+      "rain with wind",
+      "rain for sleep",
+      "rain for study",
+      "sleep sounds",
+      "focus sounds",
+      "relaxation sounds",
+      "3 hour rain",
+      "autumn rain ambience",
+      "misty morning rain",
+      "rain background"
+    ],
+    "metadata_by": "openai/gpt-oss-120b",
+    "audio": {
+      "layers": [
+        {
+          "role": "main",
+          "match": "rain",
+          "source": "rain__freesound_200270.flac",
+          "unit_len": 375.0,
+          "gain": 0.9387,
+          "offset": 0.0,
+          "normalize_db": 15.84
+        },
+        {
+          "role": "layer",
+          "match": "distant_thunder",
+          "source": "distant_thunder__freesound_361401.flac",
+          "unit_len": 402.342,
+          "gain": 0.2128,
+          "offset": 176.771,
+          "normalize_db": 23.05
+        },
+        {
+          "role": "layer",
+          "match": "light_wind",
+          "source": "light_wind__freesound_670307.flac",
+          "unit_len": 309.113,
+          "gain": 0.106,
+          "offset": 104.212,
+          "normalize_db": 6.03
+        }
+      ],
+      "crossfade_sec": 5.0,
+      "edge_trim_sec": 10.0,
+      "target_lufs": -18.0,
+      "mix_correction_db": 1.52,
+      "duration_sec": 10800.0,
+      "seam_check_sec": 375.0
+    },
+    "video": {
+      "visual_kind": "clip",
+      "visual_source": "pexels:5910560",
+      "unit_len_sec": 38.38,
+      "size_mb": 4503.1,
+      "variants": 12,
+      "encoded_sec": 460.5,
+      "repeats": 282
+    },
+    "video_id": "XmzwAP1XDy8",
+    "category_id": "10",
+    "publish_mode": "api",
+    "privacy": "public",
+    "uploaded_at": "2026-10-19T02:38:00+00:00"
   }
 ]
