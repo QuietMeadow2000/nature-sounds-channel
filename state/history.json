@@ -2534,5 +2534,59 @@
     "publish_mode": "api",
     "privacy": "public",
     "uploaded_at": "2026-10-19T02:38:00+00:00"
+  },
+  {
+    "date": "2026-10-20",
+    "channel": "main",
+    "theme": "fireplace",
+    "season_hint": null,
+    "seed": 148754298696969,
+    "title": "Indoor Stone Fireplace Burning for Cozy Sleep | 3 Hours",
+    "tags": [
+      "stone fireplace",
+      "fireplace crackle",
+      "indoor fire",
+      "fire sounds",
+      "cozy sleep",
+      "sleep sounds",
+      "relaxing fire",
+      "background noise",
+      "3 hour fireplace",
+      "focus sounds"
+    ],
+    "metadata_by": "openai/gpt-oss-120b",
+    "audio": {
+      "layers": [
+        {
+          "role": "main",
+          "match": "fireplace",
+          "source": "fireplace__freesound_496130.flac",
+          "unit_len": 344.5,
+          "gain": 0.9215,
+          "offset": 0.0,
+          "normalize_db": 15.06
+        }
+      ],
+      "crossfade_sec": 5.0,
+      "edge_trim_sec": 10.0,
+      "target_lufs": -18.0,
+      "mix_correction_db": 1.71,
+      "duration_sec": 10800.0,
+      "seam_check_sec": 344.5
+    },
+    "video": {
+      "visual_kind": "clip",
+      "visual_source": "pexels:15264411",
+      "unit_len_sec": 18.5,
+      "size_mb": 7093.8,
+      "variants": 12,
+      "encoded_sec": 222.0,
+      "repeats": 584
+    },
+    "video_id": "GoUrx3LYxOE",
+    "category_id": "22",
+    "publish_mode": "api",
+    "privacy": "public",
+    "uploaded_at": "2026-10-20T02:20:57+00:00"
   }
 ]
