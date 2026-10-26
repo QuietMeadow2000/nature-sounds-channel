@@ -1,15 +1,15 @@
 {
-  "updated": "2026-10-19",
+  "updated": "2026-10-26",
   "window_days": 28,
-  "videos_measured": 11,
+  "videos_measured": 14,
   "weights": {
-    "rain": 0.1839,
+    "rain": 0.1589,
     "ocean_waves": 0.125,
     "forest_birds": 0.125,
-    "stream": 0.0661,
+    "stream": 0.0571,
     "thunderstorm": 0.125,
     "wind": 0.125,
     "fireplace": 0.125,
-    "night_crickets": 0.125
+    "night_crickets": 0.1589
   }
 }
