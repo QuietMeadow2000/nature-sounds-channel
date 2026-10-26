@@ -2911,5 +2911,77 @@
     "publish_mode": "api",
     "privacy": "public",
     "uploaded_at": "2026-10-25T02:39:03+00:00"
+  },
+  {
+    "date": "2026-10-26",
+    "channel": "main",
+    "theme": "rain",
+    "season_hint": "autumn rain, fallen leaves, misty morning",
+    "seed": 1083258207822,
+    "title": "Steady Open‑Field Downpour for Sleep | 3 Hours",
+    "tags": [
+      "open field rain",
+      "steady countryside rain",
+      "rain with thunder",
+      "light wind rain",
+      "autumn rain",
+      "rain sounds for sleep",
+      "sleep sounds",
+      "study ambience",
+      "relaxation",
+      "3 hour rain"
+    ],
+    "metadata_by": "openai/gpt-oss-120b",
+    "audio": {
+      "layers": [
+        {
+          "role": "main",
+          "match": "rain",
+          "source": "rain__freesound_200270.flac",
+          "unit_len": 375.0,
+          "gain": 0.9861,
+          "offset": 0.0,
+          "normalize_db": 15.84
+        },
+        {
+          "role": "layer",
+          "match": "distant_thunder",
+          "source": "distant_thunder__freesound_361401.flac",
+          "unit_len": 402.342,
+          "gain": 0.2021,
+          "offset": 317.95,
+          "normalize_db": 23.05
+        },
+        {
+          "role": "layer",
+          "match": "light_wind",
+          "source": "light_wind__freesound_670307.flac",
+          "unit_len": 309.113,
+          "gain": 0.109,
+          "offset": 204.497,
+          "normalize_db": 6.03
+        }
+      ],
+      "crossfade_sec": 5.0,
+      "edge_trim_sec": 10.0,
+      "target_lufs": -18.0,
+      "mix_correction_db": 1.25,
+      "duration_sec": 10800.0,
+      "seam_check_sec": 375.0
+    },
+    "video": {
+      "visual_kind": "clip",
+      "visual_source": "pexels:4779388",
+      "unit_len_sec": 28.21,
+      "size_mb": 4538.0,
+      "variants": 12,
+      "encoded_sec": 338.5,
+      "repeats": 383
+    },
+    "video_id": "PrXUm6ksfQ4",
+    "category_id": "22",
+    "publish_mode": "api",
+    "privacy": "public",
+    "uploaded_at": "2026-10-26T02:13:33+00:00"
   }
 ]
