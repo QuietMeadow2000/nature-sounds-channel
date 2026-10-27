@@ -2983,5 +2983,63 @@
     "publish_mode": "api",
     "privacy": "public",
     "uploaded_at": "2026-10-26T02:13:33+00:00"
+  },
+  {
+    "date": "2026-10-27",
+    "channel": "main",
+    "theme": "fireplace",
+    "season_hint": null,
+    "seed": 152403048689679,
+    "title": "Stone Fireplace Glow for Cozy Sleep | 3 Hours",
+    "tags": [
+      "stone fireplace",
+      "fireplace sounds",
+      "crackling fire",
+      "cozy sleep",
+      "sleep sounds",
+      "relaxing ambience",
+      "focus sounds",
+      "3 hour fireplace",
+      "background noise",
+      "ambient fire",
+      "quiet room",
+      "deep sleep",
+      "meditation sounds",
+      "indoor fire"
+    ],
+    "metadata_by": "openai/gpt-oss-120b",
+    "audio": {
+      "layers": [
+        {
+          "role": "main",
+          "match": "fireplace",
+          "source": "fireplace__freesound_496130.flac",
+          "unit_len": 344.5,
+          "gain": 1.0351,
+          "offset": 0.0,
+          "normalize_db": 15.06
+        }
+      ],
+      "crossfade_sec": 5.0,
+      "edge_trim_sec": 10.0,
+      "target_lufs": -18.0,
+      "mix_correction_db": 0.74,
+      "duration_sec": 10800.0,
+      "seam_check_sec": 344.5
+    },
+    "video": {
+      "visual_kind": "clip",
+      "visual_source": "pexels:36907900",
+      "unit_len_sec": 11.58,
+      "size_mb": 4444.2,
+      "variants": 12,
+      "encoded_sec": 139.0,
+      "repeats": 933
+    },
+    "video_id": "3qLHyzi78hA",
+    "category_id": "10",
+    "publish_mode": "api",
+    "privacy": "public",
+    "uploaded_at": "2026-10-27T03:31:25+00:00"
   }
 ]
