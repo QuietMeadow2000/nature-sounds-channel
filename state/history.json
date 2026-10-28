@@ -3041,5 +3041,79 @@
     "publish_mode": "api",
     "privacy": "public",
     "uploaded_at": "2026-10-27T03:31:25+00:00"
+  },
+  {
+    "date": "2026-10-28",
+    "channel": "main",
+    "theme": "stream",
+    "season_hint": null,
+    "seed": 83123511666899,
+    "title": "Gentle Creek Flowing Over Stones for Meditation | 3 Hours",
+    "tags": [
+      "creek over stones",
+      "stream over stones",
+      "creek sounds",
+      "birds chirping creek",
+      "leaves rustle",
+      "spring creek",
+      "sleep sounds",
+      "focus music",
+      "relaxation audio",
+      "meditation sounds",
+      "study background",
+      "3 hour creek"
+    ],
+    "metadata_by": "openai/gpt-oss-120b",
+    "audio": {
+      "layers": [
+        {
+          "role": "main",
+          "match": "stream",
+          "source": "stream__freesound_512224.flac",
+          "unit_len": 297.316,
+          "gain": 0.9932,
+          "offset": 0.0,
+          "normalize_db": 7.08
+        },
+        {
+          "role": "layer",
+          "match": "birdsong",
+          "source": "birdsong__freesound_674085.flac",
+          "unit_len": 276.0,
+          "gain": 0.1218,
+          "offset": 48.549,
+          "normalize_db": 10.05
+        },
+        {
+          "role": "layer",
+          "match": "leaves_wind",
+          "source": "leaves_wind__freesound_670307.flac",
+          "unit_len": 309.113,
+          "gain": 0.1015,
+          "offset": 85.748,
+          "normalize_db": 6.03
+        }
+      ],
+      "crossfade_sec": 5.0,
+      "edge_trim_sec": 10.0,
+      "target_lufs": -18.0,
+      "mix_correction_db": 0.02,
+      "duration_sec": 10800.0,
+      "seam_check_sec": 297.316
+    },
+    "video": {
+      "visual_kind": "clip",
+      "visual_source": "pexels:28237492",
+      "unit_len_sec": 9.38,
+      "size_mb": 8842.2,
+      "variants": 12,
+      "encoded_sec": 112.5,
+      "repeats": 1152
+    },
+    "video_id": "Kj29LXOhw5o",
+    "category_id": "22",
+    "publish_mode": "api",
+    "privacy": "public",
+    "uploaded_at": "2026-10-28T04:00:47+00:00"
   }
 ]
