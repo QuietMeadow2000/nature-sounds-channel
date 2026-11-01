@@ -3299,5 +3299,73 @@
     "publish_mode": "api",
     "privacy": "public",
     "uploaded_at": "2026-10-31T02:59:53+00:00"
+  },
+  {
+    "date": "2026-11-01",
+    "channel": "main",
+    "theme": "night_crickets",
+    "season_hint": null,
+    "seed": 145388382131639,
+    "title": "Seaside Mexican Crickets at Night for Sleep | 3 Hours",
+    "tags": [
+      "mexican night crickets",
+      "coastal crickets",
+      "night crickets",
+      "cricket chorus",
+      "crickets by the sea",
+      "sleep sounds",
+      "relaxation audio",
+      "focus music",
+      "ambient nature",
+      "3 hour sleep",
+      "nature sounds",
+      "deep sleep",
+      "meditation background",
+      "nighttime ambience",
+      "3 hour crickets"
+    ],
+    "metadata_by": "openai/gpt-oss-120b",
+    "audio": {
+      "layers": [
+        {
+          "role": "main",
+          "match": "crickets",
+          "source": "crickets__freesound_479041.flac",
+          "unit_len": 500.781,
+          "gain": 0.9933,
+          "offset": 0.0,
+          "normalize_db": -3.43
+        },
+        {
+          "role": "layer",
+          "match": "night_wind",
+          "source": "night_wind__freesound_670307.flac",
+          "unit_len": 309.113,
+          "gain": 0.1402,
+          "offset": 182.277,
+          "normalize_db": 6.03
+        }
+      ],
+      "crossfade_sec": 5.0,
+      "edge_trim_sec": 10.0,
+      "target_lufs": -18.0,
+      "mix_correction_db": 0.38,
+      "duration_sec": 10800.0,
+      "seam_check_sec": 500.781
+    },
+    "video": {
+      "visual_kind": "clip",
+      "visual_source": "pexels:37767639",
+      "unit_len_sec": 10.83,
+      "size_mb": 4665.4,
+      "variants": 12,
+      "encoded_sec": 130.0,
+      "repeats": 997
+    },
+    "video_id": "GKKugG0xbVU",
+    "category_id": "22",
+    "publish_mode": "api",
+    "privacy": "public",
+    "uploaded_at": "2026-11-01T02:42:02+00:00"
   }
 ]
