@@ -3441,5 +3441,61 @@
     "publish_mode": "api",
     "privacy": "public",
     "uploaded_at": "2026-11-02T04:10:38+00:00"
+  },
+  {
+    "date": "2026-11-03",
+    "channel": "main",
+    "theme": "fireplace",
+    "season_hint": null,
+    "seed": 10594627652232,
+    "title": "Crackling Stone Fireplace for Cozy Sleep | 3 Hours",
+    "tags": [
+      "stone fireplace",
+      "crackling fire",
+      "fireplace sounds",
+      "cozy sleep",
+      "relaxing fireplace",
+      "fireplace ambience",
+      "sleep sounds",
+      "ambient fire",
+      "background noise",
+      "3 hour fireplace",
+      "3 hour sleep",
+      "focus"
+    ],
+    "metadata_by": "openai/gpt-oss-120b",
+    "audio": {
+      "layers": [
+        {
+          "role": "main",
+          "match": "fireplace",
+          "source": "fireplace__freesound_496130.flac",
+          "unit_len": 344.5,
+          "gain": 0.9696,
+          "offset": 0.0,
+          "normalize_db": 15.06
+        }
+      ],
+      "crossfade_sec": 5.0,
+      "edge_trim_sec": 10.0,
+      "target_lufs": -18.0,
+      "mix_correction_db": 1.29,
+      "duration_sec": 10800.0,
+      "seam_check_sec": 344.5
+    },
+    "video": {
+      "visual_kind": "clip",
+      "visual_source": "pexels:8149639",
+      "unit_len_sec": 35.54,
+      "size_mb": 6883.0,
+      "variants": 12,
+      "encoded_sec": 426.5,
+      "repeats": 304
+    },
+    "video_id": "GUZKHr-mnSA",
+    "category_id": "22",
+    "publish_mode": "api",
+    "privacy": "public",
+    "uploaded_at": "2026-11-03T05:00:28+00:00"
   }
 ]
