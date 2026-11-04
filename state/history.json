@@ -3497,5 +3497,79 @@
     "publish_mode": "api",
     "privacy": "public",
     "uploaded_at": "2026-11-03T05:00:28+00:00"
+  },
+  {
+    "date": "2026-11-04",
+    "channel": "main",
+    "theme": "stream",
+    "season_hint": null,
+    "seed": 168997625766055,
+    "title": "Trickling Creek Over Stones for Study | 3 Hours",
+    "tags": [
+      "creek over stones",
+      "spring creek sounds",
+      "stream over stones",
+      "birds chirping",
+      "leaves rustling",
+      "nature sleep sounds",
+      "study background",
+      "meditation audio",
+      "relaxing nature",
+      "focus sounds",
+      "3 hour creek",
+      "3 hour nature"
+    ],
+    "metadata_by": "openai/gpt-oss-120b",
+    "audio": {
+      "layers": [
+        {
+          "role": "main",
+          "match": "stream",
+          "source": "stream__freesound_512224.flac",
+          "unit_len": 297.316,
+          "gain": 0.9748,
+          "offset": 0.0,
+          "normalize_db": 7.08
+        },
+        {
+          "role": "layer",
+          "match": "birdsong",
+          "source": "birdsong__freesound_674085.flac",
+          "unit_len": 276.0,
+          "gain": 0.1085,
+          "offset": 100.364,
+          "normalize_db": 10.05
+        },
+        {
+          "role": "layer",
+          "match": "leaves_wind",
+          "source": "leaves_wind__freesound_670307.flac",
+          "unit_len": 309.113,
+          "gain": 0.1092,
+          "offset": 174.245,
+          "normalize_db": 6.03
+        }
+      ],
+      "crossfade_sec": 5.0,
+      "edge_trim_sec": 10.0,
+      "target_lufs": -18.0,
+      "mix_correction_db": 0.17,
+      "duration_sec": 10800.0,
+      "seam_check_sec": 297.316
+    },
+    "video": {
+      "visual_kind": "clip",
+      "visual_source": "pexels:34293437",
+      "unit_len_sec": 16.5,
+      "size_mb": 8742.3,
+      "variants": 12,
+      "encoded_sec": 198.0,
+      "repeats": 655
+    },
+    "video_id": "3yxOXaWQp3s",
+    "category_id": "10",
+    "publish_mode": "api",
+    "privacy": "public",
+    "uploaded_at": "2026-11-04T03:44:23+00:00"
   }
 ]
