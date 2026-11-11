@@ -3950,5 +3950,79 @@
     "publish_mode": "api",
     "privacy": "public",
     "uploaded_at": "2026-11-10T05:28:31+00:00"
+  },
+  {
+    "date": "2026-11-11",
+    "channel": "main",
+    "theme": "stream",
+    "season_hint": null,
+    "seed": 279277099066928,
+    "title": "Spring Creek Over Stones for Meditation | 3 Hours",
+    "tags": [
+      "spring creek",
+      "creek over stones",
+      "stream over stones",
+      "birdsong",
+      "leaves rustling",
+      "nature sounds",
+      "sleep sounds",
+      "focus music",
+      "meditation audio",
+      "3 hour stream",
+      "relaxing nature",
+      "study background"
+    ],
+    "metadata_by": "openai/gpt-oss-120b",
+    "audio": {
+      "layers": [
+        {
+          "role": "main",
+          "match": "stream",
+          "source": "stream__freesound_512224.flac",
+          "unit_len": 297.316,
+          "gain": 1.0549,
+          "offset": 0.0,
+          "normalize_db": 7.08
+        },
+        {
+          "role": "layer",
+          "match": "birdsong",
+          "source": "birdsong__freesound_674085.flac",
+          "unit_len": 276.0,
+          "gain": 0.1121,
+          "offset": 144.993,
+          "normalize_db": 10.05
+        },
+        {
+          "role": "layer",
+          "match": "leaves_wind",
+          "source": "leaves_wind__freesound_670307.flac",
+          "unit_len": 309.113,
+          "gain": 0.0942,
+          "offset": 139.526,
+          "normalize_db": 6.03
+        }
+      ],
+      "crossfade_sec": 5.0,
+      "edge_trim_sec": 10.0,
+      "target_lufs": -18.0,
+      "mix_correction_db": -0.48,
+      "duration_sec": 10800.0,
+      "seam_check_sec": 297.316
+    },
+    "video": {
+      "visual_kind": "clip",
+      "visual_source": "pexels:40406331",
+      "unit_len_sec": 18.5,
+      "size_mb": 7367.4,
+      "variants": 12,
+      "encoded_sec": 222.0,
+      "repeats": 584
+    },
+    "video_id": "YXaMVV9y4N4",
+    "category_id": "22",
+    "publish_mode": "api",
+    "privacy": "public",
+    "uploaded_at": "2026-11-11T04:14:32+00:00"
   }
 ]
