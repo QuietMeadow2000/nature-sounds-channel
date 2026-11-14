@@ -4150,5 +4150,61 @@
     "publish_mode": "api",
     "privacy": "public",
     "uploaded_at": "2026-11-13T03:41:00+00:00"
+  },
+  {
+    "date": "2026-11-14",
+    "channel": "main",
+    "theme": "ocean_waves",
+    "season_hint": null,
+    "seed": 220389189955172,
+    "title": "Tropical Island Shore Waves for Relaxation | 3 Hours",
+    "tags": [
+      "tropical island shore",
+      "ocean waves",
+      "reef water sounds",
+      "warm still air",
+      "tropical beach waves",
+      "sleep sounds",
+      "relaxation sounds",
+      "focus music",
+      "3 hour ocean",
+      "nature sounds",
+      "ambient sleep",
+      "deep relaxation"
+    ],
+    "metadata_by": "openai/gpt-oss-120b",
+    "audio": {
+      "layers": [
+        {
+          "role": "main",
+          "match": "waves",
+          "source": "waves__freesound_451743.mp3",
+          "unit_len": 445.033,
+          "gain": 0.9923,
+          "offset": 0.0,
+          "normalize_db": 13.78
+        }
+      ],
+      "crossfade_sec": 5.0,
+      "edge_trim_sec": 10.0,
+      "target_lufs": -18.0,
+      "mix_correction_db": 1.07,
+      "duration_sec": 10800.0,
+      "seam_check_sec": 445.033
+    },
+    "video": {
+      "visual_kind": "clip",
+      "visual_source": "pexels:35098575",
+      "unit_len_sec": 29.17,
+      "size_mb": 8474.8,
+      "variants": 12,
+      "encoded_sec": 350.0,
+      "repeats": 371
+    },
+    "video_id": "xP8vgV3QCqU",
+    "category_id": "10",
+    "publish_mode": "api",
+    "privacy": "public",
+    "uploaded_at": "2026-11-14T03:46:49+00:00"
   }
 ]
