@@ -4347,5 +4347,64 @@
     "publish_mode": "api",
     "privacy": "public",
     "uploaded_at": "2026-11-16T04:16:46+00:00"
+  },
+  {
+    "date": "2026-11-17",
+    "channel": "main",
+    "theme": "fireplace",
+    "season_hint": null,
+    "seed": 167732667069681,
+    "title": "Stone Fireplace Ambience for Restful Sleep | 3 Hours",
+    "tags": [
+      "stone fireplace",
+      "fireplace crackling",
+      "fireplace sounds",
+      "cozy fireplace",
+      "sleep sounds",
+      "relaxation",
+      "focus",
+      "background noise",
+      "study ambiance",
+      "3 hour fireplace",
+      "deep sleep",
+      "ambient sound",
+      "quiet room",
+      "sleep aid",
+      "calm environment"
+    ],
+    "metadata_by": "openai/gpt-oss-120b",
+    "audio": {
+      "layers": [
+        {
+          "role": "main",
+          "match": "fireplace",
+          "source": "fireplace__freesound_496130.flac",
+          "unit_len": 344.5,
+          "gain": 1.0417,
+          "offset": 0.0,
+          "normalize_db": 15.06
+        }
+      ],
+      "crossfade_sec": 5.0,
+      "edge_trim_sec": 10.0,
+      "target_lufs": -18.0,
+      "mix_correction_db": 0.69,
+      "duration_sec": 10800.0,
+      "seam_check_sec": 344.5
+    },
+    "video": {
+      "visual_kind": "clip",
+      "visual_source": "pexels:11025448",
+      "unit_len_sec": 24.79,
+      "size_mb": 6977.3,
+      "variants": 12,
+      "encoded_sec": 297.5,
+      "repeats": 436
+    },
+    "video_id": "4G_WxVBC1lY",
+    "category_id": "22",
+    "publish_mode": "api",
+    "privacy": "public",
+    "uploaded_at": "2026-11-17T05:40:52+00:00"
   }
 ]
