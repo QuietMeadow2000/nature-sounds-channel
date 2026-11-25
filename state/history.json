@@ -4856,5 +4856,79 @@
     "publish_mode": "api",
     "privacy": "public",
     "uploaded_at": "2026-11-24T07:50:40+00:00"
+  },
+  {
+    "date": "2026-11-25",
+    "channel": "main",
+    "theme": "stream",
+    "season_hint": null,
+    "seed": 243749015215604,
+    "title": "Quiet Creek Over Pebbles for Meditation | 3 Hours",
+    "tags": [
+      "creek over stones",
+      "small creek spring",
+      "stream over rocks",
+      "gentle creek",
+      "nature water sounds",
+      "sleep sounds",
+      "study sounds",
+      "relaxation audio",
+      "meditation background",
+      "3 hour creek",
+      "ambient nature",
+      "focus music"
+    ],
+    "metadata_by": "openai/gpt-oss-120b",
+    "audio": {
+      "layers": [
+        {
+          "role": "main",
+          "match": "stream",
+          "source": "stream__freesound_512224.flac",
+          "unit_len": 297.316,
+          "gain": 0.916,
+          "offset": 0.0,
+          "normalize_db": 7.08
+        },
+        {
+          "role": "layer",
+          "match": "birdsong",
+          "source": "birdsong__freesound_674085.flac",
+          "unit_len": 276.0,
+          "gain": 0.1087,
+          "offset": 99.25,
+          "normalize_db": 10.05
+        },
+        {
+          "role": "layer",
+          "match": "leaves_wind",
+          "source": "leaves_wind__freesound_670307.flac",
+          "unit_len": 309.113,
+          "gain": 0.1016,
+          "offset": 165.723,
+          "normalize_db": 6.03
+        }
+      ],
+      "crossfade_sec": 5.0,
+      "edge_trim_sec": 10.0,
+      "target_lufs": -18.0,
+      "mix_correction_db": 0.7,
+      "duration_sec": 10800.0,
+      "seam_check_sec": 297.316
+    },
+    "video": {
+      "visual_kind": "clip",
+      "visual_source": "pexels:6650293",
+      "unit_len_sec": 28.46,
+      "size_mb": 8499.0,
+      "variants": 12,
+      "encoded_sec": 341.5,
+      "repeats": 380
+    },
+    "video_id": "5wtsIYpoKZA",
+    "category_id": "22",
+    "publish_mode": "api",
+    "privacy": "public",
+    "uploaded_at": "2026-11-25T07:07:34+00:00"
   }
 ]
